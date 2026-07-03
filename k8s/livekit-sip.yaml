@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: livekit-sip
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: livekit-sip
+  template:
+    metadata:
+      labels:
+        app: livekit-sip
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: sip
+          image: livekit/sip:latest
+          env:
+            - name: SIP_CONFIG_BODY
+              value: |
+                api_key: 'devkey'
+                api_secret: 'devsecret'
+                ws_url: 'ws://127.0.0.1:7880'
+                redis:
+                  address: 'redis-master.default.svc.cluster.local:6379'
+                sip_port: 5061
+                rtp_port:
+                  start: 10000
+                  end: 15000
+                use_external_ip: true
+                logging:
+                  level: debug
