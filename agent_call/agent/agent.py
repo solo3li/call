@@ -5,7 +5,7 @@ from livekit.agents import AutoSubscribe, JobContext, WorkerOptions, cli, llm
 from livekit.agents.voice import Agent, AgentSession
 from livekit.plugins import google
 
-BACKEND_URL = os.environ.get("BACKEND_URL", "http://backend-service:8080")
+BACKEND_URL = os.environ.get("BACKEND_URL", "http://backend:5109")
 
 def get_tenant_ai_settings(room_name: str):
     if room_name.startswith("t_"):
@@ -89,7 +89,10 @@ class GeminiAgent(Agent):
         )
 
     async def on_enter(self) -> None:
-        pass
+        try:
+            self.session.generate_reply(user_input="مرحبا بك!")
+        except Exception as e:
+            print(f"Error in generate_reply: {e}")
 
 async def entrypoint(ctx: JobContext):
     await ctx.connect(auto_subscribe=AutoSubscribe.AUDIO_ONLY)
