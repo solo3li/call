@@ -10,7 +10,7 @@ helm upgrade --install redis bitnami/redis \
   --set auth.enabled=false \
   --namespace default
 
-cat <<EOF > /root/call/k8s/livekit-custom-values.yaml
+cat <<EOF > /root/call/agent_call/k8s/livekit-custom-values.yaml
 livekit:
   port: 7880
   rtc:
@@ -28,7 +28,7 @@ EOF
 echo "Installing LiveKit Server..."
 helm upgrade --install livekit-server livekit/livekit-server \
   --namespace default \
-  -f /root/call/k8s/livekit-custom-values.yaml
+  -f /root/call/agent_call/k8s/livekit-custom-values.yaml
 
 echo "Creating Certificate and IngressRoute for Traefik..."
 cat <<EOF | kubectl apply -f -
@@ -45,7 +45,7 @@ spec:
   dnsNames:
   - "${DOMAIN}"
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: livekit-ingress

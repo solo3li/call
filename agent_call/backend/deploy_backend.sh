@@ -2,10 +2,10 @@
 set -e
 
 echo "Building Backend Docker image..."
-docker build -t backend:latest .
+docker build -t call-backend:latest .
 
 echo "Importing image into k3s..."
-docker save backend:latest | k3s ctr images import -
+docker save call-backend:latest | k3s ctr images import -
 
 IP=$(curl -s ifconfig.me)
 DOMAIN="api.${IP}.nip.io"
@@ -15,21 +15,21 @@ cat <<EOF | kubectl apply -f -
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: call-backend
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend
+      app: call-backend
   template:
     metadata:
       labels:
-        app: backend
+        app: call-backend
     spec:
       containers:
-        - name: backend
-          image: backend:latest
+        - name: call-backend
+          image: call-backend:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
@@ -42,11 +42,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: call-backend
   namespace: default
 spec:
   selector:
-    app: backend
+    app: call-backend
   ports:
     - protocol: TCP
       port: 80
@@ -55,7 +55,7 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: backend-ingress
+  name: call-backend-ingress
   namespace: default
 spec:
   entryPoints:
@@ -64,18 +64,18 @@ spec:
     - match: Host(\`${DOMAIN}\`)
       kind: Rule
       services:
-        - name: backend
+        - name: call-backend
           port: 80
   tls:
-    secretName: backend-tls
+    secretName: call-backend-tls
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: backend-cert
+  name: call-backend-cert
   namespace: default
 spec:
-  secretName: backend-tls
+  secretName: call-backend-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer

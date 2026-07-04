@@ -2,10 +2,10 @@
 set -e
 
 echo "Building Frontend Docker image..."
-docker build -t frontend:latest .
+docker build -t call-frontend:latest .
 
 echo "Importing image into k3s..."
-docker save frontend:latest | k3s ctr images import -
+docker save call-frontend:latest | k3s ctr images import -
 
 IP=$(curl -s ifconfig.me)
 DOMAIN="app.${IP}.nip.io"
@@ -15,21 +15,21 @@ cat <<EOF | kubectl apply -f -
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: call-frontend
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: call-frontend
   template:
     metadata:
       labels:
-        app: frontend
+        app: call-frontend
     spec:
       containers:
-        - name: frontend
-          image: frontend:latest
+        - name: call-frontend
+          image: call-frontend:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -37,11 +37,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: call-frontend
   namespace: default
 spec:
   selector:
-    app: frontend
+    app: call-frontend
   ports:
     - protocol: TCP
       port: 80
@@ -50,7 +50,7 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: frontend-ingress
+  name: call-frontend-ingress
   namespace: default
 spec:
   entryPoints:
@@ -59,18 +59,18 @@ spec:
     - match: Host(\`${DOMAIN}\`)
       kind: Rule
       services:
-        - name: frontend
+        - name: call-frontend
           port: 80
   tls:
-    secretName: frontend-tls
+    secretName: call-frontend-tls
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: frontend-cert
+  name: call-frontend-cert
   namespace: default
 spec:
-  secretName: frontend-tls
+  secretName: call-frontend-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
