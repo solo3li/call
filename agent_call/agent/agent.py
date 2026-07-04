@@ -31,7 +31,7 @@ class GeminiAgent(Agent):
         )
 
     async def on_enter(self) -> None:
-        self.session.generate_reply(instructions="رحب بالمستخدم بكلمة واحدة مثل ألو")
+        pass
 
 async def entrypoint(ctx: JobContext):
     await ctx.connect(auto_subscribe=AutoSubscribe.AUDIO_ONLY)
