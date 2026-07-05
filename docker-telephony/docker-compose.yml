@@ -46,6 +46,33 @@ services:
       - LIVEKIT_API_SECRET=devsecret
       - BACKEND_URL=http://api-call.167.71.66.188.nip.io
 
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    networks:
+      - telephony-net
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=foodrms
+    volumes:
+      - /var/lib/rancher/k3s/storage/pvc-fd9a5a74-5c42-4ed1-ba17-b28dec3fbfd7_default_postgres-pvc:/var/lib/postgresql/data
+
+  backend:
+    image: foodrms-backend:latest
+    container_name: backend
+    networks:
+      - telephony-net
+    ports:
+      - "80:5109"
+      - "5109:5109"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Database=foodrms;Username=postgres;Password=postgres
+    volumes:
+      - /var/lib/rancher/k3s/storage/pvc-39468822-95c2-4c0c-928e-600430a9aada_default_backend-uploads-pvc:/app/wwwroot/uploads
+    depends_on:
+      - db
+
 networks:
   telephony-net:
     driver: bridge
