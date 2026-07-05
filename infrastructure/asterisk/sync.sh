@@ -1,11 +1,13 @@
 #!/bin/bash
-API_URL="http://backend:5109/api/internal/asterisk/config"
+API_URL="http://api-call.167.71.66.188.nip.io/api/internal/asterisk/config"
 
 while true; do
   curl -s $API_URL > /tmp/config.json
   
   if [ -s /tmp/config.json ]; then
     cat /tmp/config.json | jq -r '.sipConf' > /etc/asterisk/sip.conf.new
+    echo -e "\n[kamailio]\ntype=friend\nhost=kamailio\ncontext=from-internal\ninsecure=port,invite\ndisallow=all\nallow=ulaw\nallow=alaw\n" >> /etc/asterisk/sip.conf.new
+    
     cat /tmp/config.json | jq -r '.extenConf' > /etc/asterisk/extensions.conf.new
     
     # Check if files changed
