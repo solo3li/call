@@ -16,6 +16,7 @@ spec:
       containers:
         - name: backend
           image: foodrms-backend:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 5109
           env:

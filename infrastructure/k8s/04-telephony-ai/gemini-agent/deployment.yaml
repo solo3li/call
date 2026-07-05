@@ -16,6 +16,7 @@ spec:
       containers:
         - name: gemini-agent
           image: local-gemini-agent:latest
+          imagePullPolicy: Never
           env:
             - name: GOOGLE_API_KEY
               valueFrom:

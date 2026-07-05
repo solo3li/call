@@ -14,6 +14,7 @@ spec:
         app: livekit-sip
     spec:
       hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: livekit-sip
           image: livekit/sip:latest

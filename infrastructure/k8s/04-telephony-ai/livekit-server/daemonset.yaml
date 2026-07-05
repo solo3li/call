@@ -13,7 +13,8 @@ spec:
         app: livekit-server
     spec:
       hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: livekit-server
           image: livekit/livekit-server:v1.9.0
-          command: ["--keys", "devkey: devsecret", "--redis-host", "redis.telephony-ns.svc.cluster.local:6379", "--node-ip", "167.71.66.188"]
+          args: ["--keys", "devkey: devsecret", "--redis-host", "redis.telephony-ns.svc.cluster.local:6379", "--node-ip", "167.71.66.188"]
