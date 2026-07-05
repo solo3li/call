@@ -28,8 +28,8 @@ def get_tenant_ai_settings(room_name: str):
 # --- Tools ---
 @llm.function_tool(description="Get customer profile and recent orders using their phone number.")
 async def get_customer(
-    extension: Annotated[str, llm.TypeInfo(description="The extension of the tenant")],
-    phone: Annotated[str, llm.TypeInfo(description="The caller's phone number")]
+    extension: Annotated[str, "The extension of the tenant"],
+    phone: Annotated[str, "The caller's phone number"]
 ):
     try:
         resp = requests.get(f"{BACKEND_URL}/api/internal/ai-tools/customer?extension={extension}&phone={phone}")
@@ -39,8 +39,8 @@ async def get_customer(
 
 @llm.function_tool(description="Search the restaurant menu for items and prices.")
 async def search_menu(
-    extension: Annotated[str, llm.TypeInfo(description="The extension of the tenant")],
-    query: Annotated[str, llm.TypeInfo(description="The name of the food item or category to search for")]
+    extension: Annotated[str, "The extension of the tenant"],
+    query: Annotated[str, "The name of the food item or category to search for"]
 ):
     try:
         resp = requests.get(f"{BACKEND_URL}/api/internal/ai-tools/menu?extension={extension}&query={query}")
@@ -50,11 +50,11 @@ async def search_menu(
 
 @llm.function_tool(description="Place a new order for the customer.")
 async def place_order(
-    extension: Annotated[str, llm.TypeInfo(description="The extension of the tenant")],
-    phone: Annotated[str, llm.TypeInfo(description="Customer phone number")],
-    customer_name: Annotated[str, llm.TypeInfo(description="Customer name")],
-    items_summary: Annotated[str, llm.TypeInfo(description="Summary of the items ordered (e.g. 1 Pizza, 2 Cola)")],
-    total_amount: Annotated[float, llm.TypeInfo(description="Total amount of the order")]
+    extension: Annotated[str, "The extension of the tenant"],
+    phone: Annotated[str, "Customer phone number"],
+    customer_name: Annotated[str, "Customer name"],
+    items_summary: Annotated[str, "Summary of the items ordered (e.g. 1 Pizza, 2 Cola)"],
+    total_amount: Annotated[float, "Total amount of the order"]
 ):
     try:
         payload = {
@@ -71,7 +71,7 @@ async def place_order(
 
 @llm.function_tool(description="Transfer the call to a human receptionist or manager.")
 async def transfer_to_human(
-    extension: Annotated[str, llm.TypeInfo(description="The extension of the tenant")]
+    extension: Annotated[str, "The extension of the tenant"]
 ):
     try:
         resp = requests.post(f"{BACKEND_URL}/api/internal/ai-tools/transfer", json={"extension": extension})
