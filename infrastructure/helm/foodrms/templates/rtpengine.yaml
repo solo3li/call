@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: rtpengine
+  labels:
+    app: rtpengine
+spec:
+  selector:
+    matchLabels:
+      app: rtpengine
+  template:
+    metadata:
+      labels:
+        app: rtpengine
+    spec:
+      hostNetwork: true
+      containers:
+      - name: rtpengine
+        image: sipwise/rtpengine:latest
+        command:
+        - rtpengine
+        - --interface=any
+        - --listen-ng=0.0.0.0:22222
+        - --port-min=10000
+        - --port-max=20000
+        - --foreground
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 22222
+          protocol: UDP
+          name: ng-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rtpengine-service
+spec:
+  selector:
+    app: rtpengine
+  ports:
+  - port: 22222
+    targetPort: 22222
+    protocol: UDP
+    name: ng-port

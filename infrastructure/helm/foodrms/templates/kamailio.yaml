@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kamailio-config
+data:
+  kamailio.cfg: |
+    #!KAMAILIO
+    
+    # Enable dispatcher module
+    loadmodule "dispatcher.so"
+    modparam("dispatcher", "list_file", "/etc/kamailio/dispatcher.list")
+    modparam("dispatcher", "flags", 2)
+    modparam("dispatcher", "dst_avp", "$avp(AVP_DST)")
+    modparam("dispatcher", "grp_avp", "$avp(AVP_GRP)")
+    modparam("dispatcher", "cnt_avp", "$avp(AVP_CNT)")
+    
+    # Enable rtpengine module
+    loadmodule "rtpengine.so"
+    modparam("rtpengine", "rtpengine_sock", "udp:rtpengine-service:22222")
+    
+    request_route {
+        # Basic sanity checks
+        if (!mf_process_maxfwd_header("10")) {
+            sl_send_reply("483", "Too Many Hops");
+            exit;
+        }
+        
+        # Dispatch to Asterisk
+        if (is_method("INVITE")) {
+            rtpengine_manage("replace-origin replace-session-connection");
+            if (ds_select_dst("1", "4")) {
+                t_on_reply("REPLY_ROUTE");
+                forward();
+                exit;
+            } else {
+                sl_send_reply("503", "Service Unavailable");
+                exit;
+            }
+        }
+        
+        forward();
+    }
+    
+    reply_route[REPLY_ROUTE] {
+        if (status=~"[12][0-9][0-9]") {
+            rtpengine_manage("replace-origin replace-session-connection");
+        }
+    }
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kamailio-dispatcher
+data:
+  dispatcher.list: |
+    # Group 1: Asterisk StatefulSet pods
+    1 sip:my-asterisk-0.asterisk-headless:5060
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kamailio
+  labels:
+    app: kamailio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kamailio
+  template:
+    metadata:
+      labels:
+        app: kamailio
+    spec:
+      containers:
+      - name: kamailio
+        image: kamailio/kamailio:latest
+        ports:
+        - containerPort: 5060
+          protocol: UDP
+          name: sip-udp
+        - containerPort: 5060
+          protocol: TCP
+          name: sip-tcp
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/kamailio/kamailio.cfg
+          subPath: kamailio.cfg
+        - name: dispatcher-volume
+          mountPath: /etc/kamailio/dispatcher.list
+          subPath: dispatcher.list
+      volumes:
+      - name: config-volume
+        configMap:
+          name: kamailio-config
+      - name: dispatcher-volume
+        configMap:
+          name: kamailio-dispatcher
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kamailio-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: kamailio
+  ports:
+  - port: 5060
+    targetPort: 5060
+    protocol: UDP
+    name: sip-udp
+  - port: 5060
+    targetPort: 5060
+    protocol: TCP
+    name: sip-tcp
