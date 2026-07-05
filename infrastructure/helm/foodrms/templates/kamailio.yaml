@@ -19,11 +19,6 @@ data:
     loadmodule "siputils.so"
     loadmodule "textops.so"
     
-    # Enable dispatcher module
-    loadmodule "dispatcher.so"
-    modparam("dispatcher", "list_file", "/etc/kamailio/dispatcher.list")
-    modparam("dispatcher", "flags", 2)
-    
     # Configure RTPEngine
     loadmodule "rtpengine.so"
     modparam("rtpengine", "rtpengine_sock", "udp:127.0.0.1:22222")
@@ -41,11 +36,8 @@ data:
             exit;
         }
 
-        # Select Asterisk destination for all other requests
-        if (!ds_select_dst("1", "4")) {
-            sl_send_reply("503", "Service Unavailable");
-            exit;
-        }
+        # Route all other requests directly to Asterisk
+        $du = "sip:my-asterisk-0.asterisk-headless.default.svc.cluster.local:5060";
         
         if (is_method("INVITE")) {
             record_route();
@@ -64,15 +56,6 @@ data:
         }
     }
 
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kamailio-dispatcher
-data:
-  dispatcher.list: |
-    # Group 1: Asterisk StatefulSet pods
-    1 sip:my-asterisk-0.asterisk-headless.default.svc.cluster.local:5060 0 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -107,16 +90,10 @@ spec:
         - name: config-volume
           mountPath: /etc/kamailio/kamailio.cfg
           subPath: kamailio.cfg
-        - name: dispatcher-volume
-          mountPath: /etc/kamailio/dispatcher.list
-          subPath: dispatcher.list
       volumes:
       - name: config-volume
         configMap:
           name: kamailio-config
-      - name: dispatcher-volume
-        configMap:
-          name: kamailio-dispatcher
 ---
 apiVersion: v1
 kind: Service
