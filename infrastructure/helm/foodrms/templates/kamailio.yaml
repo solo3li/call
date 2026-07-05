@@ -6,6 +6,13 @@ data:
   kamailio.cfg: |
     #!KAMAILIO
     
+    loadmodule "pv.so"
+    loadmodule "sl.so"
+    loadmodule "tm.so"
+    loadmodule "maxfwd.so"
+    loadmodule "siputils.so"
+    loadmodule "textops.so"
+    
     # Enable dispatcher module
     loadmodule "dispatcher.so"
     modparam("dispatcher", "list_file", "/etc/kamailio/dispatcher.list")
@@ -41,10 +48,8 @@ data:
         forward();
     }
     
-    reply_route[REPLY_ROUTE] {
-        if (status=~"[12][0-9][0-9]") {
-            rtpengine_manage("replace-origin replace-session-connection");
-        }
+    onreply_route[REPLY_ROUTE] {
+        rtpengine_manage("replace-origin replace-session-connection");
     }
 
 ---
@@ -75,7 +80,8 @@ spec:
     spec:
       containers:
       - name: kamailio
-        image: kamailio/kamailio:latest
+        image: telephoneorg/kamailio:latest
+        command: ["/usr/sbin/kamailio", "-DD", "-E", "-f", "/etc/kamailio/kamailio.cfg"]
         ports:
         - containerPort: 5060
           protocol: UDP

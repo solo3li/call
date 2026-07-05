@@ -16,14 +16,15 @@ spec:
       hostNetwork: true
       containers:
       - name: rtpengine
-        image: sipwise/rtpengine:latest
-        command:
-        - rtpengine
-        - --interface=any
-        - --listen-ng=0.0.0.0:22222
-        - --port-min=10000
-        - --port-max=20000
-        - --foreground
+        image: davehorton/rtpengine:latest
+        env:
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        command: ["/bin/sh", "-c"]
+        args:
+        - "exec rtpengine --interface=internal/$MY_POD_IP --listen-ng=0.0.0.0:22222 --port-min=10000 --port-max=20000 --foreground"
         securityContext:
           privileged: true
         ports:

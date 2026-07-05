@@ -148,7 +148,7 @@ export default function AiSettingsPage() {
               موظف الاستقبال الآلي (AI Agent)
             </h3>
             <p className="text-sm text-gray-500">
-              تخصيص شخصية وأسلوب الموظف الآلي
+              تخصيص شخصية وأسلوب الموظف الآلي للمكالمات الصوتية (Gemini)
             </p>
           </div>
           <div className="p-6 space-y-4 flex-grow">
@@ -329,7 +329,7 @@ export default function AiSettingsPage() {
                   <h4 className="font-bold text-blue-800 border-b border-blue-200 pb-1 flex-grow">حساب الموظف البشري (Agent) - لاستقبال الشكاوى</h4>
                   <button 
                     onClick={() => {
-                      const text = `Account Name: Agent ${sipSettings.agentExtension || "101"}\nSIP Server: 167.71.66.188:5062\nUsername: ${sipSettings.agentExtension || "-"}\nDomain: 167.71.66.188:5062\nLogin: ${sipSettings.agentExtension || "-"}\nPassword: ${sipSettings.agentPassword || "-"}\nTransport: TCP`;
+                      const text = `Account Name: Agent ${sipSettings.agentExtension || "101"}\nSIP Server: 167.71.66.188:5060\nUsername: ${sipSettings.agentExtension || "-"}\nDomain: 167.71.66.188:5060\nLogin: ${sipSettings.agentExtension || "-"}\nPassword: ${sipSettings.agentPassword || "-"}\nTransport: TCP`;
                       navigator.clipboard.writeText(text);
                     }}
                     className="mr-4 text-xs bg-white text-blue-600 px-3 py-1.5 rounded border border-blue-200 hover:bg-blue-50 font-bold shadow-sm transition-colors"
@@ -349,9 +349,9 @@ export default function AiSettingsPage() {
                   <div className="flex justify-between items-center bg-gray-50 p-2 rounded group hover:bg-gray-100 transition-colors">
                     <div>
                       <label className="text-[10px] text-gray-500 font-bold block uppercase">SIP Server & Domain</label>
-                      <p className="font-mono text-sm font-bold text-gray-900">167.71.66.188:5062</p>
+                      <p className="font-mono text-sm font-bold text-gray-900">167.71.66.188:5060</p>
                     </div>
-                    <button onClick={() => navigator.clipboard.writeText("167.71.66.188:5062")} className="text-gray-400 hover:text-blue-600 p-1 bg-white rounded shadow-sm border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity" title="نسخ">📋</button>
+                    <button onClick={() => navigator.clipboard.writeText("167.71.66.188:5060")} className="text-gray-400 hover:text-blue-600 p-1 bg-white rounded shadow-sm border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity" title="نسخ">📋</button>
                   </div>
 
                   <div className="flex justify-between items-center bg-gray-50 p-2 rounded group hover:bg-gray-100 transition-colors">
@@ -386,7 +386,7 @@ export default function AiSettingsPage() {
                   <h4 className="font-bold text-purple-800 border-b border-purple-200 pb-1 flex-grow">حساب العميل (Client) - لاختبار الذكاء الاصطناعي</h4>
                   <button 
                     onClick={() => {
-                      const text = `Account Name: Client Tester\nSIP Server: 167.71.66.188:5062\nUsername: 999\nDomain: 167.71.66.188:5062\nLogin: 999\nPassword: tester123\nTransport: TCP`;
+                      const text = `Account Name: Client Tester\nSIP Server: 167.71.66.188:5060\nUsername: 999\nDomain: 167.71.66.188:5060\nLogin: 999\nPassword: tester123\nTransport: TCP`;
                       navigator.clipboard.writeText(text);
                     }}
                     className="mr-4 text-xs bg-white text-purple-600 px-3 py-1.5 rounded border border-purple-200 hover:bg-purple-50 font-bold shadow-sm transition-colors"
@@ -406,9 +406,9 @@ export default function AiSettingsPage() {
                   <div className="flex justify-between items-center bg-white p-2 rounded group hover:bg-purple-100 transition-colors">
                     <div>
                       <label className="text-[10px] text-gray-500 font-bold block uppercase">SIP Server & Domain</label>
-                      <p className="font-mono text-sm font-bold text-gray-900">167.71.66.188:5062</p>
+                      <p className="font-mono text-sm font-bold text-gray-900">167.71.66.188:5060</p>
                     </div>
-                    <button onClick={() => navigator.clipboard.writeText("167.71.66.188:5062")} className="text-gray-400 hover:text-purple-600 p-1 bg-gray-50 rounded shadow-sm border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity" title="نسخ">📋</button>
+                    <button onClick={() => navigator.clipboard.writeText("167.71.66.188:5060")} className="text-gray-400 hover:text-purple-600 p-1 bg-gray-50 rounded shadow-sm border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity" title="نسخ">📋</button>
                   </div>
 
                   <div className="flex justify-between items-center bg-white p-2 rounded group hover:bg-purple-100 transition-colors">
@@ -441,7 +441,7 @@ export default function AiSettingsPage() {
                 <p className="font-bold mb-2">💡 طريقة الاختبار (كيف تجرب النظام):</p>
                 <ol className="list-decimal list-inside space-y-1">
                   <li>استخدم بيانات <strong>حساب العميل (999)</strong> للاتصال من MicroSIP.</li>
-                  <li>اتصل على الرقم <code className="bg-white px-1 py-0.5 rounded border border-gray-200 font-bold text-blue-600">200</code> للحديث مع الذكاء الاصطناعي كأنك عميل.</li>
+                  <li>اتصل على الرقم <code className="bg-white px-1 py-0.5 rounded border border-gray-200 font-bold text-blue-600">200</code> للحديث مع الذكاء الاصطناعي (Gemini) كأنك عميل.</li>
                   <li>إذا طلبت تقديم شكوى، سيقوم الذكاء الاصطناعي بتحويلك إلى <strong>التحويلة البشرية (Agent)</strong> المحددة أدناه.</li>
                 </ol>
               </div>
