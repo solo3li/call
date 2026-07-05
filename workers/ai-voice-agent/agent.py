@@ -95,8 +95,8 @@ async def entrypoint(ctx: JobContext):
     await ctx.connect(auto_subscribe=AutoSubscribe.AUDIO_ONLY)
     
     settings, extension = get_tenant_ai_settings(ctx.room.name)
-    base_instructions = settings.get("systemPrompt") or "أنت مساعد ذكي للمطعم."
-    dialect = settings.get("dialect", "standard")
+    base_instructions = settings.get("systemPrompt") or "أنت مساعدة ذكية للمطعم. يجب أن تتحدثي دائمًا بصوت أنثوي."
+    dialect = "Egyptian (اللهجة المصرية)"
     emotion = settings.get("emotion", "neutral")
     style = settings.get("style", "normal")
     
@@ -118,7 +118,6 @@ async def entrypoint(ctx: JobContext):
     
     session = AgentSession(
         llm=google.beta.realtime.RealtimeModel(
-            model="gemini-3.1-flash-live-preview",
             api_key=os.environ.get("GOOGLE_API_KEY"),
             voice="Aoede"
         )
