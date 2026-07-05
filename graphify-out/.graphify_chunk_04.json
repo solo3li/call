@@ -1,0 +1,98 @@
+{
+  "nodes": [
+    {
+      "id": "totp_assets_favicon_png",
+      "label": "favicon.png",
+      "file_type": "image",
+      "source_file": "TOTP/assets/favicon.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "totp_app_json",
+      "label": "app.json",
+      "file_type": "code",
+      "source_file": "TOTP/app.json",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "totp_web_build",
+      "label": "TOTP Web Application",
+      "file_type": "concept",
+      "source_file": "TOTP/assets/favicon.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The favicon.png serves as the web icon for the Expo-based TOTP application when compiled/run for web platforms."
+    },
+    {
+      "id": "totp_readme_md",
+      "label": "TOTP README.md",
+      "file_type": "document",
+      "source_file": "TOTP/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "totp_assets_favicon_png",
+      "target": "totp_app_json",
+      "relation": "configured_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "TOTP/assets/favicon.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "totp_assets_favicon_png",
+      "target": "totp_web_build",
+      "relation": "defines_branding_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "TOTP/assets/favicon.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "totp_web_build",
+      "target": "totp_readme_md",
+      "relation": "documented_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "TOTP/assets/favicon.png",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "totp_app_branding",
+      "label": "TOTP App Branding Assets",
+      "nodes": [
+        "totp_assets_favicon_png",
+        "totp_app_json",
+        "totp_web_build"
+      ],
+      "relation": "branding",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "TOTP/assets/favicon.png"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

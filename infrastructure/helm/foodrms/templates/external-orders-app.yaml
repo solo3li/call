@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-orders-app
+  labels:
+    app: external-orders-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: external-orders-app
+  template:
+    metadata:
+      labels:
+        app: external-orders-app
+    spec:
+      containers:
+      - name: external-orders-app
+        image: external-orders-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-orders-app
+spec:
+  selector:
+    app: external-orders-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

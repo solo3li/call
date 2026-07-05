@@ -1,0 +1,62 @@
+@model object
+@{
+    ViewData["Title"] = "Details " + ViewBag.EntityName;
+    Type entityType = ViewBag.EntityType;
+    var properties = entityType.GetProperties()
+        .Where(p => FoodRMS.Api.Areas.Admin.Controllers.ManageController.IsBindableType(p.PropertyType))
+        .ToList();
+        
+    var idProp = properties.FirstOrDefault(p => p.Name.Equals("Id", StringComparison.OrdinalIgnoreCase));
+    var idVal = idProp?.GetValue(Model)?.ToString();
+}
+
+<div class="page-header d-flex justify-content-between align-items-center mb-4 p-4 bg-white rounded-4 shadow-sm">
+    <div class="d-flex align-items-center">
+        <div class="bg-info bg-opacity-10 text-info p-3 rounded-3 me-3">
+            <i class="bi bi-file-earmark-text-fill fs-4"></i>
+        </div>
+        <div>
+            <h1 class="page-title h3 mb-1 fw-bolder text-dark">View @ViewBag.EntityName</h1>
+            <p class="text-muted mb-0 small">Read-only details of the selected record.</p>
+        </div>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="List" asp-route-id="@ViewBag.EntityName" class="btn btn-light fw-bold shadow-sm border"><i class="bi bi-arrow-left me-1"></i> Back to List</a>
+        <a asp-action="Edit" asp-route-id="@ViewBag.EntityName" asp-route-pk="@idVal" class="btn btn-primary fw-bold shadow-sm"><i class="bi bi-pencil-fill me-1"></i> Edit Record</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-bottom p-4">
+                <h5 class="fw-bolder mb-0 text-dark">Record Details</h5>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <tbody>
+                        @foreach(var prop in properties) {
+                            var val = prop.GetValue(Model);
+                            <tr>
+                                <th class="ps-4 py-3 bg-light text-secondary fw-bold text-uppercase" style="width: 30%; font-size: 0.8rem; letter-spacing: 0.5px;">@prop.Name</th>
+                                <td class="pe-4 py-3 text-dark fw-medium">
+                                    @if (val == null) {
+                                        <span class="badge bg-light text-secondary border">null</span>
+                                    } else if (val is bool b) {
+                                        if (b) {
+                                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1"><i class="bi bi-check-circle-fill me-1"></i> True</span>
+                                        } else {
+                                            <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1"><i class="bi bi-x-circle-fill me-1"></i> False</span>
+                                        }
+                                    } else {
+                                        @val.ToString()
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

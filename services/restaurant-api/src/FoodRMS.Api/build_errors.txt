@@ -1,0 +1,8 @@
+/root/rms/foodRMS/project/backend/src/FoodRMS.Api/Infrastructure/Services/AuthService.cs(114,61): error CS1503: Argument 1: cannot convert from 'System.Guid' to 'string' [/root/rms/foodRMS/project/backend/src/FoodRMS.Api/FoodRMS.Api.csproj]
+/root/rms/foodRMS/project/backend/src/FoodRMS.Api/Infrastructure/Services/AuthService.cs(216,61): error CS1503: Argument 1: cannot convert from 'System.Guid' to 'string' [/root/rms/foodRMS/project/backend/src/FoodRMS.Api/FoodRMS.Api.csproj]
+
+Build FAILED.
+    77 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:06.95

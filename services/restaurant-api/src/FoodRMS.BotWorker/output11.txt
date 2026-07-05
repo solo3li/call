@@ -1,0 +1,173 @@
+Using launch settings from /root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/Properties/launchSettings.json...
+Building...
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1510: PackageReference System.Net.Http.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1902: Package 'SharpCompress' 0.30.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-6c8g-7p36-r338
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1510: PackageReference System.Net.Http.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1902: Package 'SharpCompress' 0.30.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-6c8g-7p36-r338
+
+--- Starting Test Scenario 1: Say Hello ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): مرحبا، هل المطعم مفتوح؟ وماذا يوجد في المنيو؟
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 125.3049ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 175.4946ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 16.7908ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 16.9803ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 2207.6248ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 2208.0368ms - 200
+
+[BOT to 123456789]: أهلاً بك! نعم، المطعم مفتوح حالياً ويسعدنا خدمتك. يسعدنا أن نقدم لك تشكيلة رائعة من الأطباق. لدينا "وجبات رئيسية" متنوعة تبدأ من 20 ر.س، ومقبلات شهية، بالإضافة إلى مشروبات منعشة وحلويات لذيذة. على سبيل المثال، يمكنك تجربة "وجبات رئيسية 1" بـ 53 ر.س، أو "مقبلات 1" بـ 88 ر.س. هل تود معرفة المزيد عن صنف معين؟
+
+
+--- Starting Test Scenario 2: Add to cart ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): أريد طلب واحد وجبات رئيسية 1
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 9.3177ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 9.49ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 6.373ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 6.5861ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 1695.9645ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 1696.1255ms - 200
+
+[BOT to 123456789]: تم إضافة 'وجبات رئيسية 1' إلى سلة طلباتك بنجاح. هل ترغب في إضافة أي شيء آخر؟
+
+
+--- Starting Test Scenario 3: View Cart ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): ماذا يوجد في سلتي الآن؟
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 9.0403ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 9.2177ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 6.9245ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 7.0937ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 1176.7949ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 1176.9587ms - 200
+
+[BOT to 123456789]: في سلتك حالياً: وجبات رئيسية 1. هل تود إتمام الطلب أم إضافة المزيد؟
+
+
+--- Starting Test Scenario 4: Checkout ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): اعتمد الطلب، العنوان: الرياض حي العقيق
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 9.9028ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 10.0991ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 6.2031ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 6.3321ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 1081.3346ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 1081.4526ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 30.0706ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 30.2402ms - 200
+
+[BOT to 123456789]: تم اعتماد طلبك بنجاح! سيتم توصيل 'وجبات رئيسية 1' إلى العنوان: الرياض حي العقيق. شكراً لك لاختيار مطعمنا!
+
+تم استلام طلبك بنجاح! رقم الطلب:  🎉
+
+
+--- Starting Test Scenario 5: Check Status ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): أين وصل طلبي؟
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 8.8597ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 8.9897ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 8.4498ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 8.5917ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 1551.5017ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 1551.6015ms - 200
+
+[BOT to 123456789]: طلبك قيد التجهيز حالياً وسيكون في طريقه إليك قريباً. شكراً لك على صبرك!
+
+
+--- Test Finished ---

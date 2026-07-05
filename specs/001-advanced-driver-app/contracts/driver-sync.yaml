@@ -1,0 +1,45 @@
+openapi: 3.0.0
+info:
+  title: Driver Offline Sync API
+  version: 1.0.0
+paths:
+  /api/v1/driver/sync:
+    post:
+      summary: Sync offline actions to the backend
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                actions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      actionId:
+                        type: string
+                        format: uuid
+                      actionType:
+                        type: string
+                        example: "UPDATE_ORDER_STATUS"
+                      payload:
+                        type: object
+                      timestamp:
+                        type: string
+                        format: date-time
+      responses:
+        '200':
+          description: Successfully synced
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  syncedActionIds:
+                    type: array
+                    items:
+                      type: string
+        '400':
+          description: Validation error

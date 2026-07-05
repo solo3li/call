@@ -1,0 +1,86 @@
+{
+  "nodes": [
+    {
+      "id": "favicon_45164a9312a610c2230ac560b2a74db7a075f9b1597a4a3c922c37818e25af5a_contain_transparent_favicon_48_image",
+      "label": "BoardToken Security Shield Favicon (Expo Cached 48x48)",
+      "file_type": "image",
+      "source_file": "TOTP/.expo/web/cache/production/images/favicon/favicon-45164a9312a610c2230ac560b2a74db7a075f9b1597a4a3c922c37818e25af5a-contain-transparent/favicon-48.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "assets_favicon_image",
+      "label": "BoardToken App Icon Asset",
+      "file_type": "image",
+      "source_file": "TOTP/assets/favicon.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "totp_app_config",
+      "label": "BoardToken Expo Application Configuration (app.json)",
+      "file_type": "code",
+      "source_file": "TOTP/app.json",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "totp_app_config",
+      "target": "assets_favicon_image",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "TOTP/app.json",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "favicon_45164a9312a610c2230ac560b2a74db7a075f9b1597a4a3c922c37818e25af5a_contain_transparent_favicon_48_image",
+      "target": "assets_favicon_image",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "TOTP/.expo/web/cache/production/images/favicon/favicon-45164a9312a610c2230ac560b2a74db7a075f9b1597a4a3c922c37818e25af5a-contain-transparent/favicon-48.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "favicon_45164a9312a610c2230ac560b2a74db7a075f9b1597a4a3c922c37818e25af5a_contain_transparent_favicon_48_image",
+      "target": "totp_app_config",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "TOTP/.expo/web/cache/production/images/favicon/favicon-45164a9312a610c2230ac560b2a74db7a075f9b1597a4a3c922c37818e25af5a-contain-transparent/favicon-48.png",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "expo_web_favicon_assets",
+      "label": "Expo Web Favicon Assets configuration and generation flow",
+      "nodes": [
+        "totp_app_config",
+        "assets_favicon_image",
+        "favicon_45164a9312a610c2230ac560b2a74db7a075f9b1597a4a3c922c37818e25af5a_contain_transparent_favicon_48_image"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "TOTP/.expo/web/cache/production/images/favicon/favicon-45164a9312a610c2230ac560b2a74db7a075f9b1597a4a3c922c37818e25af5a-contain-transparent/favicon-48.png"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

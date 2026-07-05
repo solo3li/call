@@ -1,0 +1,10 @@
+Using launch settings from /root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/Properties/launchSettings.json...
+Building...
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1510: PackageReference System.Net.Http.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1902: Package 'SharpCompress' 0.30.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-6c8g-7p36-r338
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1510: PackageReference System.Net.Http.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1902: Package 'SharpCompress' 0.30.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-6c8g-7p36-r338
+
+--- Starting Test Scenario 1: Say Hello ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): مرحبا، هل المطعم مفتوح؟ وماذا يوجد في المنيو؟

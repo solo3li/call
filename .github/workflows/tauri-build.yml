@@ -1,0 +1,258 @@
+name: "Tauri Desktop Build"
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  workflow_dispatch: # Allows manual triggering from the Actions tab
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore dependencies
+        run: dotnet restore FoodRMS.slnx
+        working-directory: ./project/backend
+      - name: Build backend
+        run: dotnet build FoodRMS.slnx --no-restore
+        working-directory: ./project/backend
+      - name: Test backend
+        run: dotnet test FoodRMS.slnx --no-build --verbosity normal
+        working-directory: ./project/backend
+
+      - name: Make test script executable
+        run: chmod +x ./project/test-endpoints.sh
+
+      - name: Test Backend Endpoints
+        run: ./project/test-endpoints.sh
+
+
+
+  build-totp:
+    name: Build TOTP App (EAS Local)
+    needs: test-api
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Setup Java (for Android build)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+        working-directory: ./TOTP
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Build Android App (APK)
+        run: NPM_CONFIG_LEGACY_PEER_DEPS=true eas build --platform android --profile preview --local --non-interactive
+        working-directory: ./TOTP
+      - name: Build Android App (AAB)
+        run: NPM_CONFIG_LEGACY_PEER_DEPS=true eas build --platform android --profile production --local --non-interactive
+        working-directory: ./TOTP
+      - name: Prepare build artifact
+        run: |
+          mv *.apk FoodRMS-TOTP.apk || true
+          mv *.aab FoodRMS-TOTP.aab || true
+        working-directory: ./TOTP
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v0.1.${{ github.run_number }}
+          files: |
+            TOTP/FoodRMS-TOTP.apk
+            TOTP/FoodRMS-TOTP.aab
+
+  build-driver:
+    name: Build Driver App (EAS Local)
+    needs: test-api
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Setup Java (for Android build)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+        working-directory: ./project/driver-app
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Build Android App (APK)
+        run: NPM_CONFIG_LEGACY_PEER_DEPS=true EAS_LOCAL_BUILD_SKIP_PROJECT_VALIDATION=1 EAS_BUILD_NO_EXPO_GO_WARNING=true eas build --platform android --profile preview --local --non-interactive
+        working-directory: ./project/driver-app
+      - name: Build Android App (AAB)
+        run: NPM_CONFIG_LEGACY_PEER_DEPS=true EAS_LOCAL_BUILD_SKIP_PROJECT_VALIDATION=1 EAS_BUILD_NO_EXPO_GO_WARNING=true eas build --platform android --profile production --local --non-interactive
+        working-directory: ./project/driver-app
+      - name: Prepare build artifact
+        run: |
+          mv *.apk FoodRMS-Driver.apk || true
+          mv *.aab FoodRMS-Driver.aab || true
+        working-directory: ./project/driver-app
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v0.1.${{ github.run_number }}
+          files: |
+            project/driver-app/FoodRMS-Driver.apk
+            project/driver-app/FoodRMS-Driver.aab
+
+  build-desktop:
+    name: Build Desktop App (${{ matrix.platform }})
+    needs: test-api
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-22.04, windows-latest, macos-latest]
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies (Ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install frontend dependencies
+        run: |
+          rm package-lock.json
+          npm install --legacy-peer-deps
+        working-directory: ./project/desktop
+
+
+
+      - name: Build Tauri App (HQ)
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+        with:
+          projectPath: ./project/desktop/apps/hq
+          tagName: v0.1.${{ github.run_number }}
+          releaseName: 'Release v0.1.${{ github.run_number }}'
+          releaseBody: 'Automated release for desktop and mobile.'
+          releaseDraft: false
+          prerelease: false
+
+      - name: Build Tauri App (Branch)
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+        with:
+          projectPath: ./project/desktop/apps/branch
+          tagName: v0.1.${{ github.run_number }}
+          releaseName: 'Release v0.1.${{ github.run_number }}'
+          releaseBody: 'Automated release for desktop and mobile.'
+          releaseDraft: false
+          prerelease: false
+
+  build-android-desktop-apps:
+    name: Build Android Desktop Apps (HQ & Branch)
+    needs: test-api
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android, armv7-linux-androideabi, i686-linux-android, x86_64-linux-android
+
+      - name: Setup Android NDK
+        run: echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;25.2.9519653"
+
+      - name: Set NDK environment variable
+        run: echo "NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653" >> $GITHUB_ENV
+
+      - name: Install frontend dependencies
+        run: |
+          rm package-lock.json
+          npm install --legacy-peer-deps
+        working-directory: ./project/desktop
+
+      - name: Build HQ Android Debug APK
+        run: |
+          npx tauri android init --ci
+          rm -rf src-tauri/gen/android/app/src/main/res/mipmap-anydpi-v26
+          cp -rf src-tauri/icons/android/* src-tauri/gen/android/app/src/main/res/
+          npx tauri android build --debug --apk --split-per-abi --ci
+        working-directory: ./project/desktop/apps/hq
+
+      - name: Build Branch Android Debug APK
+        run: |
+          npx tauri android init --ci
+          rm -rf src-tauri/gen/android/app/src/main/res/mipmap-anydpi-v26
+          cp -rf src-tauri/icons/android/* src-tauri/gen/android/app/src/main/res/
+          npx tauri android build --debug --apk --split-per-abi --ci
+        working-directory: ./project/desktop/apps/branch
+
+      - name: Rename APKs
+        run: |
+          find project/desktop/apps/hq/src-tauri/gen/android/app/build/outputs/apk -name "*.apk" -exec bash -c 'mv "$0" "${0/.apk/-hq.apk}"' {} \;
+          find project/desktop/apps/branch/src-tauri/gen/android/app/build/outputs/apk -name "*.apk" -exec bash -c 'mv "$0" "${0/.apk/-branch.apk}"' {} \;
+
+      - name: Upload Artifacts
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v0.1.${{ github.run_number }}
+          files: |
+            project/desktop/apps/hq/src-tauri/gen/android/app/build/outputs/apk/**/*.apk
+            project/desktop/apps/branch/src-tauri/gen/android/app/build/outputs/apk/**/*.apk

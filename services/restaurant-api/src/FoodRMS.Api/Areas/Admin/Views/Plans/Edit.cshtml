@@ -1,0 +1,58 @@
+@model FoodRMS.Api.Entities.Plan
+
+@{
+    ViewData["Title"] = "Edit Plan";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Edit Plan: @Model.Name</h1>
+</div>
+
+<div class="card max-w-2xl">
+    <div class="card-header text-muted">Plan Configuration</div>
+    <div class="card-body p-4">
+        <form asp-controller="Plans" asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="row g-4">
+                <div class="col-md-12">
+                    <label asp-for="Name" class="form-label fw-medium text-dark"></label>
+                    <input asp-for="Name" class="form-control bg-light" required />
+                    <span asp-validation-for="Name" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="MaxBranches" class="form-label fw-medium text-dark">Max Branches</label>
+                    <input asp-for="MaxBranches" class="form-control bg-light" type="number" required min="1" />
+                    <span asp-validation-for="MaxBranches" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="MaxEmployees" class="form-label fw-medium text-dark">Max Employees</label>
+                    <input asp-for="MaxEmployees" class="form-control bg-light" type="number" required min="1" />
+                    <span asp-validation-for="MaxEmployees" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Price" class="form-label fw-medium text-dark">Monthly Price ($)</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light text-muted border-end-0">$</span>
+                        <input asp-for="Price" class="form-control bg-light border-start-0 ps-0" type="number" step="0.01" required min="0" />
+                    </div>
+                    <span asp-validation-for="Price" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-check form-switch mt-2">
+                        <input class="form-check-input" type="checkbox" asp-for="IsCustom" style="cursor: pointer;">
+                        <label class="form-check-label ms-1 text-dark" asp-for="IsCustom" style="cursor: pointer;">
+                            Custom Plan <span class="text-muted fw-normal">(hidden from public pricing)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4 text-muted border-opacity-50" />
+            
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary px-4 shadow-sm">Save Changes</button>
+                <a asp-action="Index" class="btn btn-light border px-4 text-dark">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: botworker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: botworker
+  template:
+    metadata:
+      labels:
+        app: botworker
+    spec:
+      containers:
+      - name: botworker
+        image: "foodrms-botworker:latest"
+        imagePullPolicy: Never
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "{{ .Values.backend.environment }}"
+        - name: FoodRmsApi__BaseUrl
+          value: "http://backend:5109"
+        - name: BotWorker__ApiSecret
+          value: "this_is_a_secure_internal_secret_key_123"
+        - name: MongoDbSettings__ConnectionString
+          value: "mongodb://mongodb:27017"
+        - name: MongoDbSettings__DatabaseName
+          value: "FoodRMS_BotSession"
+        - name: OpenRouter__ApiKey
+          value: "REDACTED_API_KEY"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: botworker
+spec:
+  selector:
+    app: botworker
+  ports:
+  - port: 80
+    targetPort: 80

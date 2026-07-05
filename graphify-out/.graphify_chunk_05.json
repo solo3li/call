@@ -1,0 +1,120 @@
+{
+  "nodes": [
+    {
+      "id": "assets_icon_boardtoken_logo",
+      "label": "BoardToken App Logo",
+      "file_type": "image",
+      "source_file": "TOTP/assets/icon.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "assets_icon_boardtoken_branding",
+      "label": "BoardToken Neo-Brutalist Branding Design",
+      "file_type": "rationale",
+      "source_file": "TOTP/assets/icon.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Uses bold Neo-Brutalist styling with Chef Orange (#FF6B35), ink black borders, and security-themed visual elements (shield, keyhole, cog, and combination lock dial) to align with the FoodyBoard brand identity."
+    },
+    {
+      "id": "totp_app_app",
+      "label": "BoardToken App Component",
+      "file_type": "code",
+      "source_file": "TOTP/App.tsx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "totp_app_config",
+      "label": "BoardToken App Configuration",
+      "file_type": "code",
+      "source_file": "TOTP/app.json",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "totp_app_foodyboard_design_tokens",
+      "label": "FoodyBoard Neo-Brutalist Design Tokens",
+      "file_type": "rationale",
+      "source_file": "TOTP/App.tsx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Defines the design tokens (Chef Orange primary, Ink Black borders, Paper Beige background) representing the energetic kitchen ledger identity."
+    }
+  ],
+  "edges": [
+    {
+      "source": "totp_app_app",
+      "target": "assets_icon_boardtoken_logo",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "TOTP/App.tsx",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "totp_app_config",
+      "target": "assets_icon_boardtoken_logo",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "TOTP/app.json",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "assets_icon_boardtoken_branding",
+      "target": "assets_icon_boardtoken_logo",
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "TOTP/assets/icon.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "assets_icon_boardtoken_branding",
+      "target": "totp_app_foodyboard_design_tokens",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "TOTP/assets/icon.png",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "boardtoken_brand_identity",
+      "label": "BoardToken Brand Identity Assets",
+      "nodes": [
+        "assets_icon_boardtoken_logo",
+        "assets_icon_boardtoken_branding",
+        "totp_app_foodyboard_design_tokens"
+      ],
+      "relation": "form",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "TOTP/assets/icon.png"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

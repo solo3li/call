@@ -1,0 +1,21 @@
+FROM node:20-alpine AS build
+WORKDIR /app
+ENV RUNNING_IN_DOCKER=true
+COPY package*.json ./
+COPY apps/hq/package*.json ./apps/hq/
+COPY apps/branch/package*.json ./apps/branch/
+RUN npm install --legacy-peer-deps
+COPY . .
+RUN npm run build -w apps/hq
+
+FROM node:20-alpine
+WORKDIR /app/apps/hq
+ENV RUNNING_IN_DOCKER=true
+COPY --from=build /app/apps/hq/package*.json ./
+COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/apps/hq/node_modules ./node_modules
+COPY --from=build /app/apps/hq/.next ./.next
+COPY --from=build /app/apps/hq/public ./public
+EXPOSE 80
+ENV PORT=80
+CMD ["npm", "start"]

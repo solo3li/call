@@ -1,0 +1,52 @@
+@model FoodRMS.Api.Entities.Tenant
+
+@{
+    ViewData["Title"] = "Edit Tenant";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Edit Tenant</h1>
+</div>
+
+<div class="card max-w-2xl">
+    <div class="card-header text-muted">Tenant Configuration</div>
+    <div class="card-body p-4">
+        <form asp-controller="Tenants" asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label asp-for="Name" class="form-label fw-medium text-dark"></label>
+                    <input asp-for="Name" class="form-control bg-light" required />
+                    <span asp-validation-for="Name" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Subdomain" class="form-label fw-medium text-dark"></label>
+                    <input asp-for="Subdomain" class="form-control bg-light text-lowercase" required />
+                    <span asp-validation-for="Subdomain" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-12">
+                    <label asp-for="PlanId" class="form-label fw-medium text-dark">Subscription Plan</label>
+                    <select asp-for="PlanId" class="form-select bg-light" asp-items="ViewBag.PlanId">
+                        <option value="">-- Select a Plan --</option>
+                    </select>
+                    <span asp-validation-for="PlanId" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-check form-switch mt-2">
+                        <input class="form-check-input" type="checkbox" asp-for="IsActive" style="cursor: pointer;">
+                        <label class="form-check-label ms-1 text-dark" asp-for="IsActive" style="cursor: pointer;">
+                            Active Status
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4 text-muted border-opacity-50" />
+            
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary px-4 shadow-sm">Save Changes</button>
+                <a asp-action="Index" class="btn btn-light border px-4 text-dark">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

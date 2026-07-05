@@ -1,0 +1,30 @@
+# values.yaml
+namespace: default
+
+postgres:
+  image: postgres:15-alpine
+  username: postgres
+  password: postgres
+  database: foodrms
+
+backend:
+  image: foodrms-backend:latest
+  environment: Development
+
+frontend:
+  image: foodrms-frontend:latest
+
+hqApp:
+  image: foodrms-hq:latest
+
+branchApp:
+  image: foodrms-branch:latest
+
+pgadmin:
+  image: dpage/pgadmin4:latest
+  email: admin@foodrms.com
+  password: admin
+
+totp:
+  image: foodrms-totp:latest
+baseDomain: 167.71.66.188.nip.io

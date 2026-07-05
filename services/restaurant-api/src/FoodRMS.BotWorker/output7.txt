@@ -1,0 +1,188 @@
+Using launch settings from /root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/Properties/launchSettings.json...
+Building...
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1510: PackageReference System.Net.Http.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1902: Package 'SharpCompress' 0.30.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-6c8g-7p36-r338
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1510: PackageReference System.Net.Http.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.
+/root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/FoodRMS.BotWorker.csproj : warning NU1902: Package 'SharpCompress' 0.30.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-6c8g-7p36-r338
+
+--- Starting Test Scenario 1: Say Hello ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): مرحبا، هل المطعم مفتوح؟ وماذا يوجد في المنيو؟
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 86.0395ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 106.0044ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 13.3938ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 13.9681ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 275.8454ms - 404
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 276.4212ms - 404
+fail: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Gemini API error
+      System.Net.Http.HttpRequestException: Response status code does not indicate success: 404 (Not Found).
+         at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()
+         at FoodRMS.BotWorker.Services.TelegramBotProcessor.CallGeminiAsync(String systemPrompt, String userMessage, BotSession session) in /root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/Services/TelegramBotProcessor.cs:line 195
+
+[BOT to 123456789]: عذراً، النظام مشغول حالياً. حاول مرة أخرى لاحقاً.
+
+
+--- Starting Test Scenario 2: Add to cart ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): أريد طلب واحد برجر
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 10.169ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 10.3116ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 6.1722ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 6.2726ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 53.4496ms - 404
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 53.5946ms - 404
+fail: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Gemini API error
+      System.Net.Http.HttpRequestException: Response status code does not indicate success: 404 (Not Found).
+         at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()
+         at FoodRMS.BotWorker.Services.TelegramBotProcessor.CallGeminiAsync(String systemPrompt, String userMessage, BotSession session) in /root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/Services/TelegramBotProcessor.cs:line 195
+
+[BOT to 123456789]: عذراً، النظام مشغول حالياً. حاول مرة أخرى لاحقاً.
+
+
+--- Starting Test Scenario 3: View Cart ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): ماذا يوجد في سلتي الآن؟
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 11.3376ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 11.4797ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 7.4967ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 7.5894ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 53.6779ms - 404
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 53.8116ms - 404
+
+[BOT to 123456789]: عذراً، النظام مشغول حالياً. حاول مرة أخرى لاحقاً.
+
+fail: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Gemini API error
+      System.Net.Http.HttpRequestException: Response status code does not indicate success: 404 (Not Found).
+         at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()
+         at FoodRMS.BotWorker.Services.TelegramBotProcessor.CallGeminiAsync(String systemPrompt, String userMessage, BotSession session) in /root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/Services/TelegramBotProcessor.cs:line 195
+
+--- Starting Test Scenario 4: Checkout ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): اعتمد الطلب، العنوان: الرياض حي العقيق
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 9.9639ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 10.0856ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 6.8461ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 6.9703ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 58.1545ms - 404
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 58.2576ms - 404
+
+[BOT to 123456789]: عذراً، النظام مشغول حالياً. حاول مرة أخرى لاحقاً.
+
+fail: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Gemini API error
+      System.Net.Http.HttpRequestException: Response status code does not indicate success: 404 (Not Found).
+         at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()
+         at FoodRMS.BotWorker.Services.TelegramBotProcessor.CallGeminiAsync(String systemPrompt, String userMessage, BotSession session) in /root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/Services/TelegramBotProcessor.cs:line 195
+
+--- Starting Test Scenario 5: Check Status ---
+info: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Processing message from test_user (123456789): أين وصل طلبي؟
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/state/550e8400-e29b-41d4-a716-446655440000
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 10.0542ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 10.2101ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request GET http://localhost:5109/api/bot-integration/orders/550e8400-e29b-41d4-a716-446655440000/123456789
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 8.0445ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 8.2101ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?*
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 52.4833ms - 404
+
+[BOT to 123456789]: عذراً، النظام مشغول حالياً. حاول مرة أخرى لاحقاً.
+
+
+--- Test Finished ---
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 53.8567ms - 404
+fail: FoodRMS.BotWorker.Services.TelegramBotProcessor[0]
+      Gemini API error
+      System.Net.Http.HttpRequestException: Response status code does not indicate success: 404 (Not Found).
+         at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()
+         at FoodRMS.BotWorker.Services.TelegramBotProcessor.CallGeminiAsync(String systemPrompt, String userMessage, BotSession session) in /root/rms/foodRMS/project/backend/src/FoodRMS.BotWorker/Services/TelegramBotProcessor.cs:line 195

@@ -1,0 +1,2 @@
+  warning: could not transcribe /root/RMS/foodRMS/project/backend/src/FoodRMS.Api/wwwroot/admin/uploads/support/e7f94472-9575-430f-832f-b97e740559a7_voice_message.webm: Video transcription requires faster-whisper. Run: pip install 'graphifyy[video]'
+[]

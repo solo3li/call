@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: driver-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: driver-app
+  template:
+    metadata:
+      labels:
+        app: driver-app
+    spec:
+      containers:
+      - name: driver-app
+        image: driver-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: driver-app
+spec:
+  selector:
+    app: driver-app
+  ports:
+  - port: 80
+    targetPort: 80

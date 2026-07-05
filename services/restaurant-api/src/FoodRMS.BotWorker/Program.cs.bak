@@ -1,0 +1,16 @@
+using FoodRMS.BotWorker;
+using FoodRMS.BotWorker.Services;
+using DotNetEnv;
+
+Env.Load();
+
+var builder = Host.CreateApplicationBuilder(args);
+
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<MongoSessionStore>();
+builder.Services.AddScoped<FoodRmsApiClient>();
+builder.Services.AddScoped<ITelegramBotProcessor, TelegramBotProcessor>();
+builder.Services.AddHostedService<Worker>();
+
+var host = builder.Build();
+host.Run();

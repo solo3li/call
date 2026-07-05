@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-asterisk
+  labels:
+    app: my-asterisk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-asterisk
+  template:
+    metadata:
+      labels:
+        app: my-asterisk
+    spec:
+      hostNetwork: true
+      containers:
+      - name: asterisk
+        image: local-asterisk:latest
+        imagePullPolicy: Never
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN", "NET_RAW"]
+        ports:
+        - containerPort: 5060
+          protocol: UDP
+          name: sip
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-asterisk-service
+spec:
+  selector:
+    app: my-asterisk
+  ports:
+  - port: 5060
+    targetPort: 5060
+    protocol: UDP
+    name: sip

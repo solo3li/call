@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backend-uploads-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: "{{ .Values.backend.image }}"
+        imagePullPolicy: Never
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "{{ .Values.backend.environment }}"
+        - name: ConnectionStrings__DefaultConnection
+          value: "Host=db;Database={{ .Values.postgres.database }};Username={{ .Values.postgres.username }};Password={{ .Values.postgres.password }}"
+        - name: RUNNING_IN_DOCKER
+          value: "true"
+        ports:
+        - containerPort: 5109
+        readinessProbe:
+          tcpSocket:
+            port: 5109
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          failureThreshold: 5
+        livenessProbe:
+          tcpSocket:
+            port: 5109
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          failureThreshold: 3
+        volumeMounts:
+        - name: uploads
+          mountPath: /app/wwwroot/uploads
+      volumes:
+      - name: uploads
+        persistentVolumeClaim:
+          claimName: backend-uploads-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  ports:
+  - port: 5109
+    targetPort: 5109
+  selector:
+    app: backend

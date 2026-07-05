@@ -1,0 +1,7 @@
+{
+  "name": "foodrms-desktop-workspace",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ]
+}

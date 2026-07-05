@@ -1,0 +1,119 @@
+{
+  "nodes": [
+    {
+      "id": "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_image",
+      "label": "12f7e881-0a5a-4b71-8130-3f3d63ab1204_neo_brutalism.jpg",
+      "file_type": "image",
+      "source_file": "project/backend/src/FoodRMS.Api/wwwroot/admin/uploads/support/12f7e881-0a5a-4b71-8130-3f3d63ab1204_neo_brutalism.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_style",
+      "label": "Neo-Brutalism Design Pattern",
+      "file_type": "rationale",
+      "source_file": "project/backend/src/FoodRMS.Api/wwwroot/admin/uploads/support/12f7e881-0a5a-4b71-8130-3f3d63ab1204_neo_brutalism.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Emphasizes bold clarity and tactile confidence via thick 2px black borders, heavy non-blurry shadows (2px/3px offset), saturated brand colors, and Cairo typography."
+    },
+    {
+      "id": "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_layout",
+      "label": "Neo-Brutalism Dashboard Grid Layout",
+      "file_type": "concept",
+      "source_file": "project/backend/src/FoodRMS.Api/wwwroot/admin/uploads/support/12f7e881-0a5a-4b71-8130-3f3d63ab1204_neo_brutalism.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "frontend_design_design",
+      "label": "FoodyBoard Design System Rules",
+      "file_type": "document",
+      "source_file": "project/frontend/DESIGN.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "entities_supportmessage_supportmessage",
+      "label": "SupportMessage Entity",
+      "file_type": "code",
+      "source_file": "project/backend/src/FoodRMS.Api/Entities/SupportMessage.cs",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_image",
+      "target": "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_style",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "project/backend/src/FoodRMS.Api/wwwroot/admin/uploads/support/12f7e881-0a5a-4b71-8130-3f3d63ab1204_neo_brutalism.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_image",
+      "target": "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_layout",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "project/backend/src/FoodRMS.Api/wwwroot/admin/uploads/support/12f7e881-0a5a-4b71-8130-3f3d63ab1204_neo_brutalism.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_image",
+      "target": "entities_supportmessage_supportmessage",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "project/backend/src/FoodRMS.Api/wwwroot/admin/uploads/support/12f7e881-0a5a-4b71-8130-3f3d63ab1204_neo_brutalism.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_style",
+      "target": "frontend_design_design",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "project/backend/src/FoodRMS.Api/wwwroot/admin/uploads/support/12f7e881-0a5a-4b71-8130-3f3d63ab1204_neo_brutalism.jpg",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "neo_brutalist_design_pattern",
+      "label": "Neo-Brutalist Design Pattern Reference",
+      "nodes": [
+        "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_image",
+        "support_12f7e881_0a5a_4b71_8130_3f3d63ab1204_neo_brutalism_style",
+        "frontend_design_design"
+      ],
+      "relation": "form",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "project/backend/src/FoodRMS.Api/wwwroot/admin/uploads/support/12f7e881-0a5a-4b71-8130-3f3d63ab1204_neo_brutalism.jpg"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

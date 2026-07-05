@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gemini-agent
+  labels:
+    app: gemini-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gemini-agent
+  template:
+    metadata:
+      labels:
+        app: gemini-agent
+    spec:
+      containers:
+      - name: agent
+        image: local-gemini-agent:latest
+        imagePullPolicy: Never
+        env:
+        - name: GOOGLE_API_KEY
+          value: "REDACTED_API_KEY"
+        - name: LIVEKIT_URL
+          value: "wss://livekit.167.71.66.188.nip.io"
+        - name: LIVEKIT_API_KEY
+          value: "devkey"
+        - name: LIVEKIT_API_SECRET
+          value: "devsecret"
+        - name: BACKEND_URL
+          value: "http://backend-service:8080"
