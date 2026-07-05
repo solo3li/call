@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  asterisk:
+    build: .
+    container_name: asterisk-server
+    restart: always
+    network_mode: "host"  # CRITICAL: Ensures Asterisk binds directly to the VPS public IP for SIP/RTP
+    environment:
+      # Update this URL to point to your Kubernetes Ingress domain
+      - BACKEND_API_URL=http://api-call.167.71.66.188.nip.io/api/internal/asterisk/config
+    volumes:
+      - ./extensions.conf:/etc/asterisk/extensions.conf
+      - ./sip.conf:/etc/asterisk/sip.conf
