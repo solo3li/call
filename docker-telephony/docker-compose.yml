@@ -22,19 +22,10 @@ services:
     environment:
       - "SIP_CONFIG_BODY=api_key: 'devkey'\napi_secret: 'devsecret'\nws_url: 'ws://127.0.0.1:7880'\nredis:\n  address: '127.0.0.1:6379'\nsip_port: 5061\nrtp_port:\n  start: 11000\n  end: 11500\nuse_external_ip: true\nlogging:\n  level: debug"
 
-  rtpengine:
-    image: davehorton/rtpengine:latest
-    container_name: rtpengine
-    network_mode: "host"
-    privileged: true
-    command: >
-      /bin/sh -c "exec rtpengine --interface=internal/167.71.66.188 --listen-ng=0.0.0.0:22222 --port-min=15000 --port-max=15500 --foreground"
-
   asterisk:
     image: local-asterisk:latest
     container_name: asterisk
-    networks:
-      - telephony-net
+    network_mode: "host"
     cap_add:
       - NET_ADMIN
       - NET_RAW
@@ -43,23 +34,6 @@ services:
       - "backend-service:167.71.66.188"
       - "livekit-sip:167.71.66.188"
       - "livekit-server:167.71.66.188"
-      - "rtpengine:167.71.66.188"
-
-  kamailio:
-    image: telephoneorg/kamailio:latest
-    container_name: kamailio
-    networks:
-      - telephony-net
-    ports:
-      - "5060:5060/udp"
-      - "5060:5060/tcp"
-      - "5062:5062/udp"
-      - "5062:5062/tcp"
-    volumes:
-      - ./kamailio/kamailio.cfg:/etc/kamailio/kamailio.cfg
-    command: ["/usr/sbin/kamailio", "-DD", "-E", "-f", "/etc/kamailio/kamailio.cfg"]
-    extra_hosts:
-      - "rtpengine:172.19.0.1"
 
   gemini-agent:
     image: local-gemini-agent:latest
