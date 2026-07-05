@@ -31,7 +31,7 @@ namespace FoodRMS.Api.Controllers
             sipConf.AppendLine("tcpenable=yes");
             sipConf.AppendLine("transport=udp,tcp");
             sipConf.AppendLine("tcpbindaddr=0.0.0.0:5062");
-            sipConf.AppendLine("context=public");
+            sipConf.AppendLine("context=from-internal");
             sipConf.AppendLine("disallow=all");
             sipConf.AppendLine("allow=ulaw");
             sipConf.AppendLine("allow=alaw");

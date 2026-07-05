@@ -1,5 +1,5 @@
 #!/bin/bash
-API_URL="http://10.43.70.27:5109/api/internal/asterisk/config"
+API_URL="http://backend:5109/api/internal/asterisk/config"
 
 while true; do
   curl -s $API_URL > /tmp/config.json
