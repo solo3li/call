@@ -7,6 +7,8 @@ using FoodRMS.Api.Interfaces;
 using FoodRMS.Api.Data;
 using FoodRMS.Api.Infrastructure.Services;
 using FoodRMS.Api.Infrastructure.Authorization;
+using Microsoft.Extensions.FileProviders;
+using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -26,7 +28,7 @@ JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => options.CustomSchemaIds(type => type.FullName));
 
 // Multi-tenancy
 builder.Services.AddMemoryCache();
@@ -212,10 +214,10 @@ using (var scope = app.Services.CreateScope())
     {
         c.RouteTemplate = "api/swagger/{documentName}/swagger.json";
     });
-    app.UseSwaggerUI(c =>
+    app.MapScalarApiReference(options =>
     {
-        c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "FoodRMS API V1");
-        c.RoutePrefix = "api/swagger";
+        options.EndpointPathPrefix = "/api/scalar/{documentName}";
+        options.WithOpenApiRoutePattern("/api/swagger/{documentName}/swagger.json");
     });
 
 // app.UseHttpsRedirection();
