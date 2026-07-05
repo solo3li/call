@@ -88,11 +88,8 @@ class GeminiAgent(Agent):
             tools=tools
         )
 
-    async def on_enter(self) -> None:
-        try:
-            self.session.generate_reply(user_input="مرحبا بك!")
-        except Exception as e:
-            print(f"Error in generate_reply: {e}")
+    # async def on_enter(self) -> None:
+    #     pass
 
 async def entrypoint(ctx: JobContext):
     await ctx.connect(auto_subscribe=AutoSubscribe.AUDIO_ONLY)

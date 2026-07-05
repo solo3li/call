@@ -32,6 +32,8 @@ namespace FoodRMS.Api.Controllers
             sipConf.AppendLine("transport=udp,tcp");
             sipConf.AppendLine("tcpbindaddr=0.0.0.0:5060");
             sipConf.AppendLine("context=from-internal");
+            sipConf.AppendLine("nat=force_rport,comedia");
+            sipConf.AppendLine("directmedia=no");
             sipConf.AppendLine("disallow=all");
             sipConf.AppendLine("allow=ulaw");
             sipConf.AppendLine("allow=alaw");
@@ -41,8 +43,9 @@ namespace FoodRMS.Api.Controllers
             sipConf.AppendLine("[livekit]");
             sipConf.AppendLine("type=friend");
             sipConf.AppendLine("context=from-internal");
-            sipConf.AppendLine("host=167.71.66.188"); // Point to the host node since livekit-sip uses hostNetwork
+            sipConf.AppendLine("host=127.0.0.1"); // Point to localhost to avoid NAT loopback for RTP
             sipConf.AppendLine("port=5061");
+            sipConf.AppendLine("directmedia=no");
             sipConf.AppendLine("insecure=port,invite");
             sipConf.AppendLine("disallow=all");
             sipConf.AppendLine("allow=ulaw");
@@ -55,6 +58,8 @@ namespace FoodRMS.Api.Controllers
             sipConf.AppendLine("context=from-internal");
             sipConf.AppendLine("host=dynamic");
             sipConf.AppendLine("secret=tester123");
+            sipConf.AppendLine("nat=force_rport,comedia");
+            sipConf.AppendLine("directmedia=no");
             sipConf.AppendLine("disallow=all");
             sipConf.AppendLine("allow=ulaw");
             sipConf.AppendLine("allow=alaw");
