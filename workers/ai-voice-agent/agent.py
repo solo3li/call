@@ -119,7 +119,8 @@ async def entrypoint(ctx: JobContext):
     session = AgentSession(
         llm=google.beta.realtime.RealtimeModel(
             model="gemini-3.1-flash-live-preview",
-            api_key=os.environ.get("GOOGLE_API_KEY")
+            api_key=os.environ.get("GOOGLE_API_KEY"),
+            voice="Aoede"
         )
     )
             
