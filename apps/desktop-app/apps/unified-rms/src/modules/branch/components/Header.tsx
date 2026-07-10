@@ -7,10 +7,10 @@ interface HeaderProps {
 
 export default function Header({ onToggleMobile }: HeaderProps) {
   return (
-    <header className="lg:hidden sticky top-0 z-40 bg-neo-bg/80 backdrop-blur-md border-b-2 border-neo-border px-4 py-3">
+    <header className="lg:hidden sticky top-0 z-40 bg-carbon-bg/80 backdrop-blur-md border-b border-carbon-border px-4 py-3">
       <button
         onClick={onToggleMobile}
-        className="neo-btn bg-brand-yellow p-2 shadow-[2px_2px_0px_#1A1A1A]"
+        className="p-2 text-carbon-text hover:bg-carbon-layerHover transition-colors rounded-none"
       >
         <Menu size={22} />
       </button>

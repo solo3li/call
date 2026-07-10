@@ -86,15 +86,15 @@ function DashboardPage() {
   if (error) return <div className="p-20 text-center font-black text-2xl text-brand-red">⚠️ {error}</div>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-carbon-text">
       {/* Welcome Banner */}
-      <div className="neo-card bg-gradient-to-l from-brand-yellow via-brand-orange to-brand-pink p-6 relative overflow-hidden">
+      <div className="bg-carbon-layer border border-carbon-border p-6 relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-black text-neo-text">
+            <h2 className="text-2xl font-bold text-white">
               صباح الخير، {userName}! ☀️
             </h2>
-            <p className="font-bold text-neo-text/80 mt-1">
+            <p className="font-normal text-carbon-textSecondary mt-1">
               إليك ملخص أداء مطعمك اليوم. أداء رائع! 🚀
             </p>
           </div>
@@ -102,14 +102,11 @@ function DashboardPage() {
             <button 
               onClick={toggleBusinessDay}
               disabled={dayLoading}
-              className={`neo-btn px-6 py-3 font-black text-lg text-white ${isActiveDay ? 'bg-brand-red hover:bg-red-600' : 'bg-brand-green hover:bg-green-600'}`}
+              className={`px-4 py-2 font-bold text-white transition-colors ${isActiveDay ? 'bg-[#da1e28] hover:bg-[#ba1b23]' : 'bg-[#24a148] hover:bg-[#198038]'}`}
             >
               {dayLoading ? 'جاري التحميل...' : (isActiveDay ? '🛑 إنهاء اليوم التشغيلي' : '▶️ بدء اليوم التشغيلي')}
             </button>
           </div>
-        </div>
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 animate-float hidden sm:block w-28 h-28 mix-blend-overlay pointer-events-none">
-          <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
         </div>
       </div>
 
@@ -120,26 +117,26 @@ function DashboardPage() {
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="neo-card bg-neo-card p-6 overflow-hidden">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-black text-lg">المبيعات والأرباح 📈</h3>
-            <span className="neo-badge bg-brand-yellow">مباشر</span>
+        <div className="bg-carbon-layer border border-carbon-border p-5 overflow-hidden">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-bold text-lg text-white">المبيعات والأرباح 📈</h3>
+            <span className="bg-[#f1c21b] text-black px-2 py-0.5 text-xs font-semibold">مباشر</span>
           </div>
           <RevenueChart data={stats?.revenueData || []} />
         </div>
-        <div className="neo-card bg-neo-card p-6 overflow-hidden">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-black text-lg">حركة الطلبات 🚀</h3>
-            <span className="neo-badge bg-brand-green text-white">اليوم</span>
+        <div className="bg-carbon-layer border border-carbon-border p-5 overflow-hidden">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-bold text-lg text-white">حركة الطلبات 🚀</h3>
+            <span className="bg-[#24a148] text-white px-2 py-0.5 text-xs font-semibold">اليوم</span>
           </div>
           <OrdersChart data={stats?.ordersPerHour || []} />
         </div>
       </div>
 
-      <div className="neo-card bg-neo-card p-6 overflow-hidden">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="font-black text-lg">أحدث الطلبات 🍔</h3>
-          <button className="neo-btn bg-brand-orange text-white px-4 py-1.5 text-xs">
+      <div className="bg-carbon-layer border border-carbon-border p-5 overflow-hidden">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-bold text-lg text-white">أحدث الطلبات 🍔</h3>
+          <button className="text-carbon-blue hover:text-carbon-blueHover text-sm font-semibold transition-colors">
             عرض الكل
           </button>
         </div>
@@ -252,13 +249,13 @@ export default function DashboardApp() {
   };
 
   if (!mounted || !isLoggedIn) {
-    return <div className="min-h-screen bg-neo-bg flex items-center justify-center font-black">جاري التحميل...</div>;
+    return <div className="min-h-screen bg-carbon-bg text-carbon-text flex items-center justify-center font-bold">جاري التحميل...</div>;
   }
 
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="min-h-screen bg-neo-bg font-cairo" dir="rtl">
+    <div className="min-h-screen bg-carbon-bg text-carbon-text font-cairo" dir="rtl">
       {/* Desktop Sidebar */}
       <div className="hidden lg:block">
         <Sidebar
@@ -290,8 +287,8 @@ export default function DashboardApp() {
         />
         
         {isDisconnected && (
-          <div className="bg-[#FF1744] text-white border-b-4 border-neo-border p-3 text-center font-black text-sm md:text-base flex items-center justify-center gap-3 shadow-[0px_4px_0px_#1A1A1A] relative z-20">
-            <WifiOff size={20} strokeWidth={3} /> 
+          <div className="bg-[#da1e28] text-white border-b border-[#ba1b23] p-2 text-center font-bold text-sm flex items-center justify-center gap-2 relative z-20">
+            <WifiOff size={16} /> 
             انقطع الاتصال المباشر بالخادم! يرجى التحقق من الشبكة أو إعادة تحميل الصفحة.
           </div>
         )}
@@ -299,16 +296,16 @@ export default function DashboardApp() {
         <div className="p-4 md:p-6">{getPageContent(activeTab, setActiveTab, editOrderId, setEditOrderId)}</div>
 
         {/* Footer */}
-        <footer className="p-6 text-center border-t-2 border-neo-border mt-8">
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="text-2xl">🍽️</span>
-            <span className="font-black">أوبنو</span>
-            <span className="text-gray-400 font-bold">|</span>
-            <span className="text-sm text-gray-500 font-bold">
+        <footer className="p-6 text-center border-t border-carbon-border mt-8">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-carbon-textSecondary">
+            <span className="text-xl">🍽️</span>
+            <span className="font-bold text-white">أوبنو</span>
+            <span className="text-carbon-border">|</span>
+            <span className="text-xs">
               نظام إدارة المطاعم والكافيهات © {currentYear}
             </span>
           </div>
-          <p className="text-xs text-gray-400 font-semibold mt-1">
+          <p className="text-[10px] text-carbon-textSecondary mt-2">
             صُنع بـ ❤️ لأصحاب المطاعم والكافيهات
           </p>
         </footer>

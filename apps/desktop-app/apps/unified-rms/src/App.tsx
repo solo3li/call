@@ -7,11 +7,12 @@ import HQDashboard from "./pages/HQDashboard";
 import POSDashboard from "./pages/POSDashboard";
 import CallCenterDashboard from "./pages/CallCenterDashboard";
 import InventoryDashboard from "./pages/InventoryDashboard";
+import BranchDashboard from "./pages/BranchDashboard";
 
 import "./App.css";
 
 // Protected Route Component
-function ProtectedRoute({ children, allowedRoles }: { children: JSX.Element, allowedRoles: Role[] }) {
+function ProtectedRoute({ children, allowedRoles }: { children: React.ReactElement, allowedRoles: Role[] }) {
   const { role } = useAuth();
   
   if (!role) {
@@ -34,7 +35,8 @@ function App() {
         <Route path="/" element={role ? <Navigate to={
           role === 'admin' ? '/hq' : 
           role === 'cashier' ? '/pos' : 
-          role === 'agent' ? '/call-center' : '/inventory'
+          role === 'agent' ? '/call-center' :
+          role === 'branch_manager' ? '/branch' : '/inventory'
         } /> : <Login />} />
         
         <Route path="/login" element={<Login />} />
@@ -60,6 +62,12 @@ function App() {
         <Route path="/inventory" element={
           <ProtectedRoute allowedRoles={['admin', 'inventory_manager']}>
             <InventoryDashboard />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/branch" element={
+          <ProtectedRoute allowedRoles={['admin', 'branch_manager']}>
+            <BranchDashboard />
           </ProtectedRoute>
         } />
         

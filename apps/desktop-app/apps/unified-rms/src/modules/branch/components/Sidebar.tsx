@@ -84,8 +84,8 @@ const menuSections: MenuSection[] = [
   {
     title: "النظام",
     items: [
-      { id: "settings", label: "الإعدادات", icon: Settings, color: "bg-brand-lime" },
-      { id: "helpdesk", label: "الدعم الفني للمنصة", icon: LifeBuoy, color: "bg-[#FF69B4] text-white" }
+      { id: "settings", label: "الإعدادات", icon: Settings, color: "text-white" },
+      { id: "helpdesk", label: "الدعم الفني للمنصة", icon: LifeBuoy, color: "text-white" }
     ]
   }
 ];
@@ -105,19 +105,19 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
 
   return (
     <aside
-      className={`fixed right-0 top-0 h-screen bg-neo-card border-l-2 border-neo-border z-50 flex flex-col transition-all duration-300 shadow-[-4px_0_0_#1A1A1A] ${
+      className={`fixed right-0 top-0 h-screen bg-carbon-layer border-l border-carbon-border z-50 flex flex-col transition-all duration-300 ${
         collapsed ? "w-14" : "w-52"
       }`}
     >
       {/* Logo */}
-      <div className="p-3 border-b-2 border-neo-border flex items-center gap-2">
-        <div className="w-8 h-8 border-2 border-neo-border shadow-[2px_2px_0px_#1A1A1A] flex items-center justify-center shrink-0 overflow-hidden bg-[#FFFBEB]">
+      <div className="p-4 border-b border-carbon-border flex items-center gap-2">
+        <div className="w-8 h-8 flex items-center justify-center shrink-0 overflow-hidden bg-white">
           <img src="/logo.png" alt="OPNO Logo" className="w-full h-full object-contain p-0.5" />
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
-            <h1 className="font-black text-base leading-tight truncate text-neo-text">أوبنو</h1>
-            <p className="text-[10px] font-bold text-gray-500 truncate">إدارة المطاعم</p>
+            <h1 className="font-bold text-base leading-tight truncate text-white">أوبنو</h1>
+            <p className="text-[10px] font-normal text-carbon-textSecondary truncate">إدارة المطاعم</p>
           </div>
         )}
       </div>
@@ -142,15 +142,15 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
                   <button
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
-                    className={`w-full flex items-center gap-2 p-1.5 rounded-sm font-bold transition-all ${
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-none font-bold transition-colors ${
                       isActive
-                        ? `${item.color} shadow-[2px_2px_0px_#1A1A1A] text-neo-text border-2 border-neo-border translate-x-[-2px] translate-y-[-2px]`
-                        : "hover:bg-gray-100 text-gray-600 hover:text-neo-text border-2 border-transparent"
+                        ? `bg-carbon-blue text-white border-r-4 border-white`
+                        : "text-carbon-textSecondary hover:bg-carbon-layerHover hover:text-white border-r-4 border-transparent"
                     }`}
                     title={collapsed ? item.label : undefined}
                   >
                     <Icon size={16} className={collapsed ? "mx-auto shrink-0" : "shrink-0"} />
-                    {!collapsed && <span className="text-xs whitespace-nowrap">{item.label}</span>}
+                    {!collapsed && <span className="text-sm whitespace-nowrap">{item.label}</span>}
                   </button>
                 );
               })}
@@ -160,29 +160,29 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
       </nav>
 
       {/* Logout & Collapse toggle */}
-      <div className="p-2 border-t-2 border-neo-border space-y-1.5 bg-gray-50/50">
+      <div className="p-3 border-t border-carbon-border space-y-1 bg-carbon-layer">
         <button
           onClick={() => window.dispatchEvent(new Event('manual-update-check'))}
-          className="w-full bg-brand-blue text-white py-1.5 px-2 flex items-center justify-center gap-2 transition-all border-2 border-neo-border shadow-[2px_2px_0px_#1A1A1A] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#1A1A1A] active:translate-x-0 active:translate-y-0 active:shadow-[0_0_0_#1A1A1A]"
+          className="w-full text-carbon-textSecondary hover:text-white hover:bg-carbon-layerHover py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none"
         >
           <RefreshCw size={14} />
-          {!collapsed && <span className="font-bold text-[10px] whitespace-nowrap">فحص التحديثات</span>}
+          {!collapsed && <span className="font-bold text-xs whitespace-nowrap">فحص التحديثات</span>}
         </button>
 
         <button
           onClick={onLogout}
-          className="w-full bg-brand-red text-white py-1.5 px-2 flex items-center justify-center gap-2 transition-all border-2 border-neo-border shadow-[2px_2px_0px_#1A1A1A] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#1A1A1A] active:translate-x-0 active:translate-y-0 active:shadow-[0_0_0_#1A1A1A]"
+          className="w-full bg-[#da1e28] text-white hover:bg-[#ba1b23] py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none"
         >
           <LogOut size={14} />
-          {!collapsed && <span className="font-bold text-[10px] whitespace-nowrap">تسجيل الخروج</span>}
+          {!collapsed && <span className="font-bold text-xs whitespace-nowrap">تسجيل الخروج</span>}
         </button>
         
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="w-full bg-gray-100 text-neo-text py-1.5 px-2 flex items-center justify-center gap-2 transition-all border-2 border-neo-border shadow-[2px_2px_0px_#1A1A1A] hover:bg-gray-200 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#1A1A1A] active:translate-x-0 active:translate-y-0 active:shadow-[0_0_0_#1A1A1A]"
+          className="w-full text-carbon-textSecondary hover:text-white hover:bg-carbon-layerHover py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none mt-2"
         >
           {collapsed ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
-          {!collapsed && <span className="font-bold text-[10px] whitespace-nowrap">تصغير القائمة</span>}
+          {!collapsed && <span className="font-bold text-xs whitespace-nowrap">تصغير القائمة</span>}
         </button>
       </div>
     </aside>

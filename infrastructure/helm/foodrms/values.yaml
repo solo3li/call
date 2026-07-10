@@ -8,7 +8,7 @@ postgres:
   database: foodrms
 
 backend:
-  image: foodrms-backend:latest
+  image: foodrms-backend:v2
   environment: Development
 
 frontend:

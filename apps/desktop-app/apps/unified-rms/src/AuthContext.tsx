@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-export type Role = 'admin' | 'cashier' | 'agent' | 'inventory_manager' | null;
+export type Role = 'admin' | 'cashier' | 'agent' | 'inventory_manager' | 'branch_manager' | null;
 
 interface AuthContextType {
   role: Role;
