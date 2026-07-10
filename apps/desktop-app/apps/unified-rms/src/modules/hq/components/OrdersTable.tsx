@@ -41,7 +41,7 @@ function getTypeStyle(type: string) {
   }
 }
 
-export default function OrdersTable({ orders }: OrdersTableProps) {
+export default function OrdersTable({ orders = [] }: OrdersTableProps) {
   const { currencySymbol } = useCurrency();
   return (
     <div className="neo-card overflow-hidden">
@@ -67,7 +67,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {(orders || []).map((order) => (
               <tr
                 key={order.id}
                 className="border-b-2 border-gray-100 hover:bg-yellow-50 transition-colors"
