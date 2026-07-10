@@ -18,7 +18,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
   const displayStats = [
     {
       title: "إجمالي الإيرادات",
-      value: mounted ? (stats?.totalRevenue.toLocaleString() || "٠") : "٠",
+      value: mounted ? (stats?.totalRevenue?.toLocaleString() || "٠") : "٠",
       unit: currencySymbol,
       change: "+١٢.٥٪",
       trend: "up",
@@ -28,7 +28,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
     },
     {
       title: "الطلبات",
-      value: stats?.totalOrders.toString() || "٠",
+      value: stats?.totalOrders?.toString() || "٠",
       unit: "طلب",
       change: "+٨.٣٪",
       trend: "up",
@@ -39,7 +39,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
 
     {
       title: "طلبات معلقة",
-      value: stats?.pendingOrders.toString() || "٠",
+      value: stats?.pendingOrders?.toString() || "٠",
       unit: "طلب",
       change: "-١",
       trend: "down",
