@@ -1,7 +1,7 @@
 'use client';
 import { useFormatCurrency } from "../utils/useFormatCurrency";
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams } from 'react-router-dom';
 import { menuApi, getImageUrl } from '../utils/api';
 import { MenuItem, MenuCategory } from '../types/api';
 import { Star, Clock, MapPin, Plus, Info as InfoIcon } from 'lucide-react';
