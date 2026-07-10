@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../AuthContext';
 import DashboardApp from '../modules/hq/components/DashboardApp';
+import { DashboardProvider } from '../modules/hq/context/DashboardContext';
 
 export default function HQDashboard() {
   const { logout } = useAuth();
@@ -12,7 +13,9 @@ export default function HQDashboard() {
         <button onClick={logout}>Logout</button>
       </div>
       <div style={{ flex: 1, overflow: 'hidden' }}>
-        <DashboardApp />
+        <DashboardProvider>
+          <DashboardApp />
+        </DashboardProvider>
       </div>
     </div>
   );
