@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unified-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unified-app
+  template:
+    metadata:
+      labels:
+        app: unified-app
+    spec:
+      containers:
+      - name: unified-app
+        image: "{{ .Values.unifiedApp.image }}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unified-app
+spec:
+  selector:
+    app: unified-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

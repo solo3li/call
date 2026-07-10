@@ -14,11 +14,8 @@ backend:
 frontend:
   image: foodrms-frontend:latest
 
-hqApp:
-  image: foodrms-hq:latest
-
-branchApp:
-  image: foodrms-branch:latest
+unifiedApp:
+  image: foodrms-unified:latest
 
 pgadmin:
   image: dpage/pgadmin4:latest

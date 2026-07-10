@@ -84,7 +84,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: hq-app
+            name: unified-app
             port:
               number: 80
   - host: branch.{{ .Values.baseDomain }}
@@ -94,7 +94,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: branch-app
+            name: unified-app
             port:
               number: 80
   - host: driver.{{ .Values.baseDomain }}
@@ -139,7 +139,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: hq-app
+            name: unified-app
             port:
               number: 80
   # api-call. => Backend API

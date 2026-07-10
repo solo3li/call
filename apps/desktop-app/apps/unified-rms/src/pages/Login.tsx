@@ -2,6 +2,55 @@ import React, { useState } from 'react';
 import { LogIn, ArrowRight, Smartphone, ShieldCheck, KeyRound, CheckCircle2, UserCog, User, Headset, PackageSearch } from "lucide-react";
 import { useAuth, Role } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
+import sha1 from 'js-sha1';
+
+const AlphanumericChars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+
+function decodeBase32(input: string) {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+  const cleaned = input.toUpperCase().replace(/=+$/, '');
+  const length = cleaned.length;
+  const out = new Uint8Array(((length * 5) / 8) | 0);
+  let bits = 0;
+  let value = 0;
+  let index = 0;
+  for (let i = 0; i < length; i++) {
+    const val = alphabet.indexOf(cleaned[i]);
+    if (val === -1) continue;
+    value = (value << 5) | val;
+    bits += 5;
+    if (bits >= 8) {
+      out[index++] = (value >> (bits - 8)) & 0xff;
+      bits -= 8;
+    }
+  }
+  return out;
+}
+
+function generateBoardToken(secret: string) {
+  const keyBytes = decodeBase32(secret);
+  const unixTimestamp = Math.floor(Date.now() / 1000);
+  const step = Math.floor(unixTimestamp / 3600);
+  
+  const stepBytes = new Uint8Array(8);
+  let tempStep = step;
+  for (let i = 7; i >= 0; i--) {
+    stepBytes[i] = tempStep & 0xff;
+    tempStep = Math.floor(tempStep / 256);
+  }
+  
+  const hmacObj = sha1.hmac.create(keyBytes);
+  hmacObj.update(stepBytes);
+  const hash = new Uint8Array(hmacObj.array());
+  
+  const result = [];
+  for (let i = 0; i < 10; i++) {
+    const offset = (i * 2) % (hash.length - 1);
+    const val = ((hash[offset] << 8) | hash[offset + 1]) & 0x7fff;
+    result.push(AlphanumericChars[val % AlphanumericChars.length]);
+  }
+  return result.join('');
+}
 
 export default function Login() {
   const { login } = useAuth();
@@ -16,33 +65,65 @@ export default function Login() {
     setLoading(true);
     setError("");
 
-    // Mock verification
-    setTimeout(() => {
-      let role: Role = null;
-      if (totpCode.toUpperCase() === 'ADMIN12345') role = 'admin';
-      else if (totpCode.toUpperCase() === 'CASHIER123') role = 'cashier';
-      else if (totpCode.toUpperCase() === 'AGENT12345') role = 'agent';
-      else if (totpCode.toUpperCase() === 'INVENT1234') role = 'inventory_manager';
-      else {
-        setError("الرمز غير صحيح، يرجى المحاولة مرة أخرى.");
-        setLoading(false);
-        return;
+    try {
+      const baseUrl = window.location.origin.includes('localhost') 
+          ? 'http://api-call.167.71.66.188.nip.io/api' 
+          : '/api';
+          
+      const response = await fetch(`${baseUrl}/Auth/login-employee`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ totpCode: totpCode })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || "الرمز غير صحيح، يرجى المحاولة مرة أخرى.");
       }
 
       setSuccess(true);
+      
+      // The API returns Token, Role, TenantId, FullName etc.
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("tenantId", data.tenantId || "");
+      localStorage.setItem("userName", data.fullName || "");
+      
+      // Determine app based on role mapping
+      let assignedRole: Role = null;
+      let targetPath = "/";
+      
+      // Assign specific unified-rms roles based on API Role
+      const apiRole = (data.role || "").toUpperCase();
+      if (apiRole.includes("ADMIN") || apiRole.includes("OWNER")) {
+          assignedRole = 'admin';
+          targetPath = '/hq';
+      } else if (apiRole.includes("CASHIER")) {
+          assignedRole = 'cashier';
+          targetPath = '/pos';
+      } else if (apiRole.includes("AGENT") || apiRole.includes("STAFF")) { // Map Agent to Call Center, generic staff to Call Center for now
+          assignedRole = 'agent';
+          targetPath = '/call-center';
+      } else if (apiRole.includes("CHEF")) {
+          assignedRole = 'inventory_manager';
+          targetPath = '/inventory';
+      } else {
+          assignedRole = 'admin'; // fallback
+          targetPath = '/hq';
+      }
+      
+      localStorage.setItem("userRole", assignedRole);
+      
       setTimeout(() => {
-        // Set mock data to satisfy legacy Next.js DashboardApp checks
-        localStorage.setItem("token", "mock_token_" + role);
-        localStorage.setItem("userRole", role || "");
-        localStorage.setItem("userName", "أدمن تجريبي");
-        
-        login(role);
-        if (role === 'admin') navigate('/hq');
-        else if (role === 'cashier') navigate('/pos');
-        else if (role === 'agent') navigate('/call-center');
-        else if (role === 'inventory_manager') navigate('/inventory');
-      }, 1000);
-    }, 1000);
+        login(assignedRole);
+        navigate(targetPath);
+      }, 500);
+
+    } catch (err: any) {
+      setError(err.message || "فشل الاتصال بالخادم.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -141,19 +222,19 @@ export default function Login() {
             <div className="space-y-3">
               <p className="text-xs font-black text-gray-500 text-center mb-3">تسجيل الدخول السريع (للاختبار)</p>
               <div className="grid grid-cols-2 gap-3">
-                <button onClick={() => setTotpCode("ADMIN12345")} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#FFD700] transition-colors shadow-[2px_2px_0px_#1A1A1A]">
+                <button type="button" onClick={() => setTotpCode(generateBoardToken("ADMINSECRETKEY222222222222222222"))} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#FFD700] transition-colors shadow-[2px_2px_0px_#1A1A1A]">
                   <UserCog size={16} />
                   <span>الإدارة (HQ)</span>
                 </button>
-                <button onClick={() => setTotpCode("CASHIER123")} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#00E676] transition-colors shadow-[2px_2px_0px_#1A1A1A]">
+                <button type="button" onClick={() => setTotpCode(generateBoardToken("CASHIERSECRETKEY2222222222222222"))} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#00E676] transition-colors shadow-[2px_2px_0px_#1A1A1A]">
                   <User size={16} />
                   <span>الكاشير (POS)</span>
                 </button>
-                <button onClick={() => setTotpCode("AGENT12345")} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#FF6B35] transition-colors shadow-[2px_2px_0px_#1A1A1A]">
+                <button type="button" onClick={() => setTotpCode(generateBoardToken("AGENTSECRETKEY222222222222222222"))} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#FF6B35] transition-colors shadow-[2px_2px_0px_#1A1A1A]">
                   <Headset size={16} />
                   <span>خدمة العملاء</span>
                 </button>
-                <button onClick={() => setTotpCode("INVENT1234")} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#00B0FF] transition-colors shadow-[2px_2px_0px_#1A1A1A]">
+                <button type="button" onClick={() => setTotpCode(generateBoardToken("CHEFSECRETKEY2222222222222222222"))} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#00B0FF] transition-colors shadow-[2px_2px_0px_#1A1A1A]">
                   <PackageSearch size={16} />
                   <span>المخازن</span>
                 </button>

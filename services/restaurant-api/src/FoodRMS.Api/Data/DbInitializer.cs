@@ -594,7 +594,8 @@ namespace FoodRMS.Api.Data
                 FullName = $"مدير {name}",
                 TenantId = tenantId,
                 Role = "Owner",
-                DepartmentId = depts[2].Id
+                DepartmentId = depts[2].Id,
+                TotpSecretKey = "ADMINSECRETKEY222222222222222222"
             };
             await userManager.CreateAsync(adminUser, "Admin123!");
             await userManager.AddToRoleAsync(adminUser, adminRole.Name!);
@@ -632,7 +633,10 @@ namespace FoodRMS.Api.Data
                     DepartmentId = rolesToAssign[i].DepartmentId,
                     Status = "Available",
                     EmployeeCode = $"EMP10{i + 1}",
-                    TotpSecretKey = OtpNet.Base32Encoding.ToString(OtpNet.KeyGeneration.GenerateRandomKey(20))
+                    TotpSecretKey = i == 0 ? "CHEFSECRETKEY2222222222222222222" : 
+                                    i == 1 ? "CASHIERSECRETKEY2222222222222222" : 
+                                    i == 2 ? "AGENTSECRETKEY222222222222222222" : 
+                                    OtpNet.Base32Encoding.ToString(OtpNet.KeyGeneration.GenerateRandomKey(20))
                 };
                 await userManager.CreateAsync(staffUser, "Staff123!");
                 await userManager.AddToRoleAsync(staffUser, rolesToAssign[i].Name!);
