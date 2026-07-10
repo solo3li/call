@@ -37,6 +37,8 @@ function App() {
           role === 'agent' ? '/call-center' : '/inventory'
         } /> : <Login />} />
         
+        <Route path="/login" element={<Login />} />
+        
         <Route path="/hq" element={
           <ProtectedRoute allowedRoles={['admin']}>
             <HQDashboard />
@@ -60,6 +62,8 @@ function App() {
             <InventoryDashboard />
           </ProtectedRoute>
         } />
+        
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
   );
