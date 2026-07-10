@@ -1,10 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@config "../tailwind.config.js";
 
 @layer base {
   body {
-    @apply bg-carbon-bg text-carbon-text font-cairo;
     margin: 0;
     padding: 0;
   }
