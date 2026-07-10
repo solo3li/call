@@ -1,10 +1,11 @@
+import { useRouter } from "../../../hooks/useRouter";
 'use client';
 
 import { useState } from "react";
 import { LogIn, ArrowRight, Smartphone, ShieldCheck, KeyRound, CheckCircle2 } from "lucide-react";
 import { authApi } from "../utils/api";
 import { Link } from "react-router-dom";
-import { useNavigate as useRouter } from "react-router-dom";
+
 
 export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
   const router = useRouter();

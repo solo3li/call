@@ -1,7 +1,8 @@
+import { useRouter } from "../../../hooks/useRouter";
 'use client';
 
 import { useState, useEffect } from "react";
-import { useNavigate as useRouter } from "react-router-dom";
+
 import { WifiOff } from "lucide-react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";

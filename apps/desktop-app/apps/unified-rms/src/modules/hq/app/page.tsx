@@ -1,6 +1,7 @@
+import { useRouter } from "../../../hooks/useRouter";
 "use client";
 import { useEffect } from "react";
-import { useNavigate as useRouter } from "react-router-dom";
+
 
 export default function Home() {
   const router = useRouter();

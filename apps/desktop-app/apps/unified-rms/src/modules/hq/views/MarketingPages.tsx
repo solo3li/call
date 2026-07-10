@@ -1,7 +1,8 @@
+import { useRouter } from "../../../hooks/useRouter";
 'use client';
 
 import { Link } from "react-router-dom";
-import { useNavigate as useRouter } from "react-router-dom";
+
 import { LogIn, Rocket, ShieldCheck, Utensils, Star, CheckCircle2, Store, Users, LineChart, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { authApi } from "../utils/api";
