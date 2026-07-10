@@ -31,6 +31,11 @@ export default function Login() {
 
       setSuccess(true);
       setTimeout(() => {
+        // Set mock data to satisfy legacy Next.js DashboardApp checks
+        localStorage.setItem("token", "mock_token_" + role);
+        localStorage.setItem("userRole", role || "");
+        localStorage.setItem("userName", "أدمن تجريبي");
+        
         login(role);
         if (role === 'admin') navigate('/hq');
         else if (role === 'cashier') navigate('/pos');
