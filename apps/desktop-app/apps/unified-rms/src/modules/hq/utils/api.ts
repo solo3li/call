@@ -158,6 +158,7 @@ export const menuApi = {
 export const ordersApi = {
   create: (order: any) => api.post<Order>('/orders', order),
   getAll: (branchId?: string, deliveryType?: string, externalCompanyId?: string) => api.get<Order[]>('/orders', { params: { branchId, deliveryType, externalCompanyId } }),
+  getCustomerOrders: (customerId: string) => api.get<Order[]>(`/orders/customer/${customerId}`),
   getActiveKds: (branchId?: string) => api.get<any[]>('/orders/kds', (branchId && branchId !== "undefined" && branchId !== "null") ? { params: { branchId } } : undefined),
   getById: (id: string) => api.get<any>(`/orders/${id}`),
   updateStatus: (id: string, status: string) => api.put<Order>(`/orders/${id}/status`, { status }),

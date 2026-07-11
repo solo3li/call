@@ -48,6 +48,12 @@ namespace FoodRMS.Api.Areas.Api.Controllers
             return await _orderService.GetAllOrdersAsync(branchId, deliveryType, externalCompanyId);
         }
 
+        [HttpGet("customer/{customerId}")]
+        public async Task<ActionResult<List<OrderResponse>>> GetCustomerOrders(Guid customerId)
+        {
+            return await _orderService.GetCustomerOrdersAsync(customerId);
+        }
+
         [HttpGet("kds")]
         public async Task<ActionResult<List<OrderDetailsResponse>>> GetActiveOrdersDetails([FromQuery] Guid? branchId)
         {

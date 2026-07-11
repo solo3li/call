@@ -253,6 +253,20 @@ namespace FoodRMS.Api.Infrastructure.Services
             return orders.GroupBy(o => o.Id).Select(g => g.First()).Select(o => MapToResponseStatic(o)).ToList();
         }
 
+        public async Task<List<OrderResponse>> GetCustomerOrdersAsync(Guid customerId)
+        {
+            var query = _context.Orders.Where(o => o.CustomerId == customerId).AsQueryable();
+
+            var orders = await query
+                .Include(o => o.Customer)
+                .Include(o => o.CustomerAddress)
+                .Include(o => o.ExternalCompany)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToListAsync();
+
+            return orders.GroupBy(o => o.Id).Select(g => g.First()).Select(o => MapToResponseStatic(o)).ToList();
+        }
+
         public async Task<List<OrderDetailsResponse>> GetActiveOrdersDetailsAsync(Guid? branchId = null)
         {
             var activeDay = await _context.BusinessDays.FirstOrDefaultAsync(b => b.EndedAt == null);
