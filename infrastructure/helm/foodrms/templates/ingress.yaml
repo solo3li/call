@@ -8,14 +8,10 @@ spec:
   tls:
   - hosts:
     - {{ .Values.baseDomain }}
-    - hq.{{ .Values.baseDomain }}
-    - branch.{{ .Values.baseDomain }}
-    - driver.{{ .Values.baseDomain }}
-    - scanner.{{ .Values.baseDomain }}
-    - call.{{ .Values.baseDomain }}
     - api-call.{{ .Values.baseDomain }}
     - pgadmin.{{ .Values.baseDomain }}
     - totp.{{ .Values.baseDomain }}
+    - unified-rms.{{ .Values.baseDomain }}
     secretName: foodrms-tls-secret
   rules:
   - host: {{ .Values.baseDomain }}
@@ -67,65 +63,10 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: frontend
-            port:
-              number: 80
-  - host: hq.{{ .Values.baseDomain }}
-    http:
-      paths:
-      - path: /api
-        pathType: Prefix
-        backend:
-          service:
-            name: backend
-            port:
-              number: 5109
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
             name: unified-app
             port:
               number: 80
-  - host: branch.{{ .Values.baseDomain }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: unified-app
-            port:
-              number: 80
-  - host: driver.{{ .Values.baseDomain }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: driver-app
-            port:
-              number: 80
-  - host: scanner.{{ .Values.baseDomain }}
-    http:
-      paths:
-      - path: /api
-        pathType: Prefix
-        backend:
-          service:
-            name: backend
-            port:
-              number: 5109
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: external-orders-app
-            port:
-              number: 80
-  # call. => HQ App (إدارة إعدادات الذكاء الاصطناعي والمكالمات)
-  - host: call.{{ .Values.baseDomain }}
+  - host: unified-rms.{{ .Values.baseDomain }}
     http:
       paths:
       - path: /api
