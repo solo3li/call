@@ -13,9 +13,17 @@ interface SidebarProps {
 export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
   const { role, logout } = useAuth();
 
+  const location = useLocation();
   const { activeTab, navigateToTab } = useNavigation();
 
-  const sections = getNavigationForRole(role as Role | null);
+  // Determine current module based on URL
+  const pathParts = location.pathname.split('/').filter(Boolean);
+  let currentModule: 'hq' | 'branch' | 'pos' | 'inventory' = 'hq';
+  if (pathParts[0] && ['hq', 'branch', 'pos', 'inventory'].includes(pathParts[0])) {
+    currentModule = pathParts[0] as any;
+  }
+
+  const sections = getNavigationForRole(role as Role | null, currentModule);
 
   return (
     <aside
