@@ -708,7 +708,7 @@ export function KitchenStationsPage() {
                       {station.name}
                     </td>
                     <td className="px-2 py-1.5 border-l border-carbon-border align-middle">
-                      <span className={`text-[9px] font-semibold px-1.5 py-0.5 border border-carbon-border ${station.branchId ? 'bg-[#edf5ff] text-[#0f62fe]/10 text-carbon-blue' : 'bg-carbon-layer/30'}`}>
+                      <span className={`text-[9px] font-semibold px-1.5 py-0.5 border border-carbon-border ${station.branchId ? 'bg-carbon-layerHover text-carbon-text' : 'bg-carbon-layer/30'}`}>
                         {branchName}
                       </span>
                     </td>
@@ -1077,7 +1077,7 @@ export function MenuPage() {
                   </td>
                   <td className="px-1 py-1.5 align-middle text-center">
                     <div className="flex gap-1 justify-center">
-                      <button onClick={() => setEditingItem(item)} className="p-1 bg-[#edf5ff] text-[#0f62fe]/10 text-carbon-blue border border-brand-blue/30 shadow-sm hover:translate-y-px transition-all">
+                      <button onClick={() => setEditingItem(item)} className="p-1 bg-carbon-layerHover text-carbon-text border border-brand-blue/30 shadow-sm hover:translate-y-px transition-all">
                           <Edit3 size={12} strokeWidth={3} />
                       </button>
                       <button onClick={() => handleDeleteItem(item.id)} className="p-1 bg-carbon-error/10 text-carbon-error border border-brand-red/30 shadow-sm hover:translate-y-px transition-all">
@@ -1215,7 +1215,7 @@ export function StaffPage() {
         />
       )}
 
-      <div className="bg-[#fff0f7] text-[#ff7eb6] bg-carbon-layer border border-carbon-border p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="bg-carbon-layer border border-carbon-border p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <div className="bg-carbon-layer border border-carbon-border-flat bg-white p-3">
             <Users size={28} />
@@ -1234,7 +1234,7 @@ export function StaffPage() {
       {showAddForm && (
         <form onSubmit={handleAdd} className="bg-carbon-layer border border-carbon-border p-6 bg-[#FFFBEB] space-y-6 animate-fade-in border border-carbon-border ">
           <h3 className="font-semibold text-xl flex items-center gap-2">
-            <UserCheck className="text-brand-pink" />
+            <UserCheck className="text-carbon-text" />
             إضافة عضو جديد للفريق
           </h3>
           
@@ -1291,8 +1291,8 @@ export function StaffPage() {
                   <div 
                     key={role.id}
                     onClick={() => toggleRole(role.name)}
-                    className={`p-3 rounded-sm border border-carbon-border flex items-center gap-3 cursor-pointer transition-all ${newEmployee.roles.includes(role.name) ? 'bg-[#fff0f7] text-[#ff7eb6]/20 border-brand-pink' : 'bg-white hover:bg-carbon-bg'}`}>
-                    <div className={`w-5 h-5 rounded border border-carbon-border flex items-center justify-center ${newEmployee.roles.includes(role.name) ? 'bg-[#fff0f7] text-[#ff7eb6]' : 'bg-white'}`}>
+                    className={`p-3 rounded-sm border border-carbon-border flex items-center gap-3 cursor-pointer transition-all ${newEmployee.roles.includes(role.name) ? 'bg-carbon-layerHover text-carbon-text border-carbon-blue' : 'bg-white hover:bg-carbon-bg'}`}>
+                    <div className={`w-5 h-5 rounded border border-carbon-border flex items-center justify-center ${newEmployee.roles.includes(role.name) ? 'bg-carbon-layer text-carbon-text' : 'bg-white'}`}>
                       {newEmployee.roles.includes(role.name) && <Check size={12} className="text-white" />}
                     </div>
                     <span className="font-medium text-sm">{role.name}</span>
@@ -1321,7 +1321,7 @@ export function StaffPage() {
       <div className="bg-carbon-layer border border-carbon-border bg-white p-0 overflow-hidden overflow-x-auto border border-carbon-border rounded-none ">
         <table className="w-full text-right border-collapse min-w-[800px]">
           <thead>
-            <tr className="bg-[#fff0f7] text-[#ff7eb6]/10 border-b-2 border-carbon-border text-[10px]">
+            <tr className="bg-carbon-bg text-carbon-textSecondary border-b-2 border-carbon-border text-[10px]">
               <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border">الموظف / الجوال</th>
               <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border w-40">القسم / الفرع / ID</th>
               <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border w-48">الأدوار</th>
@@ -1339,7 +1339,7 @@ export function StaffPage() {
               </tr>
             ) : (
               employees.map(emp => (
-                <tr key={emp.id} className="hover:bg-[#fff0f7] text-[#ff7eb6]/5 transition-colors">
+                <tr key={emp.id} className="hover:hover:bg-carbon-layerHover text-carbon-text transition-colors">
                   <td className="border-l border-carbon-border px-2 py-1.5 align-middle">
                     <div className="flex items-center gap-2">
                       <div className="font-semibold text-[11px]">{emp.fullName}</div>
@@ -1351,7 +1351,7 @@ export function StaffPage() {
                     <div className="flex items-center gap-1 flex-wrap">
                       <span className="text-[9px] font-semibold px-1 border border-carbon-border bg-carbon-layer/30">{emp.departmentName}</span>
                       {emp.branchName && (
-                        <span className="text-[9px] font-semibold px-1 border border-brand-blue/30 bg-[#edf5ff] text-[#0f62fe]/10 text-carbon-blue">{emp.branchName}</span>
+                        <span className="text-[9px] font-semibold px-1 border border-brand-blue/30 bg-carbon-layerHover text-carbon-text">{emp.branchName}</span>
                       )}
                       <span className="text-[9px] font-semibold text-gray-400">ID:{emp.employeeCode}</span>
                     </div>
@@ -1360,7 +1360,7 @@ export function StaffPage() {
                   <td className="border-l border-carbon-border px-2 py-1.5 align-middle">
                     <div className="flex flex-wrap gap-1">
                       {emp.roles?.map(role => (
-                        <span key={role} className="text-[9px] font-medium px-1 border border-brand-pink/30 bg-[#fff0f7] text-[#ff7eb6]/10 text-brand-pink">
+                        <span key={role} className="text-[9px] font-medium px-1 border border-brand-pink/30 bg-carbon-bg text-carbon-textSecondary text-carbon-text">
                           {role}
                         </span>
                       ))}
@@ -2192,7 +2192,7 @@ export function SettingsPage() {
   return (
     <div className="space-y-4">
       {/* General Settings Header */}
-      <div className={`bg-[#fff0f7] text-[#ff7eb6] bg-carbon-layer border border-carbon-border p-3 flex flex-row items-center justify-between `}>
+      <div className={`bg-carbon-layer border border-carbon-border p-3 flex flex-row items-center justify-between `}>
         <div className="flex items-center gap-3">
           <Settings size={20} />
           <h2 className="text-lg font-semibold">إعدادات النظام</h2>
