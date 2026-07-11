@@ -108,19 +108,19 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
 
   return (
     <aside
-      className={`fixed right-0 top-0 h-screen bg-carbon-layer border-l border-carbon-border z-50 flex flex-col transition-all duration-300 ${
+      className={`fixed right-0 top-0 h-screen bg-carbon-darkLayer border-l border-carbon-darkBorder z-50 flex flex-col transition-all duration-300 ${
         collapsed ? "w-14" : "w-52"
       }`}
     >
       {/* Logo */}
-      <div className="p-4 border-b border-carbon-border flex items-center gap-2">
+      <div className="p-4 border-b border-carbon-darkBorder flex items-center gap-2">
         <div className="w-8 h-8 flex items-center justify-center shrink-0 overflow-hidden bg-white">
           <img src="/logo.png" alt="OPNO Logo" className="w-full h-full object-contain p-0.5" />
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
-            <h1 className="font-bold text-base leading-tight truncate text-white">أوبنو</h1>
-            <p className="text-[10px] font-normal text-carbon-textSecondary truncate">إدارة المطاعم</p>
+            <h1 className="font-bold text-base leading-tight truncate text-carbon-darkText">أوبنو</h1>
+            <p className="text-[10px] font-normal text-carbon-darkTextSecondary truncate">إدارة المطاعم</p>
           </div>
         )}
       </div>
@@ -148,7 +148,7 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
                     className={`w-full flex items-center gap-2 px-3 py-2 rounded-none font-bold transition-colors ${
                       isActive
                         ? `bg-carbon-blue text-white border-r-4 border-white`
-                        : "text-carbon-textSecondary hover:bg-carbon-layerHover hover:text-white border-r-4 border-transparent"
+                        : "text-carbon-darkTextSecondary hover:bg-carbon-darkHover hover:text-carbon-darkText border-r-4 border-transparent"
                     }`}
                     title={collapsed ? item.label : undefined}
                   >
@@ -163,10 +163,10 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
       </nav>
 
       {/* Logout & Collapse toggle */}
-      <div className="p-3 border-t border-carbon-border space-y-1 bg-carbon-layer">
+      <div className="p-3 border-t border-carbon-darkBorder space-y-1 bg-carbon-darkLayer">
         <button
           onClick={() => window.dispatchEvent(new Event('manual-update-check'))}
-          className="w-full text-carbon-textSecondary hover:text-white hover:bg-carbon-layerHover py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none"
+          className="w-full text-carbon-darkTextSecondary hover:text-carbon-darkText hover:bg-carbon-darkHover py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none"
         >
           <RefreshCw size={14} />
           {!collapsed && <span className="font-bold text-xs whitespace-nowrap">فحص التحديثات</span>}
@@ -182,7 +182,7 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
         
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="w-full text-carbon-textSecondary hover:text-white hover:bg-carbon-layerHover py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none mt-2"
+          className="w-full text-carbon-darkTextSecondary hover:text-carbon-darkText hover:bg-carbon-darkHover py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none mt-2"
         >
           {collapsed ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
           {!collapsed && <span className="font-bold text-xs whitespace-nowrap">تصغير القائمة</span>}

@@ -91,7 +91,7 @@ function DashboardPage() {
       <div className="bg-carbon-layer border border-carbon-border p-6 relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-white">
+            <h2 className="text-2xl font-bold text-carbon-text">
               صباح الخير، {userName}! ☀️
             </h2>
             <p className="font-normal text-carbon-textSecondary mt-1">
@@ -119,14 +119,14 @@ function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-carbon-layer border border-carbon-border p-5 overflow-hidden">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-lg text-white">المبيعات والأرباح 📈</h3>
+            <h3 className="font-bold text-lg text-carbon-text">المبيعات والأرباح 📈</h3>
             <span className="bg-[#f1c21b] text-black px-2 py-0.5 text-xs font-semibold">مباشر</span>
           </div>
           <RevenueChart data={stats?.revenueData || []} />
         </div>
         <div className="bg-carbon-layer border border-carbon-border p-5 overflow-hidden">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-lg text-white">حركة الطلبات 🚀</h3>
+            <h3 className="font-bold text-lg text-carbon-text">حركة الطلبات 🚀</h3>
             <span className="bg-[#24a148] text-white px-2 py-0.5 text-xs font-semibold">اليوم</span>
           </div>
           <OrdersChart data={stats?.ordersPerHour || []} />
@@ -135,7 +135,7 @@ function DashboardPage() {
 
       <div className="bg-carbon-layer border border-carbon-border p-5 overflow-hidden">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-bold text-lg text-white">أحدث الطلبات 🍔</h3>
+          <h3 className="font-bold text-lg text-carbon-text">أحدث الطلبات 🍔</h3>
           <button className="text-carbon-blue hover:text-carbon-blueHover text-sm font-semibold transition-colors">
             عرض الكل
           </button>
@@ -299,7 +299,7 @@ export default function DashboardApp() {
         <footer className="p-6 text-center border-t border-carbon-border mt-8">
           <div className="flex flex-wrap items-center justify-center gap-2 text-carbon-textSecondary">
             <span className="text-xl">🍽️</span>
-            <span className="font-bold text-white">أوبنو</span>
+            <span className="font-bold text-carbon-text">أوبنو</span>
             <span className="text-carbon-border">|</span>
             <span className="text-xs">
               نظام إدارة المطاعم والكافيهات © {currentYear}
