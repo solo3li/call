@@ -69,7 +69,7 @@ export default function CustomersPage() {
 
   return (
     <div className="space-y-4">
-      <div className={`bg-[#e5f6ff] text-[#00a68f] bg-carbon-layer border border-carbon-border p-3 flex flex-row items-center justify-between `}>
+      <div className={`bg-carbon-layer border border-carbon-border p-3 flex flex-row items-center justify-between`}>
         <div className="flex items-center gap-3">
           <Users size={20} />
           <h2 className="text-lg font-semibold">قاعدة بيانات العملاء</h2>
@@ -93,7 +93,7 @@ export default function CustomersPage() {
       </div>
 
       {showAddForm && (
-        <form onSubmit={handleAdd} className="bg-carbon-layer border border-carbon-border p-4 bg-[#FFFBEB] flex flex-col gap-3 border border-carbon-border ">
+        <form onSubmit={handleAdd} className="bg-carbon-layer border border-carbon-border p-4 flex flex-col gap-3">
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
             <div>
               <label className="block text-[10px] font-semibold text-carbon-textSecondary mb-1">اسم العميل</label>
@@ -121,10 +121,10 @@ export default function CustomersPage() {
         </form>
       )}
 
-      <div className="bg-carbon-layer border border-carbon-border p-0 overflow-hidden bg-white border border-carbon-border ">
+      <div className="bg-carbon-layer border border-carbon-border p-0 overflow-hidden">
         <table className="w-full text-right border-collapse">
           <thead>
-            <tr className="bg-[#e5f6ff] text-[#00a68f]/10 border-b-2 border-carbon-border text-[10px]">
+            <tr className="bg-carbon-bg text-carbon-textSecondary border-b border-carbon-border text-[10px]">
               <th className="px-2 py-1.5 font-semibold border-l border-carbon-border">العميل</th>
               <th className="px-2 py-1.5 font-semibold border-l border-carbon-border w-28">الهاتف</th>
               <th className="px-2 py-1.5 font-semibold border-l border-carbon-border">العنوان</th>
@@ -132,17 +132,17 @@ export default function CustomersPage() {
               <th className="px-2 py-1.5 font-semibold text-center w-16">إجراء</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-neo-border text-xs">
+          <tbody className="divide-y divide-carbon-border text-xs">
             {filteredCustomers.length === 0 ? (
               <tr>
                 <td colSpan={5} className="p-4 text-center font-semibold text-[10px] text-carbon-textSecondary bg-carbon-bg">لا توجد نتائج</td>
               </tr>
             ) : (
               filteredCustomers.map((customer) => (
-                <tr key={customer.id} className="hover:bg-[#e5f6ff] text-[#00a68f]/5 transition-colors">
+                <tr key={customer.id} className="hover:bg-carbon-layerHover text-carbon-text transition-colors">
                   <td className="px-2 py-1.5 border-l border-carbon-border align-middle font-semibold">
                     <div className="flex items-center gap-1.5">
-                      <div className="w-5 h-5 bg-[#fff0f7] text-[#ff7eb6]/20 rounded border border-carbon-border flex items-center justify-center text-[10px]">
+                      <div className="w-5 h-5 bg-carbon-layer text-carbon-text rounded border border-carbon-border flex items-center justify-center text-[10px]">
                         {customer.name?.[0] || '👤'}
                       </div>
                       <span className="text-[11px]">{customer.name}</span>

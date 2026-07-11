@@ -78,7 +78,7 @@ function CreateTripModal({ group, drivers, onClose, onCreated }: { group: Sugges
         <div className="space-y-3 relative z-10">
           <label className="block text-base font-semibold text-carbon-text">اختر المندوب الأقرب *</label>
           <div className="relative group">
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-carbon-blue bg-[#e5f6ff] text-[#00a68f]/20 p-1.5 rounded-sm group-hover:scale-110 transition-transform">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-carbon-blue bg-carbon-layerHover text-carbon-blueHover p-1.5 rounded-sm group-hover:scale-110 transition-transform">
               <User size={20} />
             </div>
             <select 

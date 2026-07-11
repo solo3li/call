@@ -349,7 +349,7 @@ export default function SupportComplaintsPage() {
 
               {/* Selected File Preview */}
               {selectedFile && (
-                <div className="bg-[#e5f6ff] text-[#00a68f]/20 px-4 py-2 border-t-2 border-carbon-border flex items-center justify-between">
+                <div className="bg-carbon-layerHover text-carbon-blueHover px-4 py-2 border-t-2 border-carbon-border flex items-center justify-between">
                   <div className="flex items-center gap-2 font-medium text-xs text-carbon-text">
                     <Paperclip size={16} />
                     <span>المرفق: {selectedFile.name}</span>
