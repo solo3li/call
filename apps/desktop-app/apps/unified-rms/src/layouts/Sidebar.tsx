@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { LogOut, ChevronRight, ChevronLeft } from "lucide-react";
 import { getNavigationForRole } from "../config/navigation";
 import { useAuth, Role } from "../AuthContext";
+import { useNavigation } from "../context/NavigationContext";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -13,6 +14,7 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
   const { role, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { activeTab, navigateToTab } = useNavigation();
 
   const sections = getNavigationForRole(role as Role | null);
 
@@ -46,13 +48,13 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
             )}
             <ul className="space-y-1">
               {section.items.map((item) => {
-                const isActive = location.pathname.startsWith(item.path || `/${item.id}`);
+                const isActive = item.path ? location.pathname.startsWith(item.path) : activeTab === item.id;
                 const Icon = item.icon;
                 
                 return (
                   <li key={item.id}>
                     <button
-                      onClick={() => item.path && navigate(item.path)}
+                      onClick={() => navigateToTab(item.id, item.path)}
                       className={`w-full flex items-center px-4 py-2.5 transition-colors group ${
                         isActive 
                           ? "bg-carbon-darkLayer border-r-4 border-carbon-blue text-white" 
