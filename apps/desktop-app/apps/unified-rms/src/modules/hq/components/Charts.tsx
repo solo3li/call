@@ -23,17 +23,17 @@ export function RevenueChart({ data }: RevenueChartProps) {
     <div className="bg-carbon-layer h-full">
       <ResponsiveContainer width="100%" height={280}>
         <LineChart data={data}>
-          <CartesianGrid strokeDasharray="0" stroke="#e0e0e0" vertical={false} />
-          <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#525252' }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fontSize: 11, fill: '#525252' }} axisLine={false} tickLine={false} />
+          <CartesianGrid strokeDasharray="0" stroke="var(--carbon-border, #393939)" vertical={false} />
+          <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'var(--carbon-textSecondary, #c6c6c6)' }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 11, fill: 'var(--carbon-textSecondary, #c6c6c6)' }} axisLine={false} tickLine={false} />
           <Tooltip
             contentStyle={{
-              background: "#ffffff",
-              border: "1px solid #e0e0e0",
+              background: "var(--carbon-layer, #161616)",
+              border: "1px solid var(--carbon-border, #393939)",
               borderRadius: "0",
               boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
               fontSize: "12px",
-              color: "#161616"
+              color: "var(--carbon-text, #f4f4f4)"
             }}
           />
           <Line
@@ -60,17 +60,17 @@ export function OrdersChart({ data }: OrdersChartProps) {
     <div className="bg-carbon-layer h-full">
       <ResponsiveContainer width="100%" height={280}>
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="0" stroke="#e0e0e0" vertical={false} />
-          <XAxis dataKey="hour" tick={{ fontSize: 11, fill: '#525252' }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fontSize: 11, fill: '#525252' }} axisLine={false} tickLine={false} />
+          <CartesianGrid strokeDasharray="0" stroke="var(--carbon-border, #393939)" vertical={false} />
+          <XAxis dataKey="hour" tick={{ fontSize: 11, fill: 'var(--carbon-textSecondary, #c6c6c6)' }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 11, fill: 'var(--carbon-textSecondary, #c6c6c6)' }} axisLine={false} tickLine={false} />
           <Tooltip
             contentStyle={{
-              background: "#ffffff",
-              border: "1px solid #e0e0e0",
+              background: "var(--carbon-layer, #161616)",
+              border: "1px solid var(--carbon-border, #393939)",
               borderRadius: "0",
               boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
               fontSize: "12px",
-              color: "#161616"
+              color: "var(--carbon-text, #f4f4f4)"
             }}
             cursor={{ fill: '#f4f4f4' }}
           />
@@ -114,14 +114,14 @@ export function CategoryChart() {
           </Pie>
           <Tooltip
             contentStyle={{
-              background: "#ffffff",
-              border: "1px solid #e0e0e0",
+              background: "var(--carbon-layer, #161616)",
+              border: "1px solid var(--carbon-border, #393939)",
               borderRadius: "0",
               boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
               fontSize: "12px",
-              color: "#161616"
+              color: "var(--carbon-text, #f4f4f4)"
             }}
-            itemStyle={{ color: "#161616" }}
+            itemStyle={{ color: "var(--carbon-text, #f4f4f4)" }}
           />
         </PieChart>
       </ResponsiveContainer>

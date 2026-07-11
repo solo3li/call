@@ -38,7 +38,7 @@ export function AnalyticsPage() {
 
   return (
     <div className="space-y-4">
-      <div className={`bg-[#e8daff] text-[#6929c4] bg-carbon-layer border border-carbon-border p-3 flex flex-row items-center justify-between text-white `}>
+      <div className={`bg-carbon-layer border border-carbon-border p-3 flex flex-row items-center justify-between`}>
         <div className="flex items-center gap-3">
           <BarChart3 size={20} />
           <h2 className="text-lg font-semibold">تحليلات الأداء</h2>
@@ -56,14 +56,14 @@ export function AnalyticsPage() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-          <StatCard title="المبيعات" value={formatCurrency(stats?.totalRevenue || 0)} icon={DollarSign} color="bg-[#defbe6] text-[#198038]" trend="+12%" />
-          <StatCard title="الطلبات" value={stats?.totalOrders || 0} icon={ShoppingBag} color="bg-carbon-layer" trend="+5%" />
-          <StatCard title="متوسط الطلب" value={formatCurrency((stats?.totalRevenue || 0) / (stats?.totalOrders || 1))} icon={TrendingUp} color="bg-[#e5f6ff] text-[#00a68f]" trend="+2%" />
-          <StatCard title="العملاء" value="128" icon={Users} color="bg-[#fff0f7] text-[#ff7eb6]" trend="+8%" />
+          <StatCard title="المبيعات" value={formatCurrency(stats?.totalRevenue || 0)} icon={DollarSign} color="bg-carbon-success/10 text-carbon-success" trend="+12%" />
+          <StatCard title="الطلبات" value={stats?.totalOrders || 0} icon={ShoppingBag} color="bg-carbon-blue/10 text-carbon-blue" trend="+5%" />
+          <StatCard title="متوسط الطلب" value={formatCurrency((stats?.totalRevenue || 0) / (stats?.totalOrders || 1))} icon={TrendingUp} color="bg-carbon-warning/10 text-carbon-warning" trend="+2%" />
+          <StatCard title="العملاء" value="128" icon={Users} color="bg-carbon-purple/10 text-carbon-purple" trend="+8%" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="bg-carbon-layer border border-carbon-border p-4 bg-white border border-carbon-border ">
+        <div className="bg-carbon-layer border border-carbon-border p-4 ">
             <h3 className="font-semibold text-sm mb-4 flex items-center gap-2">
                 <DollarSign className="text-carbon-success" size={16} />
                 تحليل الإيرادات
@@ -72,7 +72,7 @@ export function AnalyticsPage() {
                 <RevenueChart data={stats?.revenueData || []} />
             </div>
         </div>
-        <div className="bg-carbon-layer border border-carbon-border p-4 bg-white border border-carbon-border ">
+        <div className="bg-carbon-layer border border-carbon-border p-4 ">
             <h3 className="font-semibold text-sm mb-4 flex items-center gap-2">
                 <ShoppingBag className="text-carbon-warning" size={16} />
                 كثافة الطلبات
@@ -83,24 +83,24 @@ export function AnalyticsPage() {
         </div>
       </div>
 
-      <div className="bg-carbon-layer border border-carbon-border p-0 bg-white border border-carbon-border ">
+      <div className="bg-carbon-layer border border-carbon-border p-0 overflow-hidden ">
           <table className="w-full text-right border-collapse">
               <thead>
-                  <tr className="bg-gray-100 border-b-2 border-carbon-border text-[10px]">
+                  <tr className="bg-carbon-bg border-b border-carbon-border text-[10px]">
                       <th className="px-2 py-1.5 font-semibold border-l border-carbon-border">الفرع</th>
                       <th className="px-2 py-1.5 font-semibold border-l border-carbon-border">الطلبات</th>
                       <th className="px-2 py-1.5 font-semibold border-l border-carbon-border">المبيعات</th>
                       <th className="px-2 py-1.5 font-semibold border-l border-carbon-border">النمو</th>
                   </tr>
               </thead>
-              <tbody className="divide-y divide-neo-border text-xs">
+              <tbody className="divide-y divide-carbon-border text-xs">
                   {stats?.topBranches?.map((branch: any) => (
                       <tr key={branch.id} className="hover:bg-carbon-bg">
                           <td className="px-2 py-1.5 font-medium border-l border-carbon-border">{branch.name}</td>
                           <td className="px-2 py-1.5 font-medium border-l border-carbon-border">{branch.orders}</td>
                           <td className="px-2 py-1.5 font-semibold text-carbon-success border-l border-carbon-border">{formatCurrency(branch.revenue)}</td>
                           <td className="px-2 py-1.5 border-l border-carbon-border">
-                              <span className={`flex items-center gap-1 font-medium text-[10px] ${branch.trend.startsWith('+') ? 'text-green-600 bg-green-100 px-1 w-max' : 'text-red-600 bg-red-100 px-1 w-max'}`}>
+                              <span className={`flex items-center gap-1 font-medium text-[10px] ${branch.trend.startsWith('+') ? 'text-carbon-success bg-carbon-success/10 px-1 w-max' : 'text-carbon-error bg-carbon-error/10 px-1 w-max'}`}>
                                   {branch.trend.startsWith('+') ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />} {branch.trend}
                               </span>
                           </td>
@@ -120,12 +120,12 @@ export function AnalyticsPage() {
 
 function StatCard({ title, value, icon: Icon, color, trend }: any) {
     return (
-        <div className="bg-carbon-layer border border-carbon-border p-3 bg-white border border-carbon-border shadow-sm flex flex-col justify-between">
+        <div className="bg-carbon-layer border border-carbon-border p-3 flex flex-col justify-between">
             <div className="flex items-center justify-between mb-2">
                 <div className={`${color} p-1.5 border border-carbon-border`}>
-                    <Icon size={14} className="text-white" />
+                    <Icon size={14} className="currentColor" />
                 </div>
-                <span className={`text-[9px] font-semibold px-1.5 py-0.5 border border-carbon-border ${trend.startsWith('+') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                <span className={`text-[9px] font-semibold px-1.5 py-0.5 border border-carbon-border ${trend.startsWith('+') ? 'bg-carbon-success/10 text-carbon-success' : 'bg-carbon-error/10 text-carbon-error'}`}>
                     {trend}
                 </span>
             </div>

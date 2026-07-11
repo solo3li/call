@@ -25,6 +25,7 @@ module.exports = {
           success: '#24a148',
           error: '#da1e28',
           warning: '#f1c21b',
+          purple: '#8a3ffc',
         }
       },
       fontFamily: {
