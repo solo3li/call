@@ -139,20 +139,20 @@ export default function KdsMonitorPage() {
   }, [filteredOrders]);
 
   const totalActive = newOrders.length + preparingOrders.length;
-  let globalStatus = { text: "طبيعي", color: "bg-brand-green text-white", icon: <CheckCircle2 size={16} /> };
+  let globalStatus = { text: "طبيعي", color: "bg-[#defbe6] text-[#198038] text-white", icon: <CheckCircle2 size={16} /> };
   if (delayedCount > 5 || totalActive > 30) {
-    globalStatus = { text: "ضغط شديد", color: "bg-brand-red text-white animate-pulse", icon: <AlertTriangle size={16} /> };
+    globalStatus = { text: "ضغط شديد", color: "bg-carbon-error text-white animate-pulse", icon: <AlertTriangle size={16} /> };
   } else if (delayedCount > 0 || totalActive > 15) {
-    globalStatus = { text: "مزدحم", color: "bg-brand-yellow text-neo-text", icon: <Activity size={16} /> };
+    globalStatus = { text: "مزدحم", color: "bg-carbon-layer text-carbon-text", icon: <Activity size={16} /> };
   }
 
   if (!hasAccess) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[70vh] p-6">
-        <div className="bg-brand-yellow p-12 flex flex-col items-center gap-6 text-center border-4 border-neo-border shadow-[12px_12px_0px_#1A1A1A] max-w-2xl w-full">
-          <AlertTriangle size={64} strokeWidth={2.5} className="text-neo-text" />
-          <h2 className="text-5xl font-black text-neo-text uppercase tracking-tight">توقف!</h2>
-          <p className="font-bold text-2xl text-neo-text leading-snug">هذه المنطقة مخصصة لطاقم المطبخ فقط.</p>
+        <div className="bg-carbon-layer p-12 flex flex-col items-center gap-6 text-center border border-carbon-border  max-w-2xl w-full">
+          <AlertTriangle size={64} strokeWidth={2.5} className="text-carbon-text" />
+          <h2 className="text-5xl font-semibold text-carbon-text uppercase tracking-tight">توقف!</h2>
+          <p className="font-medium text-2xl text-carbon-text leading-snug">هذه المنطقة مخصصة لطاقم المطبخ فقط.</p>
         </div>
       </div>
     );
@@ -161,7 +161,7 @@ export default function KdsMonitorPage() {
   if (loading && orders.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[70vh]">
-        <div className="text-center font-black text-4xl animate-pulse flex items-center gap-4">
+        <div className="text-center font-semibold text-4xl animate-pulse flex items-center gap-4">
           <ChefHat size={48} />
           <span>جاري تسخين الشاشات...</span>
         </div>
@@ -186,14 +186,14 @@ export default function KdsMonitorPage() {
     const isWarning = minutesElapsed > 10 && !isCritical && !isReadyColumn;
 
     // Compact Colors
-    let cardClasses = "bg-white border-neo-border text-neo-text";
-    let progressBg = "bg-brand-green";
+    let cardClasses = "bg-white border-carbon-border text-carbon-text";
+    let progressBg = "bg-[#defbe6] text-[#198038]";
     
     if (isCritical) {
-      cardClasses = "bg-brand-red border-black text-white shadow-[2px_2px_0px_#1A1A1A]";
+      cardClasses = "bg-carbon-error border-black text-white ";
       progressBg = "bg-white"; // contrast on red
     } else if (isWarning) {
-      cardClasses = "bg-brand-orange/20 border-brand-orange text-neo-text";
+      cardClasses = "bg-[#fcf4d6] text-[#b47a00]/20 border-brand-orange text-carbon-text";
     }
 
     return (
@@ -204,17 +204,17 @@ export default function KdsMonitorPage() {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
-        className={`border-2 flex flex-col justify-between overflow-hidden shadow-[2px_2px_0px_#1A1A1A] ${cardClasses}`}
+        className={`border-2 flex flex-col justify-between overflow-hidden  ${cardClasses}`}
       >
         <div className="p-2 border-b-2 border-inherit flex justify-between items-center">
           <div className="flex items-center gap-1.5">
-            <span className={`text-[9px] font-black px-1 py-0.5 border-2 border-inherit uppercase ${isCritical ? 'bg-black text-white' : 'bg-brand-yellow text-neo-text'}`}>{order.orderType}</span>
-            <h3 className="text-xl font-black leading-none shrink-0">#{order.orderNumber}</h3>
-            {order.orderType === "Delivery" && <Truck size={12} className={isCritical ? 'text-white' : 'text-brand-blue'}/>}
+            <span className={`text-[9px] font-semibold px-1 py-0.5 border-2 border-inherit uppercase ${isCritical ? 'bg-black text-white' : 'bg-carbon-layer text-carbon-text'}`}>{order.orderType}</span>
+            <h3 className="text-xl font-semibold leading-none shrink-0">#{order.orderNumber}</h3>
+            {order.orderType === "Delivery" && <Truck size={12} className={isCritical ? 'text-white' : 'text-carbon-blue'}/>}
           </div>
-          <div className={`flex items-center gap-1 px-1.5 py-0.5 border-2 border-inherit ${isCritical ? 'bg-black text-white animate-pulse' : 'bg-white text-neo-text'}`}>
+          <div className={`flex items-center gap-1 px-1.5 py-0.5 border-2 border-inherit ${isCritical ? 'bg-black text-white animate-pulse' : 'bg-white text-carbon-text'}`}>
             <Clock size={12} />
-            <span className="text-sm font-black">{minutesElapsed}د</span>
+            <span className="text-sm font-semibold">{minutesElapsed}د</span>
           </div>
         </div>
 
@@ -228,9 +228,9 @@ export default function KdsMonitorPage() {
           {!isReadyColumn && items.map((item: any) => {
             if (item.status === "Ready") return null; // Hide ready items in dense mode to save space
             return (
-              <div key={item.id} className="flex justify-between items-center text-[11px] font-bold leading-tight">
+              <div key={item.id} className="flex justify-between items-center text-[11px] font-medium leading-tight">
                 <div className="flex items-center gap-1 overflow-hidden">
-                  <span className="font-black bg-black/10 px-1 rounded-sm">{item.quantity}</span>
+                  <span className="font-semibold bg-black/10 px-1 rounded-sm">{item.quantity}</span>
                   <span className="truncate">{item.menuItemName}</span>
                 </div>
                 <div className="shrink-0 flex items-center gap-1 opacity-80">
@@ -241,15 +241,15 @@ export default function KdsMonitorPage() {
             );
           })}
           {!isReadyColumn && readyItems > 0 && (
-            <div className="text-[10px] text-center font-bold opacity-60 mt-1">
+            <div className="text-[10px] text-center font-medium opacity-60 mt-1">
               + {readyItems} أصناف جاهزة
             </div>
           )}
           
           {isReadyColumn && (
             <div className="flex flex-col items-center justify-center py-2 gap-1">
-              <CheckCircle2 size={24} className={isCritical ? 'text-white' : 'text-brand-green'} />
-              <span className="text-[10px] font-black">{totalItems} أصناف جاهزة</span>
+              <CheckCircle2 size={24} className={isCritical ? 'text-white' : 'text-carbon-success'} />
+              <span className="text-[10px] font-semibold">{totalItems} أصناف جاهزة</span>
             </div>
           )}
         </div>
@@ -258,7 +258,7 @@ export default function KdsMonitorPage() {
         {isReadyColumn && (
            <button
              onClick={() => handleOrderStatusChange(order.id.toString(), "Completed")}
-             className="w-full bg-black text-white py-2 px-1 text-xs font-black uppercase hover:bg-brand-yellow hover:text-black transition-colors"
+             className="w-full bg-black text-white py-2 px-1 text-xs font-semibold uppercase hover:bg-carbon-layer hover:text-black transition-colors"
            >
              تسليم الطلب
            </button>
@@ -268,15 +268,15 @@ export default function KdsMonitorPage() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-100px)] bg-gray-50">
+    <div className="flex flex-col h-[calc(100vh-100px)] bg-carbon-bg">
       {/* High Volume Dense Header */}
-      <header className="flex flex-col lg:flex-row items-center justify-between p-2 border-b-2 border-neo-border bg-white shrink-0 gap-2 relative z-10 shadow-[0_2px_0px_#1A1A1A]">
+      <header className="flex flex-col lg:flex-row items-center justify-between p-2 border-b-2 border-carbon-border bg-white shrink-0 gap-2 relative z-10 ">
         <div className="flex items-center justify-between w-full lg:w-auto gap-2 shrink-0">
           <div className="flex items-center gap-2">
-            <div className={`px-3 py-1.5 border-2 border-neo-border shadow-[2px_2px_0px_#1A1A1A] flex items-center gap-2 font-black text-sm uppercase ${globalStatus.color}`}>
+            <div className={`px-3 py-1.5 border border-carbon-border  flex items-center gap-2 font-semibold text-sm uppercase ${globalStatus.color}`}>
               {globalStatus.icon} {globalStatus.text}
             </div>
-            <h1 className="text-lg font-black leading-none text-neo-text hidden xl:block">KDS | Command Center</h1>
+            <h1 className="text-lg font-semibold leading-none text-carbon-text hidden xl:block">KDS | Command Center</h1>
           </div>
         </div>
 
@@ -286,7 +286,7 @@ export default function KdsMonitorPage() {
             <button
               key={type}
               onClick={() => setOrderTypeFilter(type)}
-              className={`px-4 py-1.5 text-xs font-black border-2 border-neo-border whitespace-nowrap transition-all active:scale-95 ${orderTypeFilter === type ? 'bg-brand-yellow text-neo-text shadow-[2px_2px_0px_#1A1A1A] -translate-y-0.5' : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-800'}`}
+              className={`px-4 py-1.5 text-xs font-semibold border border-carbon-border whitespace-nowrap transition-all active:scale-95 ${orderTypeFilter === type ? 'bg-carbon-layer text-carbon-text  -translate-y-0.5' : 'bg-white text-carbon-textSecondary hover:bg-carbon-layerHover hover:text-gray-800'}`}
             >
               {type}
             </button>
@@ -302,13 +302,13 @@ export default function KdsMonitorPage() {
               placeholder="بحث برقم الطلب..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white border-2 border-neo-border py-1 pr-7 pl-2 text-xs font-bold focus:outline-none shadow-[2px_2px_0px_#1A1A1A]"
+              className="w-full bg-white border border-carbon-border py-1 pr-7 pl-2 text-xs font-medium focus:outline-none "
             />
           </div>
           <select
             value={stationFilter}
             onChange={(e) => setStationFilter(e.target.value)}
-            className="w-28 bg-brand-blue text-white border-2 border-neo-border py-1 px-1 text-xs font-black cursor-pointer shadow-[2px_2px_0px_#1A1A1A]"
+            className="w-28 bg-[#edf5ff] text-[#0f62fe] text-white border border-carbon-border py-1 px-1 text-xs font-semibold cursor-pointer "
           >
             <option value="الكل">كل المحطات</option>
             {activeStations.filter(s => s !== "الكل").map(station => <option key={station} value={station}>{station}</option>)}
@@ -317,13 +317,13 @@ export default function KdsMonitorPage() {
       </header>
 
       {/* Dense Bottleneck Tracker */}
-      <div className="bg-white border-b-2 border-neo-border p-1.5 flex flex-wrap gap-2 shrink-0 items-center justify-center text-xs">
-        <span className="font-black text-gray-400 uppercase text-[10px]">الضغط:</span>
+      <div className="bg-white border-b-2 border-carbon-border p-1.5 flex flex-wrap gap-2 shrink-0 items-center justify-center text-xs">
+        <span className="font-semibold text-gray-400 uppercase text-[10px]">الضغط:</span>
         {Object.entries(stationLoads).length === 0 ? (
-          <span className="font-bold text-gray-400">لا يوجد</span>
+          <span className="font-medium text-gray-400">لا يوجد</span>
         ) : (
           Object.entries(stationLoads).sort((a,b) => b[1] - a[1]).map(([station, load]) => (
-            <div key={station} className={`flex items-center gap-1 border border-neo-border px-1.5 py-0.5 shrink-0 ${load > 5 ? 'bg-brand-red text-white font-black' : load > 2 ? 'bg-brand-orange text-white font-bold' : 'bg-gray-100 font-bold'}`}>
+            <div key={station} className={`flex items-center gap-1 border border-carbon-border px-1.5 py-0.5 shrink-0 ${load > 5 ? 'bg-carbon-error text-white font-semibold' : load > 2 ? 'bg-[#fcf4d6] text-[#b47a00] text-white font-medium' : 'bg-gray-100 font-medium'}`}>
               <span>{station}:</span>
               <span>{load}</span>
             </div>
@@ -338,7 +338,7 @@ export default function KdsMonitorPage() {
           {/* Column 1: New Orders */}
           <div className="bg-gray-200/50 border-2 border-gray-300 p-1.5 min-h-[500px] flex flex-col gap-2 relative">
             <div className="sticky top-0 z-10 bg-gray-200 border-b-2 border-gray-300 py-1 text-center shadow-sm">
-              <h2 className="font-black text-gray-700 text-xs flex items-center justify-center gap-1">
+              <h2 className="font-semibold text-carbon-textSecondary text-xs flex items-center justify-center gap-1">
                 طلبات جديدة ({newOrders.length})
               </h2>
             </div>
@@ -348,9 +348,9 @@ export default function KdsMonitorPage() {
           </div>
 
           {/* Column 2: Preparing */}
-          <div className="bg-brand-purple/10 border-2 border-brand-purple/50 p-1.5 min-h-[500px] flex flex-col gap-2 relative">
-            <div className="sticky top-0 z-10 bg-brand-purple text-white border-b-2 border-brand-purple py-1 text-center shadow-sm">
-              <h2 className="font-black text-xs flex items-center justify-center gap-1">
+          <div className="bg-[#e8daff] text-[#6929c4]/10 border-2 border-brand-purple/50 p-1.5 min-h-[500px] flex flex-col gap-2 relative">
+            <div className="sticky top-0 z-10 bg-[#e8daff] text-[#6929c4] text-white border-b-2 border-brand-purple py-1 text-center shadow-sm">
+              <h2 className="font-semibold text-xs flex items-center justify-center gap-1">
                 <Flame size={12} className="animate-pulse" /> قيد التحضير ({preparingOrders.length})
               </h2>
             </div>
@@ -360,9 +360,9 @@ export default function KdsMonitorPage() {
           </div>
 
           {/* Column 3: Ready */}
-          <div className="bg-brand-green/10 border-2 border-brand-green/50 p-1.5 min-h-[500px] flex flex-col gap-2 relative">
-            <div className="sticky top-0 z-10 bg-brand-green text-white border-b-2 border-brand-green py-1 text-center shadow-sm">
-              <h2 className="font-black text-xs flex items-center justify-center gap-1">
+          <div className="bg-[#defbe6] text-[#198038]/10 border-2 border-brand-green/50 p-1.5 min-h-[500px] flex flex-col gap-2 relative">
+            <div className="sticky top-0 z-10 bg-[#defbe6] text-[#198038] text-white border-b-2 border-brand-green py-1 text-center shadow-sm">
+              <h2 className="font-semibold text-xs flex items-center justify-center gap-1">
                 <CheckCircle2 size={12} /> جاهز ({readyOrders.length})
               </h2>
             </div>

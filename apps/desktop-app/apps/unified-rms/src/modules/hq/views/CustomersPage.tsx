@@ -65,14 +65,14 @@ export default function CustomersPage() {
     return nameMatch || phoneMatch;
   });
 
-  if (!mounted || loading) return <div className="p-20 text-center font-black text-2xl animate-pulse">جاري تحميل العملاء... 👥</div>;
+  if (!mounted || loading) return <div className="p-20 text-center font-semibold text-2xl animate-pulse">جاري تحميل العملاء... 👥</div>;
 
   return (
     <div className="space-y-4">
-      <div className={`bg-brand-cyan neo-card p-3 flex flex-row items-center justify-between shadow-[2px_2px_0px_#1A1A1A]`}>
+      <div className={`bg-[#e5f6ff] text-[#00a68f] bg-carbon-layer border border-carbon-border p-3 flex flex-row items-center justify-between `}>
         <div className="flex items-center gap-3">
           <Users size={20} />
-          <h2 className="text-lg font-black">قاعدة بيانات العملاء</h2>
+          <h2 className="text-lg font-semibold">قاعدة بيانات العملاء</h2>
         </div>
         <div className="flex gap-2 w-1/2">
           <div className="relative flex-1">
@@ -80,12 +80,12 @@ export default function CustomersPage() {
             <input
               type="text"
               placeholder="ابحث بالاسم أو الهاتف..."
-              className="neo-input w-full pr-8 text-xs py-1 h-8 border-2 border-neo-border"
+              className="w-full border border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full pr-8 text-xs py-1 h-8 border border-carbon-border"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <button onClick={() => setShowAddForm(!showAddForm)} className="neo-btn bg-white px-3 py-1 flex items-center justify-center gap-1 shadow-sm h-8">
+          <button onClick={() => setShowAddForm(!showAddForm)} className="px-4 py-2 text-sm font-medium transition-colors bg-carbon-layer text-carbon-text border border-carbon-border hover:bg-carbon-layerHover px-3 py-1 flex items-center justify-center gap-1 shadow-sm h-8">
             <Plus size={14} />
             <span className="text-xs">جديد</span>
           </button>
@@ -93,94 +93,94 @@ export default function CustomersPage() {
       </div>
 
       {showAddForm && (
-        <form onSubmit={handleAdd} className="neo-card p-4 bg-[#FFFBEB] flex flex-col gap-3 border-2 border-neo-border shadow-[2px_2px_0px_#1A1A1A]">
+        <form onSubmit={handleAdd} className="bg-carbon-layer border border-carbon-border p-4 bg-[#FFFBEB] flex flex-col gap-3 border border-carbon-border ">
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
             <div>
-              <label className="block text-[10px] font-black text-gray-700 mb-1">اسم العميل</label>
-              <input required type="text" className="neo-input w-full text-xs py-1 h-8" value={newCustomer.name} onChange={e => setNewCustomer({...newCustomer, name: e.target.value})} />
+              <label className="block text-[10px] font-semibold text-carbon-textSecondary mb-1">اسم العميل</label>
+              <input required type="text" className="w-full border border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full text-xs py-1 h-8" value={newCustomer.name} onChange={e => setNewCustomer({...newCustomer, name: e.target.value})} />
             </div>
             <div>
-              <label className="block text-[10px] font-black text-gray-700 mb-1">رقم الهاتف</label>
-              <input required type="text" className="neo-input w-full text-xs py-1 h-8" value={newCustomer.phoneNumber} onChange={e => setNewCustomer({...newCustomer, phoneNumber: e.target.value})} />
+              <label className="block text-[10px] font-semibold text-carbon-textSecondary mb-1">رقم الهاتف</label>
+              <input required type="text" className="w-full border border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full text-xs py-1 h-8" value={newCustomer.phoneNumber} onChange={e => setNewCustomer({...newCustomer, phoneNumber: e.target.value})} />
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-[10px] font-black text-gray-700 mb-1 flex items-center justify-between">
+              <label className="block text-[10px] font-semibold text-carbon-textSecondary mb-1 flex items-center justify-between">
                 <span>العنوان أو الإحداثيات</span>
                 {newCustomer.address.trim().match(/^-?\d+\.?\d*,\s*-?\d+\.?\d*$/) && (
-                  <span className="text-[9px] font-bold text-brand-green bg-green-50 px-1 rounded border border-green-200 flex items-center gap-1">
+                  <span className="text-[9px] font-medium text-carbon-success bg-green-50 px-1 rounded border border-green-200 flex items-center gap-1">
                     <MapPin size={10} /> إحداثيات ✓
                   </span>
                 )}
               </label>
               <div className="flex gap-2">
-                <input required type="text" className="neo-input flex-1 text-xs py-1 h-8" value={newCustomer.address} onChange={e => setNewCustomer({...newCustomer, address: e.target.value})} />
-                <button type="submit" className="neo-btn bg-brand-green py-1 px-4 h-8 text-xs shadow-sm">حفظ</button>
+                <input required type="text" className="w-full border border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary flex-1 text-xs py-1 h-8" value={newCustomer.address} onChange={e => setNewCustomer({...newCustomer, address: e.target.value})} />
+                <button type="submit" className="px-4 py-2 text-sm font-medium transition-colors bg-carbon-blue text-white hover:bg-carbon-blueHover py-1 px-4 h-8 text-xs shadow-sm">حفظ</button>
               </div>
             </div>
           </div>
         </form>
       )}
 
-      <div className="neo-card p-0 overflow-hidden bg-white border-4 border-neo-border shadow-[4px_4px_0px_#1A1A1A]">
+      <div className="bg-carbon-layer border border-carbon-border p-0 overflow-hidden bg-white border border-carbon-border ">
         <table className="w-full text-right border-collapse">
           <thead>
-            <tr className="bg-brand-cyan/10 border-b-2 border-neo-border text-[10px]">
-              <th className="px-2 py-1.5 font-black border-l border-neo-border">العميل</th>
-              <th className="px-2 py-1.5 font-black border-l border-neo-border w-28">الهاتف</th>
-              <th className="px-2 py-1.5 font-black border-l border-neo-border">العنوان</th>
-              <th className="px-2 py-1.5 font-black border-l border-neo-border w-32">النشاط</th>
-              <th className="px-2 py-1.5 font-black text-center w-16">إجراء</th>
+            <tr className="bg-[#e5f6ff] text-[#00a68f]/10 border-b-2 border-carbon-border text-[10px]">
+              <th className="px-2 py-1.5 font-semibold border-l border-carbon-border">العميل</th>
+              <th className="px-2 py-1.5 font-semibold border-l border-carbon-border w-28">الهاتف</th>
+              <th className="px-2 py-1.5 font-semibold border-l border-carbon-border">العنوان</th>
+              <th className="px-2 py-1.5 font-semibold border-l border-carbon-border w-32">النشاط</th>
+              <th className="px-2 py-1.5 font-semibold text-center w-16">إجراء</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-neo-border text-xs">
             {filteredCustomers.length === 0 ? (
               <tr>
-                <td colSpan={5} className="p-4 text-center font-black text-[10px] text-gray-500 bg-gray-50">لا توجد نتائج</td>
+                <td colSpan={5} className="p-4 text-center font-semibold text-[10px] text-carbon-textSecondary bg-carbon-bg">لا توجد نتائج</td>
               </tr>
             ) : (
               filteredCustomers.map((customer) => (
-                <tr key={customer.id} className="hover:bg-brand-cyan/5 transition-colors">
-                  <td className="px-2 py-1.5 border-l border-neo-border align-middle font-black">
+                <tr key={customer.id} className="hover:bg-[#e5f6ff] text-[#00a68f]/5 transition-colors">
+                  <td className="px-2 py-1.5 border-l border-carbon-border align-middle font-semibold">
                     <div className="flex items-center gap-1.5">
-                      <div className="w-5 h-5 bg-brand-pink/20 rounded border border-neo-border flex items-center justify-center text-[10px]">
+                      <div className="w-5 h-5 bg-[#fff0f7] text-[#ff7eb6]/20 rounded border border-carbon-border flex items-center justify-center text-[10px]">
                         {customer.name?.[0] || '👤'}
                       </div>
                       <span className="text-[11px]">{customer.name}</span>
                     </div>
                   </td>
-                  <td className="px-2 py-1.5 border-l border-neo-border align-middle">
-                    <div className="flex items-center gap-1 font-bold text-[10px] dir-ltr text-right">
+                  <td className="px-2 py-1.5 border-l border-carbon-border align-middle">
+                    <div className="flex items-center gap-1 font-medium text-[10px] dir-ltr text-right">
                       <Phone size={10} className="text-gray-400" />
                       <span>{customer.phoneNumber}</span>
                     </div>
                   </td>
-                  <td className="px-2 py-1.5 border-l border-neo-border align-middle">
+                  <td className="px-2 py-1.5 border-l border-carbon-border align-middle">
                     <div className="flex flex-col">
-                      <div className="flex items-center gap-1 font-bold text-[10px] truncate max-w-[200px]">
+                      <div className="flex items-center gap-1 font-medium text-[10px] truncate max-w-[200px]">
                         <MapPin size={10} className="text-gray-400 shrink-0" />
                         <span className="truncate">{customer.customerAddresses?.[0]?.addressDetails || 'لا يوجد عنوان'}</span>
                       </div>
                       {(customer.customerAddresses?.[0]?.latitude && customer.customerAddresses?.[0]?.longitude) && (
-                        <span className="text-[9px] text-brand-green font-black flex items-center gap-0.5 mt-0.5">
+                        <span className="text-[9px] text-carbon-success font-semibold flex items-center gap-0.5 mt-0.5">
                           <MapPin size={8} /> إحداثيات
                         </span>
                       )}
                     </div>
                   </td>
-                  <td className="px-2 py-1.5 border-l border-neo-border align-middle">
+                  <td className="px-2 py-1.5 border-l border-carbon-border align-middle">
                     <div className="flex flex-col gap-0.5">
-                      <div className="flex items-center gap-1 font-bold text-[9px]">
-                        <ShoppingBag size={10} className="text-brand-orange" />
+                      <div className="flex items-center gap-1 font-medium text-[9px]">
+                        <ShoppingBag size={10} className="text-carbon-warning" />
                         <span>{customer.totalOrders} طلبات</span>
                       </div>
-                      <div className="flex items-center gap-1 font-bold text-[9px]">
-                        <span className="text-brand-green text-[10px]">💰</span>
+                      <div className="flex items-center gap-1 font-medium text-[9px]">
+                        <span className="text-carbon-success text-[10px]"></span>
                         <span>{formatCurrency(customer.totalSpent)}</span>
                       </div>
                     </div>
                   </td>
                   <td className="px-1 py-1.5 align-middle text-center">
-                    <button onClick={() => handleDelete(customer.id)} className="p-1 bg-brand-red/10 text-brand-red border border-brand-red/30 shadow-sm hover:translate-y-px transition-all">
+                    <button onClick={() => handleDelete(customer.id)} className="p-1 bg-carbon-error/10 text-carbon-error border border-brand-red/30 shadow-sm hover:translate-y-px transition-all">
                       <Trash2 size={12} strokeWidth={3} />
                     </button>
                   </td>

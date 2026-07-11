@@ -171,14 +171,14 @@ export default function SupportComplaintsPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Page Banner */}
-      <div className="neo-card bg-brand-yellow p-3 flex flex-row items-center justify-between shadow-[2px_2px_0px_#1A1A1A]">
+      <div className="bg-carbon-layer border border-carbon-border bg-carbon-layer p-3 flex flex-row items-center justify-between ">
         <div className="flex items-center gap-3">
           <MessageSquare className="text-brand-purple" size={20} />
-          <h1 className="text-lg font-black text-neo-text">دعم العملاء والشكاوى</h1>
+          <h1 className="text-lg font-semibold text-carbon-text">دعم العملاء والشكاوى</h1>
         </div>
         <button 
           onClick={fetchTickets}
-          className="neo-btn bg-white text-neo-text flex items-center gap-1 text-xs font-bold px-3 py-1 shadow-sm"
+          className="px-4 py-2 text-sm font-medium transition-colors bg-carbon-layer text-carbon-text border border-carbon-border hover:bg-carbon-layerHover text-carbon-text flex items-center gap-1 text-xs font-medium px-3 py-1 shadow-sm"
         >
           <RefreshCw size={14} className={loading ? 'animate-spin' : ''} /> <span className="hidden sm:inline">تحديث</span>
         </button>
@@ -187,7 +187,7 @@ export default function SupportComplaintsPage() {
       {/* Main Container */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[700px] max-h-[85vh]">
         {/* Tickets List */}
-        <div className="lg:col-span-1 neo-card bg-neo-card p-2 flex flex-col gap-2 overflow-hidden h-full border-2 border-neo-border">
+        <div className="lg:col-span-1 bg-carbon-layer border border-carbon-border bg-bg-carbon-layer border border-carbon-border p-2 flex flex-col gap-2 overflow-hidden h-full border border-carbon-border">
           {/* Search & Filter Controls */}
           <div className="space-y-2">
             <div className="relative">
@@ -197,13 +197,13 @@ export default function SupportComplaintsPage() {
                 placeholder="ابحث..."
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                className="w-full bg-white border-2 border-neo-border pr-8 pl-2 py-1 font-bold text-xs shadow-sm outline-none"
+                className="w-full bg-white border border-carbon-border pr-8 pl-2 py-1 font-medium text-xs shadow-sm outline-none"
               />
             </div>
 
             <div className="flex gap-2">
               <div
-                className="flex-1 py-1 px-2 font-black text-[10px] flex items-center justify-center gap-1 bg-brand-red text-white neo-btn shadow-sm"
+                className="flex-1 py-1 px-2 font-semibold text-[10px] flex items-center justify-center gap-1 bg-carbon-error text-white px-4 py-2 text-sm font-medium transition-colors bg-carbon-blue text-white hover:bg-carbon-blueHover shadow-sm"
               >
                 <AlertTriangle size={12} /> شكاوى ({filteredTickets.length})
               </div>
@@ -213,11 +213,11 @@ export default function SupportComplaintsPage() {
           {/* Tickets Scroll View */}
           <div className="flex-1 overflow-y-auto space-y-3 custom-scrollbar pr-1">
             {loading && tickets.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-64 text-gray-400 font-bold animate-pulse">
+              <div className="flex flex-col items-center justify-center h-64 text-gray-400 font-medium animate-pulse">
                 جاري تحميل التذاكر...
               </div>
             ) : filteredTickets.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-64 text-gray-400 font-bold text-center p-4">
+              <div className="flex flex-col items-center justify-center h-64 text-gray-400 font-medium text-center p-4">
                 <MessageSquare size={36} className="mb-2 opacity-50" />
                 لا توجد تذاكر أو شكاوى مطابقة للبحث.
               </div>
@@ -229,36 +229,36 @@ export default function SupportComplaintsPage() {
                   <div
                     key={ticket.id}
                     onClick={() => setSelectedTicketId(ticket.id)}
-                    className={`p-2 border-2 border-neo-border transition-all cursor-pointer flex flex-col gap-1 ${
+                    className={`p-2 border border-carbon-border transition-all cursor-pointer flex flex-col gap-1 ${
                       isSelected 
-                        ? 'bg-brand-yellow/30 shadow-sm translate-x-[-1px] translate-y-[-1px]' 
-                        : 'bg-white hover:bg-gray-50 shadow-sm'
+                        ? 'bg-carbon-layer/30 shadow-sm translate-x-[-1px] translate-y-[-1px]' 
+                        : 'bg-white hover:bg-carbon-bg shadow-sm'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-1">
-                      <div className="flex items-center gap-1 font-black text-[10px] text-neo-text line-clamp-1">
+                      <div className="flex items-center gap-1 font-semibold text-[10px] text-carbon-text line-clamp-1">
                         {ticket.isComplaint ? (
-                          <span className="bg-brand-red text-white px-1 text-[9px]">⚠️</span>
+                          <span className="bg-carbon-error text-white px-1 text-[9px]"></span>
                         ) : (
-                          <span className="bg-brand-blue text-white px-1 text-[9px]">💬</span>
+                          <span className="bg-[#edf5ff] text-[#0f62fe] text-white px-1 text-[9px]">💬</span>
                         )}
                         <span className="truncate w-32">{ticket.title}</span>
                       </div>
-                      <span className={`text-[8px] font-black uppercase px-1 shrink-0 border border-neo-border ${ticket.status === 'Open' ? 'bg-brand-green text-white' : 'bg-gray-200 text-gray-600'}`}>
+                      <span className={`text-[8px] font-semibold uppercase px-1 shrink-0 border border-carbon-border ${ticket.status === 'Open' ? 'bg-[#defbe6] text-[#198038] text-white' : 'bg-gray-200 text-carbon-textSecondary'}`}>
                         {ticket.status === 'Open' ? 'مفتوح' : 'مغلق'}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1 text-[9px] font-bold text-gray-600">
+                    <div className="flex items-center gap-1 text-[9px] font-medium text-carbon-textSecondary">
                       <User size={10} className="text-brand-purple" />
                       <span className="truncate">{ticket.customerName || 'عميل'}</span>
                     </div>
 
-                    <p className="text-[9px] font-bold text-gray-500 line-clamp-1 bg-gray-50 p-1 border border-neo-border/50">
+                    <p className="text-[9px] font-medium text-carbon-textSecondary line-clamp-1 bg-carbon-bg p-1 border border-carbon-border/50">
                       {ticket.lastMessage}
                     </p>
 
-                    <div className="flex items-center justify-between text-[8px] font-bold text-gray-400 pt-1 border-t border-neo-border/10">
+                    <div className="flex items-center justify-between text-[8px] font-medium text-gray-400 pt-1 border-t border-carbon-border/10">
                       <span className="flex items-center gap-1"><Clock size={10} /> {timeStr}</span>
                       <span className="text-brand-purple">
                         {ticket.messageCount} رسالة
@@ -272,28 +272,28 @@ export default function SupportComplaintsPage() {
         </div>
 
         {/* Chat Interface */}
-        <div className="lg:col-span-3 neo-card bg-neo-card flex flex-col overflow-hidden h-full border-2 border-neo-border p-0">
+        <div className="lg:col-span-3 bg-carbon-layer border border-carbon-border bg-bg-carbon-layer border border-carbon-border flex flex-col overflow-hidden h-full border border-carbon-border p-0">
           {selectedTicketId && activeTicket ? (
             <>
               {/* Chat Header */}
-              <div className="bg-brand-purple text-white p-2 border-b-2 border-neo-border flex items-center justify-between gap-2">
+              <div className="bg-[#e8daff] text-[#6929c4] text-white p-2 border-b-2 border-carbon-border flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 overflow-hidden">
-                  <div className="w-8 h-8 bg-white/10 border-2 border-white flex items-center justify-center shrink-0 font-bold text-xs">
+                  <div className="w-8 h-8 bg-white/10 border-2 border-white flex items-center justify-center shrink-0 font-medium text-xs">
                     {activeTicket.customerName?.charAt(0) || 'ع'}
                   </div>
                   <div className="overflow-hidden">
-                    <h2 className="font-black text-sm truncate flex items-center gap-1">
+                    <h2 className="font-semibold text-sm truncate flex items-center gap-1">
                       {activeTicket.title}
                       {activeTicket.isComplaint && (
-                        <span className="bg-brand-red text-white text-[9px] px-1 font-black border border-white">
-                          شكوى ⚠️
+                        <span className="bg-carbon-error text-white text-[9px] px-1 font-semibold border border-white">
+                          شكوى 
                         </span>
                       )}
                     </h2>
-                    <p className="text-[10px] font-bold text-white/80 truncate flex items-center gap-2 mt-0.5">
+                    <p className="text-[10px] font-medium text-white/80 truncate flex items-center gap-2 mt-0.5">
                       <span>{activeTicket.customerName || 'عميل'}</span>
                       {activeTicket.telegramChatId && (
-                        <span className="bg-brand-blue/30 px-1 border border-white/20 text-[9px]">
+                        <span className="bg-[#edf5ff] text-[#0f62fe]/30 px-1 border border-white/20 text-[9px]">
                           تليجرام 🤖
                         </span>
                       )}
@@ -302,7 +302,7 @@ export default function SupportComplaintsPage() {
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className={`px-2 py-0.5 text-[10px] font-black uppercase border-2 border-white ${activeTicket.status === 'Open' ? 'bg-brand-green text-white' : 'bg-gray-600 text-white'}`}>
+                  <span className={`px-2 py-0.5 text-[10px] font-semibold uppercase border-2 border-white ${activeTicket.status === 'Open' ? 'bg-[#defbe6] text-[#198038] text-white' : 'bg-gray-600 text-white'}`}>
                     {activeTicket.status === 'Open' ? 'مفتوح' : 'مغلق'}
                   </span>
                 </div>
@@ -311,7 +311,7 @@ export default function SupportComplaintsPage() {
               {/* Messages Scroll Area */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#FFFBEB]/40 custom-scrollbar">
                 {messages.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-gray-400 font-bold">
+                  <div className="flex flex-col items-center justify-center h-full text-gray-400 font-medium">
                     لا توجد رسائل في هذه التذكرة بعد.
                   </div>
                 ) : (
@@ -320,23 +320,23 @@ export default function SupportComplaintsPage() {
                     const timeStr = new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     return (
                       <div key={msg.id} className={`flex flex-col ${isCustomer ? 'items-start' : 'items-end'}`}>
-                        <span className="text-[10px] font-black text-gray-500 mb-1 px-1">
+                        <span className="text-[10px] font-semibold text-carbon-textSecondary mb-1 px-1">
                           {isCustomer ? (activeTicket.customerName || 'العميل') : 'إدارة المطعم'} • {timeStr}
                         </span>
-                        <div className={`p-3 rounded-2xl max-w-[80%] border-2 border-neo-border shadow-[3px_3px_0px_#1A1A1A] ${
-                          isCustomer ? 'bg-white text-neo-text rounded-tr-none' : 'bg-brand-yellow text-neo-text rounded-tl-none'
+                        <div className={`p-3 rounded-sm max-w-[80%] border border-carbon-border  ${
+                          isCustomer ? 'bg-white text-carbon-text rounded-tr-none' : 'bg-carbon-layer text-carbon-text rounded-tl-none'
                         }`}>
-                          {msg.messageType === 'Text' && <p className="whitespace-pre-wrap font-bold text-sm">{msg.text}</p>}
+                          {msg.messageType === 'Text' && <p className="whitespace-pre-wrap font-medium text-sm">{msg.text}</p>}
                           {msg.messageType === 'Image' && (
                             <div>
-                              <img src={msg.attachmentUrl} alt="المرفق" className="rounded-xl border-2 border-neo-border mb-2 max-h-60 object-cover shadow-[2px_2px_0px_#1A1A1A]" />
-                              {msg.text && <p className="font-bold text-sm">{msg.text}</p>}
+                              <img src={msg.attachmentUrl} alt="المرفق" className="rounded-sm border border-carbon-border mb-2 max-h-60 object-cover " />
+                              {msg.text && <p className="font-medium text-sm">{msg.text}</p>}
                             </div>
                           )}
                           {msg.messageType === 'File' && (
-                            <a href={msg.attachmentUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-white p-2 rounded-xl border-2 border-neo-border hover:shadow-[2px_2px_0px_#1A1A1A] transition">
+                            <a href={msg.attachmentUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-white p-2 rounded-sm border border-carbon-border hover: transition">
                               <Paperclip size={20} className="text-brand-purple shrink-0" />
-                              <span className="truncate underline font-bold text-sm">{msg.attachmentName}</span>
+                              <span className="truncate underline font-medium text-sm">{msg.attachmentName}</span>
                             </a>
                           )}
                         </div>
@@ -349,24 +349,24 @@ export default function SupportComplaintsPage() {
 
               {/* Selected File Preview */}
               {selectedFile && (
-                <div className="bg-brand-cyan/20 px-4 py-2 border-t-2 border-neo-border flex items-center justify-between">
-                  <div className="flex items-center gap-2 font-bold text-xs text-neo-text">
+                <div className="bg-[#e5f6ff] text-[#00a68f]/20 px-4 py-2 border-t-2 border-carbon-border flex items-center justify-between">
+                  <div className="flex items-center gap-2 font-medium text-xs text-carbon-text">
                     <Paperclip size={16} />
                     <span>المرفق: {selectedFile.name}</span>
                   </div>
-                  <button onClick={() => setSelectedFile(null)} className="font-black text-brand-red text-xs hover:underline">إلغاء المرفق</button>
+                  <button onClick={() => setSelectedFile(null)} className="font-semibold text-carbon-error text-xs hover:underline">إلغاء المرفق</button>
                 </div>
               )}
 
               {/* Message Input Form */}
-              <div className="bg-white p-2 border-t-2 border-neo-border">
+              <div className="bg-white p-2 border-t-2 border-carbon-border">
                 <form onSubmit={handleSendMessage} className="flex items-end gap-2">
                   <input type="file" ref={fileInputRef} className="hidden" onChange={e => e.target.files && setSelectedFile(e.target.files[0])} />
 
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="p-2 text-neo-text bg-brand-yellow border-2 border-neo-border shadow-sm flex-shrink-0"
+                    className="p-2 text-carbon-text bg-carbon-layer border border-carbon-border shadow-sm flex-shrink-0"
                     title="إرفاق ملف"
                   >
                     <Paperclip size={16} />
@@ -377,25 +377,25 @@ export default function SupportComplaintsPage() {
                     onChange={e => setInputText(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(e); } }}
                     placeholder="رد سريع..."
-                    className="flex-1 max-h-24 min-h-[36px] bg-gray-50 border-2 border-neo-border px-2 py-1 text-xs font-bold shadow-sm focus:bg-white resize-none outline-none"
+                    className="flex-1 max-h-24 min-h-[36px] bg-carbon-bg border border-carbon-border px-2 py-1 text-xs font-medium shadow-sm focus:bg-white resize-none outline-none"
                     rows={1}
                   />
 
                   <button
                     type="submit"
                     disabled={sending || (!inputText.trim() && !selectedFile)}
-                    className="p-2 px-4 bg-brand-orange text-white border-2 border-neo-border shadow-sm disabled:opacity-50 flex-shrink-0 flex items-center gap-1 font-black text-xs"
+                    className="p-2 px-4 bg-[#fcf4d6] text-[#b47a00] text-white border border-carbon-border shadow-sm disabled:opacity-50 flex-shrink-0 flex items-center gap-1 font-semibold text-xs"
                   >
-                    {sending ? <span className="animate-spin text-[10px]">⏳</span> : <Send size={14} className="rotate-180" />}
+                    {sending ? <span className="animate-spin text-[10px]"></span> : <Send size={14} className="rotate-180" />}
                   </button>
                 </form>
               </div>
             </>
           ) : (
-            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-gray-400 font-bold bg-gray-50/50">
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-gray-400 font-medium bg-carbon-bg/50">
               <MessageSquare size={64} className="mb-4 text-gray-300 animate-bounce" />
-              <h3 className="text-xl font-black text-gray-600 mb-1">اختر تذكرة أو شكوى للبدء</h3>
-              <p className="text-sm text-gray-500 max-w-md">
+              <h3 className="text-xl font-semibold text-carbon-textSecondary mb-1">اختر تذكرة أو شكوى للبدء</h3>
+              <p className="text-sm text-carbon-textSecondary max-w-md">
                 قم باختيار إحدى التذاكر من القائمة الجانبية لعرض تفاصيل المحادثة والرد مباشرة على استفسارات وشكاوى عملائك.
               </p>
             </div>

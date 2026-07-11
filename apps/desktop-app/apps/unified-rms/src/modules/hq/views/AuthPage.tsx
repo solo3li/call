@@ -67,7 +67,7 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
       <div className="absolute inset-0 pointer-events-none opacity-5 bg-[linear-gradient(to_right,#1A1A1A_1px,transparent_1px),linear-gradient(to_bottom,#1A1A1A_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
 
       {/* Back to home float badge */}
-      <Link href="/" className="absolute top-6 right-6 z-20 flex items-center gap-2 px-5 py-2.5 bg-white border-3 border-[#1A1A1A] rounded-xl font-black text-[#1A1A1A] shadow-[3px_3px_0px_#1A1A1A] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#1A1A1A] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1A1A1A] transition-all text-sm">
+      <Link href="/" className="absolute top-6 right-6 z-20 flex items-center gap-2 px-5 py-2.5 bg-white border-3 border-[#1A1A1A] rounded-sm font-semibold text-[#1A1A1A]  hover:translate-y-[-2px] hover: active:translate-y-[1px] active: transition-all text-sm">
         <ArrowRight size={18} strokeWidth={3} />
         <span>الرئيسية</span>
       </Link>
@@ -88,10 +88,10 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
                 alt="OPNO Logo" 
                 className="w-24 h-24 object-contain mb-4 transform hover:scale-105 transition-transform duration-300"
               />
-              <h1 className="text-4xl font-black bg-[#FF6B35] text-white px-6 py-2 border-3 border-[#1A1A1A] rotate-1 inline-block shadow-[4px_4px_0px_#1A1A1A] rounded-xl tracking-tight">
+              <h1 className="text-4xl font-semibold bg-[#FF6B35] text-white px-6 py-2 border-3 border-[#1A1A1A] rotate-1 inline-block  rounded-sm tracking-tight">
                 أوبنو
               </h1>
-              <p className="font-bold text-gray-500 text-sm mt-5 text-center leading-relaxed">
+              <p className="font-medium text-carbon-textSecondary text-sm mt-5 text-center leading-relaxed">
                 بوابة الموظفين — التحقق عبر BoardToken
               </p>
             </div>
@@ -99,15 +99,15 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
             {/* Error Message Alert Card */}
             {error && (
               <div className="mb-4">
-                <div className="p-4 bg-[#FF1744] text-white border-3 border-[#1A1A1A] rounded-2xl font-black text-sm text-center flex items-center justify-center gap-2 shadow-[3px_3px_0px_#1A1A1A] rotate-[-1deg]">
-                  ⚠️ {error}
+                <div className="p-4 bg-[#FF1744] text-white border-3 border-[#1A1A1A] rounded-sm font-semibold text-sm text-center flex items-center justify-center gap-2  rotate-[-1deg]">
+                   {error}
                 </div>
               </div>
             )}
 
             {/* Success Animation Card */}
             {success && (
-              <div className="mb-6 p-4 bg-[#00E676] text-[#1A1A1A] border-3 border-[#1A1A1A] rounded-2xl font-black text-sm text-center flex flex-col items-center justify-center gap-2 shadow-[3px_3px_0px_#1A1A1A]">
+              <div className="mb-6 p-4 bg-[#00E676] text-[#1A1A1A] border-3 border-[#1A1A1A] rounded-sm font-semibold text-sm text-center flex flex-col items-center justify-center gap-2 ">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 size={22} strokeWidth={3} />
                   <span>تم بنجاح! جاري الانتقال...</span>
@@ -123,13 +123,13 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
               <div className="space-y-5">
                 
                 {/* Pair App Instructions Block */}
-                <div className="bg-[#FFFBEB] border-3 border-[#1A1A1A] rounded-2xl p-4 flex gap-4 items-start shadow-[3px_3px_0px_#1A1A1A]">
-                  <div className="w-12 h-12 bg-[#AA00FF]/15 border-2 border-[#AA00FF] rounded-xl flex items-center justify-center shrink-0">
+                <div className="bg-[#FFFBEB] border-3 border-[#1A1A1A] rounded-sm p-4 flex gap-4 items-start ">
+                  <div className="w-12 h-12 bg-[#AA00FF]/15 border-2 border-[#AA00FF] rounded-sm flex items-center justify-center shrink-0">
                     <Smartphone className="text-[#AA00FF]" size={24} strokeWidth={3} />
                   </div>
                   <div>
-                    <p className="font-black text-sm text-[#AA00FF]">طريقة تسجيل دخول الموظفين</p>
-                    <ol className="mt-1.5 space-y-1.5 text-xs font-black text-gray-700 list-decimal list-inside">
+                    <p className="font-semibold text-sm text-[#AA00FF]">طريقة تسجيل دخول الموظفين</p>
+                    <ol className="mt-1.5 space-y-1.5 text-xs font-semibold text-carbon-textSecondary list-decimal list-inside">
                       <li>افتح تطبيق <strong className="text-[#FF6B35] underline">BoardToken</strong> على جوالك.</li>
                       <li>أدخل الرمز المكوّن من <strong className="text-[#AA00FF]">10 خانات (حروف وأرقام)</strong>.</li>
                     </ol>
@@ -138,11 +138,11 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
 
                 {/* TOTP Input Register */}
                 <div className="space-y-2">
-                  <label className="font-black text-sm flex items-center gap-2 text-[#1A1A1A]">
+                  <label className="font-semibold text-sm flex items-center gap-2 text-[#1A1A1A]">
                     <ShieldCheck size={18} className="text-[#AA00FF]" strokeWidth={3} />
                     رمز تسجيل الدخول المؤقت
                   </label>
-                  <div className="relative flex items-center border-3 border-[#1A1A1A] rounded-xl overflow-hidden focus-within:shadow-[3px_3px_0px_#AA00FF] focus-within:translate-y-[-1px] transition-all">
+                  <div className="relative flex items-center border-3 border-[#1A1A1A] rounded-sm overflow-hidden focus-within: focus-within:translate-y-[-1px] transition-all">
                     <div className="absolute right-0 top-0 bottom-0 w-12 bg-[#AA00FF]/10 border-l-3 border-[#1A1A1A] flex items-center justify-center rounded-r-lg">
                       <KeyRound className="text-[#1A1A1A]" size={20} strokeWidth={2.5} />
                     </div>
@@ -156,10 +156,10 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
                       onChange={(e) => setTotpCode(e.target.value.replace(/[^A-Za-z0-9]/g, ''))}
                       placeholder="مثال: AB12C3D4EF"
                       autoComplete="one-time-code"
-                      className="w-full pr-16 pl-4 py-4 text-2xl tracking-[0.2em] font-black dir-ltr text-center uppercase bg-white text-[#1A1A1A] focus:outline-none placeholder-gray-300"
+                      className="w-full pr-16 pl-4 py-4 text-2xl tracking-[0.2em] font-semibold dir-ltr text-center uppercase bg-white text-[#1A1A1A] focus:outline-none placeholder-gray-300"
                     />
                   </div>
-                  <p className="text-xs font-bold text-gray-400 text-center">
+                  <p className="text-xs font-medium text-gray-400 text-center">
                     يتكون الرمز من 10 خانات من الأرقام والحروف اللاتينية الكبيرة
                   </p>
                 </div>
@@ -169,7 +169,7 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
               <button
                 type="submit"
                 disabled={loading || success}
-                className="w-full py-4 text-xl flex items-center justify-center gap-3 border-3 border-[#1A1A1A] rounded-2xl font-black hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#1A1A1A] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1A1A1A] transition-all text-white bg-[#AA00FF] shadow-[3px_3px_0px_#1A1A1A]"
+                className="w-full py-4 text-xl flex items-center justify-center gap-3 border-3 border-[#1A1A1A] rounded-sm font-semibold hover:translate-y-[-2px] hover: active:translate-y-[1px] active: transition-all text-white bg-[#AA00FF] "
               >
                 {loading ? (
                   <span>جاري التحقق...</span>
