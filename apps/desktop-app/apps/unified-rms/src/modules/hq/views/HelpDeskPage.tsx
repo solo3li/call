@@ -360,7 +360,7 @@ export default function HelpDeskPage() {
  </div>
  )}
 
- <div className={`relative group p-3 rounded-none-none max-w-[85%] border-carbon-border ${isMe ? 'bg-carbon-blue text-carbon-text' : 'bg-carbon-layer text-carbon-text'}`}>
+ <div className={`relative group p-3 rounded-none max-w-[85%] border-carbon-border ${isMe ? 'bg-carbon-blue text-carbon-text' : 'bg-carbon-layer text-carbon-text'}`}>
  {msg.messageType === 'Text' && <span className="whitespace-pre-wrap font-medium">{msg.text}</span>}
  {msg.messageType === 'Image' && (
  <div>
@@ -410,7 +410,7 @@ export default function HelpDeskPage() {
  </div>
  </div>
  
- <div className="bg-carbon-bg rounded-none-none flex flex-col flex-1 overflow-hidden border-carbon-border">
+ <div className="bg-carbon-bg rounded-none flex flex-col flex-1 overflow-hidden border-carbon-border">
  {/* LOBBY VIEW */}
  {activeView === 'lobby' && (
  <>
@@ -491,7 +491,7 @@ export default function HelpDeskPage() {
  value={newTitle}
  onChange={e => setNewTitle(e.target.value)}
  placeholder="e.g. Kitchen KDS Printer Not Syncing"
- className="bg-carbon-bg border-carbon-border rounded-none-none px-3 py-2 text-sm font-medium outline-none focus: transition-all"
+ className="bg-carbon-bg border-carbon-border rounded-none px-3 py-2 text-sm font-medium outline-none focus: transition-all"
  />
  </div>
 
@@ -502,7 +502,7 @@ export default function HelpDeskPage() {
  <select
  value={newCategory}
  onChange={e => setNewCategory(e.target.value)}
- className="bg-carbon-bg border-carbon-border rounded-none-none px-3 py-2 text-sm font-medium outline-none focus: transition-all"
+ className="bg-carbon-bg border-carbon-border rounded-none px-3 py-2 text-sm font-medium outline-none focus: transition-all"
  >
  <option value="General">General Inquiry</option>
  <option value="Technical">Technical Support</option>
@@ -519,7 +519,7 @@ export default function HelpDeskPage() {
  <select
  value={newPriority}
  onChange={e => setNewPriority(e.target.value)}
- className="bg-carbon-bg border-carbon-border rounded-none-none px-3 py-2 text-sm font-medium outline-none focus: transition-all"
+ className="bg-carbon-bg border-carbon-border rounded-none px-3 py-2 text-sm font-medium outline-none focus: transition-all"
  >
  <option value="Low">Low</option>
  <option value="Medium">Medium</option>
@@ -534,7 +534,7 @@ export default function HelpDeskPage() {
  value={newInitialMsg}
  onChange={e => setNewInitialMsg(e.target.value)}
  placeholder="Describe the issue in detail to help our technical team assist you faster..."
- className="bg-carbon-bg border-carbon-border rounded-none-none px-3 py-2 text-sm font-medium outline-none focus: transition-all flex-1 resize-none min-h-[120px]"
+ className="bg-carbon-bg border-carbon-border rounded-none px-3 py-2 text-sm font-medium outline-none focus: transition-all flex-1 resize-none min-h-[120px]"
  />
  </div>
 
@@ -542,14 +542,14 @@ export default function HelpDeskPage() {
  <button
  type="button"
  onClick={() => setActiveView('lobby')}
- className="px-4 py-2 bg-carbon-bg text-carbon-text font-semibold text-xs uppercase rounded-none-none border-carbon-border hover: transition-all"
+ className="px-4 py-2 bg-carbon-bg text-carbon-text font-semibold text-xs uppercase rounded-none border-carbon-border hover: transition-all"
  >
  Cancel
  </button>
  <button
  type="submit"
  disabled={isCreating}
- className="px-6 py-2 bg-carbon-layer border-b border-carbon-border text-carbon-text font-semibold text-xs uppercase rounded-none-none border-carbon-border hover: disabled:opacity-50 transition-all flex items-center gap-1"
+ className="px-6 py-2 bg-carbon-layer border-b border-carbon-border text-carbon-text font-semibold text-xs uppercase rounded-none border-carbon-border hover: disabled:opacity-50 transition-all flex items-center gap-1"
  >
  {isCreating ? 'Creating...' : 'Submit Ticket'}
  </button>
@@ -580,7 +580,7 @@ export default function HelpDeskPage() {
  <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
  {!ticketId ? (
  <div className="flex-1 flex items-center justify-center">
- <div className="w-10 h-10 border-carbon-border-b-[#FF6B35] rounded-none-none animate-spin"></div>
+ <div className="w-10 h-10 border-carbon-border-b-[#FF6B35] rounded-none animate-spin"></div>
  </div>
  ) : (
  messages.map(renderMessage)
@@ -610,7 +610,7 @@ export default function HelpDeskPage() {
  {audioBlob && (
  <div className="bg-carbon-layer border-b border-carbon-border px-4 py-2 border-t border-carbon-border flex justify-between items-center overflow-hidden">
  <div className="flex items-center gap-2">
- <div className="bg-[#1A1A1A] text-white p-1 rounded-none-none"><Mic size={16} /></div>
+ <div className="bg-[#1A1A1A] text-white p-1 rounded-none"><Mic size={16} /></div>
  <audio src={URL.createObjectURL(audioBlob)} controls className="h-8 w-48" />
  </div>
  <button onClick={clearMedia} className="p-1 hover:bg-[#1A1A1A]/10 rounded-none transition"><X size={16} strokeWidth={3}/></button>

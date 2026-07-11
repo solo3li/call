@@ -522,15 +522,15 @@ function DeliveryZoneManager({ branchId }: { branchId: string }) {
  )}
 
  {loading && (
- <div className="text-center py-6 text-sm font-semibold text-gray-400 animate-pulse">
+ <div className="text-center py-6 text-sm font-semibold text-carbon-textSecondary animate-pulse">
  جاري التحميل...
  </div>
  )}
 
  {!loading && filteredZones.length === 0 && (
  <div className="flex flex-col items-center justify-center py-10 gap-3 border-solid border-carbon-border bg-carbon-layer/50">
- <MapPin size={32} className="text-gray-300" />
- <p className="text-sm font-semibold text-gray-400">لا توجد مناطق توصيل مسجلة لهذا الفرع</p>
+ <MapPin size={32} className="text-carbon-textSecondary" />
+ <p className="text-sm font-semibold text-carbon-textSecondary">لا توجد مناطق توصيل مسجلة لهذا الفرع</p>
  </div>
  )}
 
@@ -553,7 +553,7 @@ function DeliveryZoneManager({ branchId }: { branchId: string }) {
  <span className="flex-1 font-semibold text-sm text-carbon-text truncate">{z.name}</span>
 
  {/* Coordinates pill */}
- <span className={`hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold w-24 justify-center shrink-0 ${z.coordinates ? 'text-carbon-blue bg-carbon-blue/10 text-carbon-blue/10 border-brand-blue/30 px-2 py-0.5 rounded-full' : 'text-gray-300'}`}>
+ <span className={`hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold w-24 justify-center shrink-0 ${z.coordinates ? 'text-carbon-blue bg-carbon-blue/10 text-carbon-blue/10 border-brand-blue/30 px-2 py-0.5 rounded-full' : 'text-carbon-textSecondary'}`}>
  {z.coordinates ? <>🗺️ {getCoordCount(z.coordinates)} نقطة</> : '—'}
  </span>
 
@@ -737,364 +737,453 @@ export function KitchenStationsPage() {
 // --- MENU PAGE ---
 
 export function MenuPage() {
- const formatCurrency = useFormatCurrency();
- const [apiItems, setApiItems] = useState<MenuItem[]>([]);
- const [apiCategories, setApiCategories] = useState<MenuCategory[]>([]);
- const [branches, setBranches] = useState<Branch[]>([]);
- const [stations, setStations] = useState<KitchenStation[]>([]);
- const [activeCategory, setActiveCategory] = useState<number | "الكل">("الكل");
- const [loading, setLoading] = useState(true);
- const [showAddForm, setShowAddForm] = useState(false);
- const [showCatForm, setShowCatForm] = useState(false);
- const [newItem, setNewItem] = useState({ name: "", description: "", price: 0, categoryId: 0, branchId: "", imageUrl: "", kitchenStationId: 0 });
- const [newCat, setNewCat] = useState({ name: "", icon: "", imageUrl: "" });
- const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
- const [editingCat, setEditingCat] = useState<MenuCategory | null>(null);
- const [catUploading, setCatUploading] = useState(false);
- const [itemUploading, setItemUploading] = useState(false);
+  const formatCurrency = useFormatCurrency();
+  const [apiItems, setApiItems] = useState<MenuItem[]>([]);
+  const [apiCategories, setApiCategories] = useState<MenuCategory[]>([]);
+  const [branches, setBranches] = useState<Branch[]>([]);
+  const [stations, setStations] = useState<KitchenStation[]>([]);
+  const [activeCategory, setActiveCategory] = useState<number | "الكل">("الكل");
+  const [loading, setLoading] = useState(true);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showCatForm, setShowCatForm] = useState(false);
+  const [newItem, setNewItem] = useState({ name: "", description: "", price: 0, categoryId: 0, branchId: "", imageUrl: "", kitchenStationId: 0 });
+  const [newCat, setNewCat] = useState({ name: "", icon: "", imageUrl: "" });
+  const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
+  const [editingCat, setEditingCat] = useState<MenuCategory | null>(null);
+  const [catUploading, setCatUploading] = useState(false);
+  const [itemUploading, setItemUploading] = useState(false);
 
- const handleCatImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
- const file = e.target.files?.[0];
- if (!file) return;
- setCatUploading(true);
- try {
- const res = await menuApi.uploadImage(file);
- if (editingCat) {
- setEditingCat(prev => prev ? { ...prev, imageUrl: res.data.url } : null);
- } else {
- setNewCat(prev => ({ ...prev, imageUrl: res.data.url }));
- }
- } catch (err) {
- alert("فشل رفع الصورة. يرجى المحاولة مرة أخرى.");
- console.error(err);
- } finally {
- setCatUploading(false);
- }
- };
+  const handleCatImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setCatUploading(true);
+    try {
+      const res = await menuApi.uploadImage(file);
+      if (editingCat) {
+        setEditingCat(prev => prev ? { ...prev, imageUrl: res.data.url } : null);
+      } else {
+        setNewCat(prev => ({ ...prev, imageUrl: res.data.url }));
+      }
+    } catch (err) {
+      alert("فشل رفع الصورة. يرجى المحاولة مرة أخرى.");
+    } finally {
+      setCatUploading(false);
+    }
+  };
 
- const handleItemImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
- const file = e.target.files?.[0];
- if (!file) return;
- setItemUploading(true);
- try {
- const res = await menuApi.uploadImage(file);
- if (editingItem) {
- setEditingItem(prev => prev ? { ...prev, imageUrl: res.data.url } : null);
- } else {
- setNewItem(prev => ({ ...prev, imageUrl: res.data.url }));
- }
- } catch (err) {
- alert("فشل رفع الصورة. يرجى المحاولة مرة أخرى.");
- console.error(err);
- } finally {
- setItemUploading(false);
- }
- };
+  const handleItemImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setItemUploading(true);
+    try {
+      const res = await menuApi.uploadImage(file);
+      if (editingItem) {
+        setEditingItem(prev => prev ? { ...prev, imageUrl: res.data.url } : null);
+      } else {
+        setNewItem(prev => ({ ...prev, imageUrl: res.data.url }));
+      }
+    } catch (err) {
+      alert("فشل رفع الصورة. يرجى المحاولة مرة أخرى.");
+    } finally {
+      setItemUploading(false);
+    }
+  };
 
- const fetchData = async () => {
- try {
- setLoading(true);
- const [itemsRes, categoriesRes, branchesRes, stationsRes] = await Promise.all([
- menuApi.getItems().catch(() => ({ data: [] })),
- menuApi.getCategories().catch(() => ({ data: [] })),
- branchesApi.getAll().catch(() => ({ data: [] })),
- kitchenStationsApi.getAll().catch(() => ({ data: [] }))
- ]);
- setApiItems(itemsRes.data || []);
- setApiCategories(categoriesRes.data || []);
- setBranches(branchesRes.data || []);
- setStations(stationsRes.data || []);
- } catch (err) {
- console.error(err);
- } finally {
- setLoading(false);
- }
- };
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const [itemsRes, categoriesRes, branchesRes, stationsRes] = await Promise.all([
+        menuApi.getItems().catch(() => ({ data: [] })),
+        menuApi.getCategories().catch(() => ({ data: [] })),
+        branchesApi.getAll().catch(() => ({ data: [] })),
+        kitchenStationsApi.getAll().catch(() => ({ data: [] }))
+      ]);
+      setApiItems(itemsRes.data || []);
+      setApiCategories(categoriesRes.data || []);
+      setBranches(branchesRes.data || []);
+      setStations(stationsRes.data || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
- useEffect(() => {
- fetchData();
- }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
- const handleAddItem = async (e: React.FormEvent) => {
- e.preventDefault();
- const data = editingItem || newItem;
- if (data.categoryId === 0) {
- alert("يرجى اختيار الفئة");
- return;
- }
- try {
- if (editingItem) {
- await menuApi.updateItem(editingItem.id, editingItem);
- setEditingItem(null);
- } else {
- await menuApi.createItem({
- ...newItem,
- branchId: newItem.branchId || null,
- kitchenStationId: newItem.kitchenStationId || null
- });
- setShowAddForm(false);
- setNewItem({ name: "", description: "", price: 0, categoryId: 0, branchId: "", imageUrl: "", kitchenStationId: 0 });
- }
- fetchData();
- } catch (err) {
- alert("فشل العملية. يرجى المحاولة مرة أخرى.");
- }
- };
+  const handleAddItem = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const data = editingItem || newItem;
+    if (data.categoryId === 0) {
+      alert("يرجى اختيار الفئة");
+      return;
+    }
+    try {
+      if (editingItem) {
+        await menuApi.updateItem(editingItem.id, editingItem);
+        setEditingItem(null);
+      } else {
+        await menuApi.createItem({
+          ...newItem,
+          branchId: newItem.branchId || null,
+          kitchenStationId: newItem.kitchenStationId || null
+        });
+        setShowAddForm(false);
+        setNewItem({ name: "", description: "", price: 0, categoryId: 0, branchId: "", imageUrl: "", kitchenStationId: 0 });
+      }
+      fetchData();
+    } catch (err) {
+      alert("فشل العملية. يرجى المحاولة مرة أخرى.");
+    }
+  };
 
- const handleAddCategory = async (e: React.FormEvent) => {
- e.preventDefault();
- try {
- if (editingCat) {
- await menuApi.updateCategory(editingCat.id, editingCat);
- setEditingCat(null);
- } else {
- await menuApi.createCategory(newCat);
- setShowCatForm(false);
- setNewCat({ name: "", icon: "", imageUrl: "" });
- }
- fetchData();
- } catch (err) {
- alert("فشل العملية.");
- }
- };
+  const handleAddCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (editingCat) {
+        await menuApi.updateCategory(editingCat.id, editingCat);
+        setEditingCat(null);
+      } else {
+        await menuApi.createCategory(newCat);
+        setShowCatForm(false);
+        setNewCat({ name: "", icon: "", imageUrl: "" });
+      }
+      fetchData();
+    } catch (err) {
+      alert("فشل العملية.");
+    }
+  };
 
- const handleDeleteItem = async (id: number) => {
- if (confirm("هل أنت متأكد من حذف هذا الصنف؟")) {
- try {
- await menuApi.deleteItem(id);
- fetchData();
- } catch (err) {
- alert("فشل الحذف. يرجى المحاولة مرة أخرى.");
- }
- }
- };
+  const handleDeleteItem = async (id: number) => {
+    if (confirm("هل أنت متأكد من حذف هذا الصنف؟")) {
+      try {
+        await menuApi.deleteItem(id);
+        fetchData();
+      } catch (err) {
+        alert("فشل الحذف. يرجى المحاولة مرة أخرى.");
+      }
+    }
+  };
 
- const handleDeleteCategory = async (id: number) => {
- if (confirm("حذف الفئة سيؤدي لحذف جميع أصنافها. هل أنت متأكد؟")) {
- try {
- await menuApi.deleteCategory(id);
- fetchData();
- } catch (err) {
- alert("فشل حذف الفئة.");
- }
- }
- };
+  const handleDeleteCategory = async (id: number) => {
+    if (confirm("حذف الفئة سيؤدي لحذف جميع أصنافها. هل أنت متأكد؟")) {
+      try {
+        await menuApi.deleteCategory(id);
+        fetchData();
+      } catch (err) {
+        alert("فشل حذف الفئة.");
+      }
+    }
+  };
 
- const filteredMenu = activeCategory === "الكل" ? apiItems : apiItems.filter((item) => item.categoryId === activeCategory);
+  const filteredMenu = activeCategory === "الكل" ? apiItems : apiItems.filter((item) => item.categoryId === activeCategory);
 
- if (loading) return <div className="p-20 text-center font-semibold text-2xl animate-pulse">جاري تحميل القائمة... ☕</div>;
+  if (loading) return <div className="p-20 text-center font-semibold text-2xl animate-pulse">جاري تحميل القائمة... ☕</div>;
 
- return (
- <div className="space-y-6">
- <div className={`bg-carbon-success/10 text-carbon-success bg-carbon-layer border-carbon-border p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between`}>
- <div className="flex items-center gap-4">
- <div className="bg-carbon-layer border-carbon-border bg-carbon-layer p-3">
- <UtensilsCrossed size={28} />
- </div>
- <div>
- <h2 className="text-2xl font-semibold">قائمة الطعام</h2>
- <p className="font-medium text-carbon-text/70">إدارة الأصناف، الأسعار، التوفر، وربحية كل منتج</p>
- </div>
- </div>
- <div className="flex gap-2">
- <button onClick={() => setShowCatForm(!showCatForm)} className="px-5 py-2.5 flex items-center justify-center gap-2">
- <Tag size={18} />
- <span>إضافة فئة</span>
- </button>
- <button onClick={() => setShowAddForm(!showAddForm)} className="px-5 py-2.5 flex items-center justify-center gap-2">
- <Plus size={18} />
- <span>إضافة صنف</span>
- </button>
- </div>
- </div>
+  return (
+    <div className="space-y-6 max-w-7xl">
+      {/* Header */}
+      <div className="bg-carbon-layer border-b border-carbon-border p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <Utensils size={24} className="text-carbon-text" />
+          <div>
+            <h2 className="text-xl font-semibold text-carbon-text">إدارة قائمة الطعام (المنيو)</h2>
+            <p className="text-sm text-carbon-textSecondary mt-1">تعديل التصنيفات والأصناف، الصور، والأسعار</p>
+          </div>
+        </div>
+        <div className="flex gap-3">
+          <button 
+            onClick={() => {
+              setShowCatForm(!showCatForm);
+              if (showCatForm) setEditingCat(null);
+            }} 
+            className={`px-6 py-2.5 text-sm font-medium transition-colors border border-carbon-border flex items-center gap-2 ${
+              showCatForm || editingCat ? 'bg-carbon-layerHover text-carbon-text' : 'bg-transparent text-carbon-text hover:bg-carbon-layerHover'
+            }`}
+          >
+            {showCatForm || editingCat ? <X size={16} /> : <Plus size={16} />}
+            <span>{showCatForm || editingCat ? 'إلغاء التصنيف' : 'تصنيف جديد'}</span>
+          </button>
+          <button 
+            onClick={() => {
+              setShowAddForm(!showAddForm);
+              if (showAddForm) setEditingItem(null);
+            }} 
+            className="bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors px-6 py-2.5 text-sm font-medium flex items-center gap-2"
+          >
+            {showAddForm || editingItem ? <X size={16} /> : <Plus size={16} />}
+            <span>{showAddForm || editingItem ? 'إلغاء الإضافة' : 'صنف جديد'}</span>
+          </button>
+        </div>
+      </div>
 
- {(showCatForm || editingCat) && (
- <form onSubmit={handleAddCategory} className="bg-carbon-layer border-carbon-border p-5 bg-carbon-layer/10 flex flex-col gap-4 animate-fade-in border-carbon-warning">
- <div className="flex justify-between items-center">
- <h3 className="font-semibold text-lg">{editingCat ? "تعديل الفئة" : "إضافة فئة جديدة"}</h3>
- {editingCat && <button type="button" onClick={() => setEditingCat(null)} className="p-1 hover:bg-black/5 rounded-full"><X size={20} /></button>}
- </div>
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
- <input required type="text" placeholder="اسم الفئة (مثلاً: برجر، بيتزا)" className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary" 
- value={editingCat ? editingCat.name : newCat.name} 
- onChange={e => editingCat ? setEditingCat({...editingCat, name: e.target.value}) : setNewCat({...newCat, name: e.target.value})} />
- <input required type="text" placeholder="أيقونة الفئة (ايموجي)" className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary text-center text-2xl" 
- value={editingCat ? editingCat.icon : newCat.icon} 
- onChange={e => editingCat ? setEditingCat({...editingCat, icon: e.target.value}) : setNewCat({...newCat, icon: e.target.value})} />
- <div className="flex flex-col gap-1">
- {(editingCat ? editingCat.imageUrl : newCat.imageUrl) && (
- <div className="w-20 h-20 rounded-sm border-carbon-border overflow-hidden mb-2 ">
- <img src={getImageUrl(editingCat ? editingCat.imageUrl : newCat.imageUrl)} className="w-full h-full object-cover" alt="Preview" />
- </div>
- )}
- <input type="text" placeholder="رابط صورة الفئة" className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary" 
- value={editingCat ? (editingCat.imageUrl || '') : newCat.imageUrl} 
- onChange={e => editingCat ? setEditingCat({...editingCat, imageUrl: e.target.value}) : setNewCat({...newCat, imageUrl: e.target.value})} />
- <div className="flex items-center gap-2 mt-1">
- <span className="text-xs text-carbon-textSecondary font-medium">أو تحميل:</span>
- <input type="file" accept="image/*" onChange={handleCatImageUpload} className="text-xs file:mr-2 file:py-1 file:px-2 file:rounded-sm file:border file:border-carbon-border file:bg-carbon-layer file:text-xs file:font-semibold file: cursor-pointer" />
- {catUploading && <span className="text-xs text-[#f1c21b] font-medium animate-pulse">جاري الرفع...</span>}
- </div>
- </div>
- </div>
- <button type="submit" disabled={catUploading} className="py-3 mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
- {catUploading ? "جاري رفع الصورة..." : (editingCat ? "تحديث الفئة" : "حفظ الفئة")}
- </button>
- </form>
- )}
+      {/* Category Editor */}
+      {(showCatForm || editingCat) && (
+        <form onSubmit={handleAddCategory} className="bg-carbon-layer border border-carbon-border p-6 shadow-sm animate-fade-in space-y-6">
+          <h3 className="text-base font-semibold text-carbon-text border-b border-carbon-border pb-3 mb-4 flex items-center gap-2">
+            <List size={18} className="text-carbon-blue" />
+            {editingCat?.id ? "تعديل تصنيف" : "تصنيف جديد"}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="space-y-2">
+              <label className="block text-sm text-carbon-textSecondary">اسم التصنيف *</label>
+              <input 
+                required 
+                type="text" 
+                value={editingCat ? editingCat.name : newCat.name} 
+                onChange={e => editingCat ? setEditingCat({...editingCat, name: e.target.value}) : setNewCat({...newCat, name: e.target.value})} 
+                className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-sm text-carbon-textSecondary">الأيقونة (Emoji)</label>
+              <input 
+                type="text" 
+                value={editingCat ? editingCat.icon : newCat.icon} 
+                onChange={e => editingCat ? setEditingCat({...editingCat, icon: e.target.value}) : setNewCat({...newCat, icon: e.target.value})} 
+                className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors text-center"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-sm text-carbon-textSecondary">صورة الفئة (اختياري)</label>
+              <input 
+                type="text" 
+                value={editingCat ? (editingCat.imageUrl || "") : newCat.imageUrl} 
+                onChange={e => editingCat ? setEditingCat({...editingCat, imageUrl: e.target.value}) : setNewCat({...newCat, imageUrl: e.target.value})} 
+                className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors text-left dir-ltr"
+              />
+            </div>
+          </div>
+          <div className="pt-4 border-t border-carbon-border flex justify-end">
+            <button type="submit" disabled={catUploading} className="bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors px-6 py-2 text-sm font-medium flex items-center gap-2">
+              <Check size={16} /> {catUploading ? 'جاري الرفع...' : 'حفظ التصنيف'}
+            </button>
+          </div>
+        </form>
+      )}
 
- {(showAddForm || editingItem) && (
- <form onSubmit={handleAddItem} className="bg-carbon-layer border-carbon-border p-5 bg-carbon-layerHover flex flex-col gap-4 animate-fade-in">
- <div className="flex justify-between items-center">
- <h3 className="font-semibold text-lg">{editingItem ? "تعديل الصنف" : "إضافة صنف جديد"}</h3>
- {editingItem && <button type="button" onClick={() => setEditingItem(null)} className="p-1 hover:bg-black/5 rounded-full"><X size={20} /></button>}
- </div>
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
- <input required type="text" placeholder="اسم الصنف" className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary" 
- value={editingItem ? editingItem.name : newItem.name} 
- onChange={e => editingItem ? setEditingItem({...editingItem, name: e.target.value}) : setNewItem({...newItem, name: e.target.value})} />
- <input type="text" placeholder="الوصف" className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary" 
- value={editingItem ? (editingItem.description || '') : newItem.description} 
- onChange={e => editingItem ? setEditingItem({...editingItem, description: e.target.value}) : setNewItem({...newItem, description: e.target.value})} />
- <input required type="number" placeholder="السعر" className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary" 
- value={editingItem ? editingItem.price : (newItem.price || "")} 
- onChange={e => editingItem ? setEditingItem({...editingItem, price: parseFloat(e.target.value) || 0}) : setNewItem({...newItem, price: parseFloat(e.target.value) || 0})} />
- <div className="flex flex-col gap-1">
- {(editingItem ? editingItem.imageUrl : newItem.imageUrl) && (
- <div className="w-20 h-20 rounded-sm border-carbon-border overflow-hidden mb-2 ">
- <img src={getImageUrl(editingItem ? editingItem.imageUrl : newItem.imageUrl)} className="w-full h-full object-cover" alt="Preview" />
- </div>
- )}
- <input type="text" placeholder="رابط الصورة" className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary" 
- value={editingItem ? (editingItem.imageUrl || '') : newItem.imageUrl} 
- onChange={e => editingItem ? setEditingItem({...editingItem, imageUrl: e.target.value}) : setNewItem({...newItem, imageUrl: e.target.value})} />
- <div className="flex items-center gap-2 mt-1">
- <span className="text-xs text-carbon-textSecondary font-medium">أو تحميل:</span>
- <input type="file" accept="image/*" onChange={handleItemImageUpload} className="text-xs file:mr-2 file:py-1 file:px-2 file:rounded-sm file:border file:border-carbon-border file:bg-carbon-layer file:text-xs file:font-semibold file: cursor-pointer" />
- {itemUploading && <span className="text-xs text-[#f1c21b] font-medium animate-pulse">جاري الرفع...</span>}
- </div>
- </div>
- <select required className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary" 
- value={editingItem ? editingItem.categoryId : newItem.categoryId} 
- onChange={e => editingItem ? setEditingItem({...editingItem, categoryId: parseInt(e.target.value)}) : setNewItem({...newItem, categoryId: parseInt(e.target.value)})}>
- <option value="0">اختر الفئة</option>
- {apiCategories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
- </select>
- <select className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary" 
- value={editingItem ? (editingItem.branchId || '') : newItem.branchId} 
- onChange={e => editingItem ? setEditingItem({...editingItem, branchId: e.target.value}) : setNewItem({...newItem, branchId: e.target.value})}>
- <option value="">كل الفروع (عام)</option>
- {branches.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
- </select>
- <select className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary" 
- value={editingItem ? (editingItem.kitchenStationId || 0) : newItem.kitchenStationId} 
- onChange={e => editingItem ? setEditingItem({...editingItem, kitchenStationId: parseInt(e.target.value)}) : setNewItem({...newItem, kitchenStationId: parseInt(e.target.value)})}>
- <option value="0">بدون محطة (عام)</option>
- {stations.map(s => <option key={s.id} value={s.id}>{s.name} {s.branchId ? `(${branches.find(b => b.id === s.branchId)?.name})` : ''}</option>)}
- </select>
- </div>
- <button type="submit" disabled={itemUploading} className="py-3 mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
- {itemUploading ? "جاري رفع الصورة..." : (editingItem ? "تحديث الصنف" : "حفظ الصنف")}
- </button>
- </form>
- )}
+      {/* Item Editor */}
+      {(showAddForm || editingItem) && (
+        <form onSubmit={handleAddItem} className="bg-carbon-layer border border-carbon-border p-6 shadow-sm animate-fade-in space-y-6">
+          <h3 className="text-base font-semibold text-carbon-text border-b border-carbon-border pb-3 mb-4 flex items-center gap-2">
+            <Utensils size={18} className="text-carbon-blue" />
+            {editingItem?.id ? "تعديل صنف" : "إضافة صنف جديد"}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="space-y-2 lg:col-span-2">
+              <label className="block text-sm text-carbon-textSecondary">اسم الصنف *</label>
+              <input 
+                required 
+                type="text" 
+                value={editingItem ? editingItem.name : newItem.name} 
+                onChange={e => editingItem ? setEditingItem({...editingItem, name: e.target.value}) : setNewItem({...newItem, name: e.target.value})} 
+                className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-sm text-carbon-textSecondary">السعر *</label>
+              <input 
+                required 
+                type="number" 
+                step="0.01"
+                value={editingItem ? editingItem.price : newItem.price} 
+                onChange={e => editingItem ? setEditingItem({...editingItem, price: parseFloat(e.target.value) || 0}) : setNewItem({...newItem, price: parseFloat(e.target.value) || 0})} 
+                className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors"
+              />
+            </div>
+            <div className="space-y-2 lg:col-span-2">
+              <label className="block text-sm text-carbon-textSecondary">الوصف</label>
+              <textarea 
+                value={editingItem ? editingItem.description : newItem.description} 
+                onChange={e => editingItem ? setEditingItem({...editingItem, description: e.target.value}) : setNewItem({...newItem, description: e.target.value})} 
+                className="w-full bg-carbon-bg border border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors custom-scrollbar h-24 resize-none"
+              />
+            </div>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="block text-sm text-carbon-textSecondary">التصنيف *</label>
+                <select 
+                  required 
+                  value={editingItem ? editingItem.categoryId : newItem.categoryId} 
+                  onChange={e => editingItem ? setEditingItem({...editingItem, categoryId: parseInt(e.target.value) || 0}) : setNewItem({...newItem, categoryId: parseInt(e.target.value) || 0})} 
+                  className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors appearance-none"
+                >
+                  <option value="0">اختر الفئة</option>
+                  {apiCategories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm text-carbon-textSecondary">الفرع (اختياري)</label>
+                <select 
+                  value={editingItem ? (editingItem.branchId || "") : newItem.branchId} 
+                  onChange={e => editingItem ? setEditingItem({...editingItem, branchId: e.target.value || null}) : setNewItem({...newItem, branchId: e.target.value})} 
+                  className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors appearance-none"
+                >
+                  <option value="">كل الفروع (عام)</option>
+                  {branches.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                </select>
+              </div>
+            </div>
+            <div className="space-y-2 lg:col-span-3">
+              <label className="block text-sm text-carbon-textSecondary">مسار الصورة (اختياري)</label>
+              <input 
+                type="text" 
+                value={editingItem ? (editingItem.imageUrl || "") : newItem.imageUrl} 
+                onChange={e => editingItem ? setEditingItem({...editingItem, imageUrl: e.target.value}) : setNewItem({...newItem, imageUrl: e.target.value})} 
+                placeholder="/images/items/burger.jpg"
+                className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors dir-ltr text-left"
+              />
+            </div>
+          </div>
+          <div className="pt-4 border-t border-carbon-border flex justify-end gap-3">
+            <button 
+              type="button" 
+              onClick={() => {
+                  setShowAddForm(false);
+                  setEditingItem(null);
+              }} 
+              className="px-6 py-2 bg-transparent text-carbon-text hover:bg-carbon-layerHover border border-carbon-border transition-colors text-sm font-medium"
+            >
+              إلغاء
+            </button>
+            <button 
+              type="submit" 
+              disabled={itemUploading}
+              className="bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors px-6 py-2 text-sm font-medium flex items-center gap-2"
+            >
+              <Check size={16} /> {itemUploading ? 'جاري الرفع...' : 'حفظ الصنف'}
+            </button>
+          </div>
+        </form>
+      )}
 
- <div className="bg-carbon-layer border-carbon-border p-4 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between bg-carbon-layer">
- <div className="flex flex-wrap gap-2">
- <button
- onClick={() => setActiveCategory("الكل")}
- className={`px-4 py-2 text-sm font-medium transition-colors border border-carbon-border ${activeCategory === "الكل" ? "bg-carbon-blue text-white" : "bg-carbon-layer text-carbon-text hover:bg-carbon-layerHover"}`}>
- الكل
- </button>
- {apiCategories.map((cat) => (
- <div key={cat.id} className="relative group">
- <button
- onClick={() => setActiveCategory(cat.id)}
- className={`px-4 py-2 text-sm font-medium transition-colors border border-carbon-border flex items-center gap-2 ${activeCategory === cat.id ? "bg-carbon-blue text-white" : "bg-carbon-layer text-carbon-text hover:bg-carbon-layerHover"}`}>
- {cat.imageUrl ? (
- <img src={getImageUrl(cat.imageUrl)} alt={cat.name} className="w-4 h-4 rounded-full object-cover" />
- ) : (
- <span>{cat.icon}</span>
- )}
- <span>{cat.name}</span>
- </button>
- <div className="absolute -top-2 -right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
- <button 
- onClick={() => setEditingCat(cat)}
- className="bg-carbon-blue/10 text-carbon-blue text-white p-1 rounded-full border-carbon-border ">
- <Edit3 size={10} />
- </button>
- <button 
- onClick={() => handleDeleteCategory(cat.id)}
- className="bg-carbon-error text-white p-1 rounded-full border-carbon-border ">
- <X size={10} />
- </button>
- </div>
- </div>
- ))}
- </div>
- </div>
+      {/* Categories Filter */}
+      <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+        <button
+          onClick={() => setActiveCategory("الكل")}
+          className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors border ${
+            activeCategory === "الكل" 
+              ? "bg-carbon-blue/10 border-carbon-blue text-carbon-blue" 
+              : "bg-carbon-layer border-carbon-border text-carbon-text hover:bg-carbon-layerHover"
+          }`}
+        >
+          الكل
+        </button>
+        {apiCategories.sort((a, b) => a.sortOrder - b.sortOrder).map(cat => (
+          <div key={cat.id} className="flex group">
+            <button
+              onClick={() => setActiveCategory(cat.id)}
+              className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors border flex items-center gap-2 ${
+                activeCategory === cat.id 
+                  ? "bg-carbon-blue/10 border-carbon-blue text-carbon-blue" 
+                  : "bg-carbon-layer border-carbon-border text-carbon-text hover:bg-carbon-layerHover border-l-0"
+              }`}
+            >
+              <span>{cat.icon}</span>
+              <span>{cat.name}</span>
+            </button>
+            <div className={`px-2 border border-carbon-border border-r-0 flex items-center justify-center transition-colors ${
+              activeCategory === cat.id ? "bg-carbon-blue/10 border-carbon-blue border-r-carbon-blue/30" : "bg-carbon-layer group-hover:bg-carbon-layerHover"
+            }`}>
+              <button 
+                onClick={() => { setEditingCat(cat); setShowCatForm(true); }}
+                className={`p-1 rounded-sm text-carbon-textSecondary hover:text-carbon-blue transition-colors`}
+                title="تعديل التصنيف"
+              >
+                <Edit3 size={14} />
+              </button>
+              <button 
+                onClick={() => handleDeleteCategory(cat.id)}
+                className={`p-1 rounded-sm text-carbon-textSecondary hover:text-carbon-error transition-colors`}
+                title="حذف التصنيف"
+              >
+                <X size={14} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
 
- <div className="bg-carbon-layer border-carbon-border p-0 overflow-hidden bg-carbon-layer border-carbon-border ">
- <table className="w-full text-right border-collapse">
- <thead>
- <tr className="bg-carbon-layerHover border-b-2 border-carbon-border text-[10px]">
- <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border w-10 text-center">صورة</th>
- <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border">الصنف / الوصف</th>
- <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border w-24">الفرع</th>
- <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border w-24">السعر</th>
- <th className="px-2 py-1.5 font-semibold text-carbon-text text-center w-20">إجراءات</th>
- </tr>
- </thead>
- <tbody className="divide-y divide-carbon-border text-xs">
- {filteredMenu.length === 0 ? (
- <tr>
- <td colSpan={5} className="p-4 text-center font-semibold text-[10px] text-carbon-textSecondary bg-carbon-bg">لا توجد أصناف</td>
- </tr>
- ) : (
- filteredMenu.map((item) => (
- <tr key={item.id} className="hover:bg-carbon-layerHover transition-colors">
- <td className="px-2 py-1.5 border-l border-carbon-border align-middle text-center">
- <div className="w-8 h-8 rounded border-carbon-border bg-carbon-layer flex items-center justify-center overflow-hidden mx-auto shadow-sm">
- {item.imageUrl ? (
- <img src={getImageUrl(item.imageUrl)} alt={item.name} className="w-full h-full object-cover" />
- ) : (
- <span className="text-sm">{apiCategories.find(c => c.id === item.categoryId)?.icon || '🍕'}</span>
- )}
- </div>
- </td>
- <td className="px-2 py-1.5 border-l border-carbon-border align-middle">
- <h4 className="font-semibold text-[11px]">{item.name}</h4>
- <p className="text-[9px] font-medium text-carbon-textSecondary truncate max-w-[200px]">{item.description}</p>
- </td>
- <td className="px-2 py-1.5 border-l border-carbon-border align-middle">
- <span className="text-[9px] font-semibold text-carbon-blue bg-carbon-blue/10 text-carbon-blue/10 px-1 border-brand-blue/20">
- {item.branchId ? branches.find(b => b.id === item.branchId)?.name : 'عام'}
- </span>
- </td>
- <td className="px-2 py-1.5 border-l border-carbon-border align-middle font-semibold text-carbon-blue">
- {formatCurrency(item.price)}
- </td>
- <td className="px-1 py-1.5 align-middle text-center">
- <div className="flex gap-1 justify-center">
- <button onClick={() => setEditingItem(item)} className="p-1 bg-carbon-layerHover text-carbon-text border-brand-blue/30 shadow-sm hover:translate-y-px transition-all">
- <Edit3 size={12} strokeWidth={3} />
- </button>
- <button onClick={() => handleDeleteItem(item.id)} className="p-1 bg-carbon-error/10 text-carbon-error border-brand-red/30 shadow-sm hover:translate-y-px transition-all">
- <Trash2 size={12} strokeWidth={3} />
- </button>
- </div>
- </td>
- </tr>
- ))
- )}
- </tbody>
- </table>
- </div>
- </div>
- );
+      {/* Items Table */}
+      <div className="bg-carbon-layer border border-carbon-border overflow-hidden shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-right">
+            <thead className="bg-carbon-bg border-b border-carbon-border text-carbon-textSecondary text-xs">
+              <tr>
+                <th className="px-4 py-3 font-medium border-l border-carbon-border w-16 text-center">الصورة</th>
+                <th className="px-4 py-3 font-medium border-l border-carbon-border">الصنف / الوصف</th>
+                <th className="px-4 py-3 font-medium border-l border-carbon-border">الفرع</th>
+                <th className="px-4 py-3 font-medium border-l border-carbon-border">السعر</th>
+                <th className="px-4 py-3 font-medium text-center w-24">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-carbon-border bg-carbon-layer">
+              {filteredMenu.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="p-8 text-center text-sm text-carbon-textSecondary">
+                    لا توجد أصناف في هذا التصنيف
+                  </td>
+                </tr>
+              ) : (
+                filteredMenu.map((item) => (
+                  <tr key={item.id} className="hover:bg-carbon-layerHover transition-colors">
+                    <td className="px-4 py-3 border-l border-carbon-border align-middle text-center">
+                      <div className="w-10 h-10 border border-carbon-border bg-carbon-bg flex items-center justify-center overflow-hidden mx-auto">
+                        {item.imageUrl ? (
+                          <img src={getImageUrl(item.imageUrl)} alt={item.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-lg">{apiCategories.find(c => c.id === item.categoryId)?.icon || '🍕'}</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 border-l border-carbon-border align-middle">
+                      <h4 className="font-semibold text-sm text-carbon-text">{item.name}</h4>
+                      <p className="text-xs text-carbon-textSecondary mt-1 line-clamp-1 max-w-[300px]">{item.description}</p>
+                    </td>
+                    <td className="px-4 py-3 border-l border-carbon-border align-middle">
+                      {item.branchId ? (
+                        <span className="text-xs font-medium px-2 py-0.5 bg-carbon-blue/10 text-carbon-blue border border-carbon-blue/20">
+                          {branches.find(b => b.id === item.branchId)?.name}
+                        </span>
+                      ) : (
+                        <span className="text-xs font-medium px-2 py-0.5 bg-carbon-bg text-carbon-textSecondary border border-carbon-border">
+                          عام
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 border-l border-carbon-border align-middle font-semibold text-carbon-text">
+                      {formatCurrency(item.price)}
+                    </td>
+                    <td className="px-4 py-3 align-middle text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <button 
+                          onClick={() => { setEditingItem(item); setShowAddForm(true); }} 
+                          className="p-1.5 text-carbon-textSecondary hover:text-carbon-blue hover:bg-carbon-layerHover transition-colors border border-transparent hover:border-carbon-border" 
+                          title="تعديل الصنف"
+                        >
+                          <Edit3 size={14} />
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteItem(item.id)} 
+                          className="p-1.5 text-carbon-textSecondary hover:text-carbon-error hover:bg-carbon-layerHover transition-colors border border-transparent hover:border-carbon-border" 
+                          title="حذف الصنف"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
 }
-
 // --- STAFF PAGE ---
 export function StaffPage() {
  const formatCurrency = useFormatCurrency();
@@ -1144,7 +1233,7 @@ export function StaffPage() {
  try {
  const payload = {
  ...newEmployee,
- departmentId: newEmployee.departmentId || null,
+departmentId: newEmployee.departmentId || null,
  branchId: newEmployee.branchId || null
  };
  const response = await employeesApi.create(payload);
@@ -1206,7 +1295,7 @@ export function StaffPage() {
  if (loading) return <div className="p-20 text-center font-semibold text-2xl animate-pulse">جاري تحميل فريق العمل... </div>;
 
  return (
- <div className="space-y-6">
+ <div className="space-y-6 max-w-7xl">
  {qrModalData && (
  <EmployeeQrModal 
  employeeName={qrModalData.name} 
@@ -1215,184 +1304,211 @@ export function StaffPage() {
  />
  )}
 
- <div className="bg-carbon-layer border-carbon-border p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+ <div className="bg-carbon-layer border-b border-carbon-border p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
  <div className="flex items-center gap-4">
- <div className="bg-carbon-layer border-carbon-border bg-carbon-layer p-3">
- <Users size={28} />
- </div>
+ <Users size={24} className="text-carbon-text" />
  <div>
- <h2 className="text-2xl font-semibold">إدارة الموظفين</h2>
- <p className="font-medium text-carbon-text/70">إدارة الفريق، الصلاحيات، ورموز الدخول الآمنة</p>
+ <h2 className="text-xl font-semibold text-carbon-text">إدارة الموظفين</h2>
+ <p className="text-sm text-carbon-textSecondary mt-1">إدارة الفريق، الصلاحيات، ورموز الدخول الآمنة</p>
  </div>
  </div>
- <button onClick={() => setShowAddForm(!showAddForm)} className="px-5 py-2.5 flex items-center justify-center gap-2">
- {showAddForm ? <X size={18} /> : <Plus size={18} />}
+ <button 
+ onClick={() => setShowAddForm(!showAddForm)} 
+ className="bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors px-6 py-2.5 text-sm font-medium flex items-center justify-center gap-2"
+ >
+ {showAddForm ? <X size={16} /> : <Plus size={16} />}
  <span>{showAddForm ? 'إلغاء' : 'موظف جديد'}</span>
  </button>
  </div>
 
  {showAddForm && (
- <form onSubmit={handleAdd} className="bg-carbon-layer border-carbon-border p-6 bg-carbon-layerHover space-y-6 animate-fade-in border-carbon-border ">
- <h3 className="font-semibold text-xl flex items-center gap-2">
- <UserCheck className="text-carbon-text" />
- إضافة عضو جديد للفريق
+ <form onSubmit={handleAdd} className="bg-carbon-layer border border-carbon-border p-6 shadow-sm animate-fade-in space-y-6">
+ <h3 className="text-base font-semibold text-carbon-text border-b border-carbon-border pb-3 mb-4 flex items-center gap-2">
+ <UserPlus size={18} className="text-carbon-blue" />
+ إضافة موظف جديد
  </h3>
- 
- <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
- <div className="space-y-4">
- <div className="space-y-2">
- <label className="font-semibold text-sm">الاسم الكامل</label>
- <input required type="text" placeholder="مثال: أحمد العتيبي" className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full" value={newEmployee.fullName} onChange={e => setNewEmployee({...newEmployee, fullName: e.target.value})} />
+
+ <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div>
+ <label className="block text-sm text-carbon-textSecondary mb-2">الاسم الكامل *</label>
+ <input 
+ type="text" 
+ required
+ value={newEmployee.fullName}
+ onChange={e => setNewEmployee({...newEmployee, fullName: e.target.value})}
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors" 
+ />
  </div>
- <div className="space-y-2">
- <label className="font-semibold text-sm">رقم الجوال (للتواصل)</label>
- <div className="relative">
- <Mail className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
- <input required type="tel" placeholder="05XXXXXXXX" className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full pr-12 dir-ltr text-right" value={newEmployee.mobileNumber} onChange={e => setNewEmployee({...newEmployee, mobileNumber: e.target.value})} />
+ <div>
+ <label className="block text-sm text-carbon-textSecondary mb-2">رقم الهاتف *</label>
+ <input 
+ type="tel" 
+ required
+ value={newEmployee.mobileNumber}
+ onChange={e => setNewEmployee({...newEmployee, mobileNumber: e.target.value})}
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors dir-ltr text-left" 
+ placeholder="+966..."
+ />
  </div>
- </div>
- <div className="space-y-2">
- <label className="font-semibold text-sm">القسم</label>
- <select required className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full" value={newEmployee.departmentId} onChange={e => setNewEmployee({...newEmployee, departmentId: e.target.value})}>
- <option value="">اختر القسم...</option>
- {departments.map(d => (
- <option key={d.id} value={d.id}>{d.name}</option>
- ))}
+ <div>
+ <label className="block text-sm text-carbon-textSecondary mb-2">القسم *</label>
+ <select 
+ required
+ value={newEmployee.departmentId}
+ onChange={e => setNewEmployee({...newEmployee, departmentId: e.target.value})}
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors appearance-none"
+ >
+ <option value="" disabled>اختر القسم</option>
+ {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
  </select>
  </div>
- <div className="space-y-2">
- <label className="font-semibold text-sm flex items-center gap-2 cursor-pointer p-4 bg-carbon-bg border-transparent hover:border-carbon-border/30 rounded-sm transition-all w-full">
- <input type="checkbox" className="w-5 h-5 accent-brand-pink rounded-sm cursor-pointer" checked={newEmployee.isDelivery} onChange={e => setNewEmployee({...newEmployee, isDelivery: e.target.checked})} />
- <span className="flex-1">
- مندوب توصيل 
- <p className="text-xs text-carbon-textSecondary font-medium mt-1">تفعيل هذا الخيار سيولد كود استجابة سريعة QR لدخول المندوب السريع لتطبيق التوصيل</p>
- </span>
+ <div>
+ <label className="block text-sm text-carbon-textSecondary mb-2">الفرع التابع له</label>
+ <select 
+ value={newEmployee.branchId}
+ onChange={e => setNewEmployee({...newEmployee, branchId: e.target.value})}
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors appearance-none"
+ >
+ <option value="">المركز الرئيسي (HQ)</option>
+ {branches.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+ </select>
+ </div>
+ <div>
+ <label className="block text-sm text-carbon-textSecondary mb-2">رمز الموظف (اختياري)</label>
+ <input 
+ type="text" 
+ value={newEmployee.employeeCode}
+ onChange={e => setNewEmployee({...newEmployee, employeeCode: e.target.value})}
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors dir-ltr text-left" 
+ />
+ </div>
+ </div>
+
+ <div className="pt-4 border-t border-carbon-border">
+ <label className="block text-sm text-carbon-textSecondary mb-3">الأدوار المخصصة (Roles)</label>
+ <div className="flex flex-wrap gap-4">
+ {roles.map(r => {
+ const isChecked = newEmployee.roles.includes(r.name);
+ return (
+ <label key={r.id} className="flex items-center gap-2 cursor-pointer group">
+ <div className="relative flex items-center justify-center">
+ <input 
+ type="checkbox" 
+ className="peer appearance-none w-4 h-4 border border-carbon-border bg-carbon-bg checked:bg-carbon-blue checked:border-carbon-blue transition-colors cursor-pointer"
+ checked={isChecked}
+ onChange={() => toggleRole(r.name)}
+ />
+ <Check size={12} strokeWidth={3} className="text-white absolute pointer-events-none opacity-0 peer-checked:opacity-100" />
+ </div>
+ <span className="text-sm font-medium text-carbon-text group-hover:text-carbon-blue transition-colors">{r.name}</span>
  </label>
- </div>
- <div className="space-y-2">
- <label className="font-semibold text-sm">الفرع (اختياري - لكل الفروع اتركها فارغة)</label>
- <select className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full" value={newEmployee.branchId} onChange={e => setNewEmployee({...newEmployee, branchId: e.target.value})}>
- <option value="">كل الفروع (مدير عام)</option>
- {branches.map(b => (
- <option key={b.id} value={b.id}>{b.name}</option>
- ))}
- </select>
- </div>
- <div className="space-y-2">
- <label className="font-semibold text-sm">رمز الموظف (اختياري)</label>
- <input type="text" placeholder="EMP123" className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full uppercase" value={newEmployee.employeeCode} onChange={e => setNewEmployee({...newEmployee, employeeCode: e.target.value})} />
+ );
+ })}
  </div>
  </div>
 
- <div className="space-y-2">
- <label className="font-semibold text-sm">الأدوار والصلاحيات (يمكنك اختيار أكثر من دور)</label>
- <div className="grid grid-cols-2 gap-3">
- {roles.map(role => (
- <div 
- key={role.id}
- onClick={() => toggleRole(role.name)}
- className={`p-3 rounded-sm border-carbon-border flex items-center gap-3 cursor-pointer transition-all ${newEmployee.roles.includes(role.name) ? 'bg-carbon-layerHover text-carbon-text border-carbon-blue' : 'bg-carbon-layer hover:bg-carbon-bg'}`}>
- <div className={`w-5 h-5 rounded border-carbon-border flex items-center justify-center ${newEmployee.roles.includes(role.name) ? 'bg-carbon-layer text-carbon-text' : 'bg-carbon-layer'}`}>
- {newEmployee.roles.includes(role.name) && <Check size={12} className="text-white" />}
- </div>
- <span className="font-medium text-sm">{role.name}</span>
- </div>
- ))}
- </div>
- {roles.length === 0 && (
- <div className="p-4 bg-carbon-bg rounded-sm border-solid border-gray-400 text-center">
- <p className="text-xs font-medium text-carbon-textSecondary">لا توجد أدوار معرفة. يرجى إضافة أدوار من صفحة الصلاحيات أولاً.</p>
- </div>
- )}
- </div>
- </div>
-
- <div className="pt-4 border-t-2 border-carbon-border">
- <button type="submit" disabled={newEmployee.roles.length === 0} className="w-full py-4 text-lg font-semibold flex items-center justify-center gap-2 disabled:opacity-50">
- <span>تأكيد الإضافة وإصدار رمز الدخول</span>
- <ShieldCheck size={20} />
+ <div className="pt-6 border-t border-carbon-border flex justify-end gap-3">
+ <button 
+ type="button" 
+ onClick={() => setShowAddForm(false)} 
+ className="px-6 py-2 bg-transparent text-carbon-text hover:bg-carbon-layerHover border border-carbon-border transition-colors text-sm font-medium"
+ >
+ إلغاء
+ </button>
+ <button 
+ type="submit" 
+ className="px-6 py-2 bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors text-sm font-medium flex items-center gap-2"
+ >
+ <UserPlus size={16} />
+ إضافة الموظف
  </button>
  </div>
  </form>
  )}
 
- {/* Staff Table */}
- {/* Staff Table */}
- <div className="bg-carbon-layer border-carbon-border bg-carbon-layer p-0 overflow-hidden overflow-x-auto border-carbon-border rounded-none ">
- <table className="w-full text-right border-collapse min-w-[800px]">
- <thead>
- <tr className="bg-carbon-bg text-carbon-textSecondary border-b-2 border-carbon-border text-[10px]">
- <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border">الموظف / الجوال</th>
- <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border w-40">القسم / الفرع / ID</th>
- <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border w-48">الأدوار</th>
- <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border w-24">حالة الدخول</th>
- <th className="px-2 py-1.5 font-semibold text-carbon-text border-l border-carbon-border w-20">الحالة</th>
- <th className="px-2 py-1.5 font-semibold text-carbon-text text-center w-24">إجراءات</th>
+ <div className="bg-carbon-layer border border-carbon-border overflow-hidden">
+ <div className="overflow-x-auto">
+ <table className="w-full text-right">
+ <thead className="bg-carbon-bg border-b border-carbon-border text-carbon-textSecondary text-xs">
+ <tr>
+ <th className="px-4 py-3 font-medium border-l border-carbon-border">الموظف</th>
+ <th className="px-4 py-3 font-medium border-l border-carbon-border">القسم / الفرع</th>
+ <th className="px-4 py-3 font-medium border-l border-carbon-border">الأدوار (Roles)</th>
+ <th className="px-4 py-3 font-medium border-l border-carbon-border">تسجيل الدخول (TOTP)</th>
+ <th className="px-4 py-3 font-medium border-l border-carbon-border">الحالة</th>
+ <th className="px-4 py-3 font-medium text-center w-24">إجراءات</th>
  </tr>
  </thead>
- <tbody className="divide-y divide-carbon-border bg-carbon-layer text-xs">
+ <tbody className="divide-y divide-carbon-border bg-carbon-layer">
  {employees.length === 0 ? (
  <tr>
- <td colSpan={6} className="p-4 text-center bg-carbon-bg">
- <p className="font-semibold text-[10px] text-carbon-textSecondary">لا يوجد موظفين</p>
+ <td colSpan={6} className="p-8 text-center text-sm text-carbon-textSecondary">
+ لا يوجد موظفين حالياً
  </td>
  </tr>
  ) : (
  employees.map(emp => (
- <tr key={emp.id} className="hover:hover:bg-carbon-layerHover text-carbon-text transition-colors">
- <td className="border-l border-carbon-border px-2 py-1.5 align-middle">
- <div className="flex items-center gap-2">
- <div className="font-semibold text-[11px]">{emp.fullName}</div>
- <div className="text-[9px] font-medium text-carbon-textSecondary dir-ltr">{emp.mobileNumber}</div>
+ <tr key={emp.id} className="hover:bg-carbon-layerHover transition-colors">
+ <td className="px-4 py-3 border-l border-carbon-border">
+ <div className="flex flex-col gap-1">
+ <span className="font-semibold text-sm text-carbon-text">{emp.fullName}</span>
+ <span className="text-xs text-carbon-textSecondary dir-ltr text-left w-max">{emp.mobileNumber}</span>
  </div>
  </td>
  
- <td className="border-l border-carbon-border px-2 py-1.5 align-middle">
- <div className="flex items-center gap-1 flex-wrap">
- <span className="text-[9px] font-semibold px-1 border-carbon-border bg-carbon-layer/30">{emp.departmentName}</span>
+ <td className="px-4 py-3 border-l border-carbon-border">
+ <div className="flex flex-col gap-1.5">
+ <div className="flex gap-2 items-center">
+ <span className="text-xs font-medium px-2 py-0.5 bg-carbon-bg border border-carbon-border text-carbon-text">{emp.departmentName}</span>
  {emp.branchName && (
- <span className="text-[9px] font-semibold px-1 border-brand-blue/30 bg-carbon-layerHover text-carbon-text">{emp.branchName}</span>
+ <span className="text-xs font-medium px-2 py-0.5 bg-carbon-blue/10 text-carbon-blue border border-carbon-border">{emp.branchName}</span>
  )}
- <span className="text-[9px] font-semibold text-gray-400">ID:{emp.employeeCode}</span>
+ </div>
+ <span className="text-xs text-carbon-textSecondary font-mono">ID: {emp.employeeCode}</span>
  </div>
  </td>
 
- <td className="border-l border-carbon-border px-2 py-1.5 align-middle">
- <div className="flex flex-wrap gap-1">
+ <td className="px-4 py-3 border-l border-carbon-border">
+ <div className="flex flex-wrap gap-1.5">
  {emp.roles?.map(role => (
- <span key={role} className="text-[9px] font-medium px-1 border-carbon-border/30 bg-carbon-bg text-carbon-textSecondary text-carbon-text">
+ <span key={role} className="text-[10px] font-medium px-2 py-0.5 bg-carbon-bg border border-carbon-border text-carbon-textSecondary">
  {role}
  </span>
  ))}
  </div>
  </td>
 
- <td className="border-l border-carbon-border px-2 py-1.5 align-middle">
- <div className="flex items-center gap-1">
- <ShieldCheck size={12} className={emp.hasTotp ? "text-carbon-success" : "text-gray-300"} />
- <span className={`text-[9px] font-semibold ${emp.hasTotp ? "text-carbon-success" : "text-gray-400"}`}>
+ <td className="px-4 py-3 border-l border-carbon-border">
+ <div className="flex items-center gap-2">
+ <ShieldCheck size={14} className={emp.hasTotp ? "text-carbon-success" : "text-carbon-textSecondary"} />
+ <span className={`text-xs font-medium ${emp.hasTotp ? "text-carbon-success" : "text-carbon-textSecondary"}`}>
  {emp.hasTotp ? "مفعل" : "غير مفعل"}
  </span>
  </div>
  </td>
 
- <td className="border-l border-carbon-border px-2 py-1.5 align-middle">
- <span className={`text-[9px] font-semibold px-1.5 py-0.5 border-carbon-border shadow-sm block w-max ${emp.status === "Available" ? "bg-carbon-success/10 text-carbon-success text-white" : "bg-gray-400 text-white"}`}>
+ <td className="px-4 py-3 border-l border-carbon-border">
+ <span className={`text-xs font-medium px-2 py-1 flex items-center justify-center w-fit gap-1 border border-carbon-border ${emp.status === "Available" ? "bg-carbon-success/10 text-carbon-success" : "bg-carbon-layerHover text-carbon-textSecondary"}`}>
+ <span className={`w-1.5 h-1.5 rounded-full ${emp.status === "Available" ? "bg-carbon-success" : "bg-carbon-textSecondary"}`}></span>
  {emp.status === "Available" ? "نشط" : "غير نشط"}
  </span>
  </td>
  
- <td className="px-1 py-1.5 align-middle text-center">
- <div className="flex items-center justify-center gap-1">
+ <td className="px-4 py-3 text-center">
+ <div className="flex items-center justify-center gap-2">
  <button 
  onClick={() => handleRegenerateTotp(emp.id)}
- className="p-1 bg-carbon-layerHover text-carbon-text/10 text-brand-purple border-brand-purple/30 shadow-sm hover:translate-y-px transition-all" title="تحديث الرمز">
- <RefreshCw size={12} strokeWidth={3} />
+ className="p-1.5 text-carbon-textSecondary hover:text-carbon-blue hover:bg-carbon-layerHover transition-colors border border-transparent hover:border-carbon-border" 
+ title="تحديث الرمز"
+ >
+ <RefreshCw size={14} />
  </button>
  <button 
  onClick={() => handleDelete(emp.id)}
- className="p-1 bg-carbon-error/10 text-carbon-error border-brand-red/30 shadow-sm hover:translate-y-px transition-all" title="حذف الموظف">
- <Trash2 size={12} strokeWidth={3} />
+ className="p-1.5 text-carbon-textSecondary hover:text-carbon-error hover:bg-carbon-layerHover transition-colors border border-transparent hover:border-carbon-border" 
+ title="حذف الموظف"
+ >
+ <Trash2 size={14} />
  </button>
  </div>
  </td>
@@ -1402,12 +1518,13 @@ export function StaffPage() {
  </tbody>
  </table>
  </div>
+ </div>
  
  {employees.length === 0 && !loading && (
  <div className="bg-carbon-layer border-carbon-border p-12 text-center bg-carbon-bg border-solid border-carbon-border">
- <Users size={64} className="mx-auto text-gray-300 mb-4" />
- <h3 className="text-xl font-semibold text-gray-400">لا يوجد موظفين حالياً</h3>
- <p className="font-medium text-gray-400 mt-2">ابدأ بإضافة طاقم العمل وتوزيع الصلاحيات</p>
+ <Users size={64} className="mx-auto text-carbon-textSecondary mb-4" />
+ <h3 className="text-xl font-semibold text-carbon-textSecondary">لا يوجد موظفين حالياً</h3>
+ <p className="font-medium text-carbon-textSecondary mt-2">ابدأ بإضافة طاقم العمل وتوزيع الصلاحيات</p>
  </div>
  )}
  </div>
@@ -1574,7 +1691,7 @@ export function OrdersPage({ onEditOrder }: { onEditOrder?: (id: string) => void
  </button>
 
  {detailsLoading || !orderDetails ? (
- <div className="bg-carbon-layer border-carbon-border p-10 text-center animate-pulse font-semibold text-xs text-gray-400 bg-carbon-layer border-carbon-border">جاري التحميل...</div>
+ <div className="bg-carbon-layer border-carbon-border p-10 text-center animate-pulse font-semibold text-xs text-carbon-textSecondary bg-carbon-layer border-carbon-border">جاري التحميل...</div>
  ) : (
  <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
  {/* Main Info */}
@@ -1920,7 +2037,7 @@ export function OrdersPage({ onEditOrder }: { onEditOrder?: (id: string) => void
  {order.externalCompanyName}
  </span>
  ) : (
- <span className="text-gray-400">-</span>
+ <span className="text-carbon-textSecondary">-</span>
  )}
  </td>
  <td className={`${borderClasses} font-medium text-[10px] whitespace-nowrap`}>
@@ -2037,7 +2154,7 @@ export function ReviewsPage() {
  </span>
  <div>
  <p className="font-semibold text-sm">{notif.text}</p>
- <span className="text-xs font-medium text-gray-400">{notif.time}</span>
+ <span className="text-xs font-medium text-carbon-textSecondary">{notif.time}</span>
  </div>
  </div>
  {notif.unread && <span className="px-2 py-1 text-xs font-medium bg-carbon-layer text-[10px]">جديد</span>}
@@ -2190,52 +2307,50 @@ export function SettingsPage() {
  };
 
  return (
- <div className="space-y-4">
+ <div className="space-y-6 max-w-5xl">
  {/* General Settings Header */}
- <div className={`bg-carbon-layer border-carbon-border p-3 flex flex-row items-center justify-between `}>
- <div className="flex items-center gap-3">
- <Settings size={20} />
- <h2 className="text-lg font-semibold">إعدادات النظام</h2>
- </div>
+ <div className="bg-carbon-layer border-b border-carbon-border p-5 flex items-center gap-3">
+ <Settings size={24} className="text-carbon-text" />
+ <h2 className="text-xl font-semibold text-carbon-text">إعدادات النظام</h2>
  </div>
 
  {/* General Settings Form */}
- <form onSubmit={handleSave} className="bg-carbon-layer border-carbon-border p-4 bg-carbon-layer border-carbon-border ">
- <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+ <form onSubmit={handleSave} className="bg-carbon-layer p-6 space-y-6 shadow-sm border border-carbon-border">
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
  <div>
- <label className="block text-[10px] font-semibold text-carbon-textSecondary mb-1">اسم المطعم</label>
+ <label className="block text-sm text-carbon-textSecondary mb-2">اسم المطعم</label>
  <input 
  type="text" 
- className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full border-carbon-border shadow-sm font-medium text-xs py-1 h-8" 
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-3 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary transition-colors" 
  value={settings.restaurantName} 
  onChange={e => setSettings({...settings, restaurantName: e.target.value})} 
  />
  </div>
 
  <div>
- <label className="block text-[10px] font-semibold text-carbon-textSecondary mb-1">النطاق الفرعي</label>
+ <label className="block text-sm text-carbon-textSecondary mb-2">النطاق الفرعي</label>
  <input 
  type="text" 
  disabled
- className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full border-carbon-border shadow-sm font-medium bg-carbon-bg text-left dir-ltr cursor-not-allowed text-xs py-1 h-8" 
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-3 text-sm focus:outline-none text-carbon-textSecondary cursor-not-allowed dir-ltr text-left" 
  value={settings.subdomain} 
  />
  </div>
 
  <div>
- <label className="block text-[10px] font-semibold text-carbon-textSecondary mb-1">نسبة الضريبة (٪)</label>
+ <label className="block text-sm text-carbon-textSecondary mb-2">نسبة الضريبة (٪)</label>
  <input 
  type="number" 
- className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full border-carbon-border shadow-sm font-medium text-xs py-1 h-8" 
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-3 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary transition-colors" 
  value={settings.taxRate} 
  onChange={e => setSettings({...settings, taxRate: parseFloat(e.target.value) || 0})} 
  />
  </div>
 
  <div>
- <label className="block text-[10px] font-semibold text-carbon-textSecondary mb-1">العملة الافتراضية</label>
+ <label className="block text-sm text-carbon-textSecondary mb-2">العملة الافتراضية</label>
  <select 
- className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full border-carbon-border shadow-sm font-medium text-xs py-1 h-8" 
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-3 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors appearance-none" 
  value={settings.currencyId} 
  onChange={e => setSettings({...settings, currencyId: e.target.value})} 
  >
@@ -2247,102 +2362,94 @@ export function SettingsPage() {
  </div>
  </div>
 
- <div className="mt-4 pt-4 border-t border-carbon-border flex items-center justify-between">
- <div className="flex gap-4">
- <div className="flex items-center gap-2">
- <span className="text-[10px] font-medium text-carbon-textSecondary">الخطة:</span>
- <span className="font-semibold text-xs text-carbon-blue">النمو (Growth)</span>
+ <div className="pt-6 border-t border-carbon-border flex items-center justify-between">
+ <div className="flex gap-6">
+ <div className="flex flex-col">
+ <span className="text-xs text-carbon-textSecondary">الخطة الحالية</span>
+ <span className="font-semibold text-sm text-carbon-blue mt-1">النمو (Growth)</span>
  </div>
- <div className="flex items-center gap-2">
- <span className="text-[10px] font-medium text-carbon-textSecondary">فروع:</span>
- <span className="font-semibold text-xs text-carbon-success">{settings.maxBranches}</span>
+ <div className="flex flex-col">
+ <span className="text-xs text-carbon-textSecondary">الفروع</span>
+ <span className="font-semibold text-sm text-carbon-text mt-1">{settings.maxBranches} الحد الأقصى</span>
  </div>
- <div className="flex items-center gap-2">
- <span className="text-[10px] font-medium text-carbon-textSecondary">موظفين:</span>
- <span className="font-semibold text-xs text-carbon-warning">{settings.maxStaff}</span>
+ <div className="flex flex-col">
+ <span className="text-xs text-carbon-textSecondary">الموظفين</span>
+ <span className="font-semibold text-sm text-carbon-text mt-1">{settings.maxStaff} الحد الأقصى</span>
  </div>
  </div>
 
- <div className="flex items-center gap-2">
+ <div className="flex items-center gap-4">
  {saved && (
- <span className="text-[10px] font-semibold text-carbon-success animate-fade-in">تم الحفظ!</span>
+ <span className="text-sm font-semibold text-carbon-success animate-fade-in">تم الحفظ بنجاح</span>
  )}
- <button type="submit" className="px-4 py-1.5 flex items-center justify-center gap-1 text-xs font-semibold shadow-sm">
- <Save size={14} />
- <span>حفظ</span>
+ <button type="submit" className="bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors px-6 py-2 text-sm font-medium flex items-center gap-2">
+ <span>حفظ التغييرات</span>
+ <Save size={16} />
  </button>
  </div>
  </div>
  </form>
 
  {/* Telegram Bot Header */}
- <div className={`bg-carbon-layer border-carbon-border p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between`}>
- <div className="flex items-center gap-4">
- <div className="bg-carbon-layer border-carbon-border bg-carbon-layer p-3 text-3xl">
- 🤖
- </div>
- <div>
- <h2 className="text-2xl font-semibold">إدارة بوت التليجرام والمحاكاة المباشرة</h2>
- <p className="font-medium text-carbon-text/70">تكوين البوت الخاص بمطعمك، استقبال الطلبات تلقائياً، ومحاكاة المحادثة المباشرة</p>
- </div>
- </div>
+ <div className="bg-carbon-layer border-b border-carbon-border p-5 flex flex-col gap-2 mt-8">
+ <h2 className="text-xl font-semibold text-carbon-text flex items-center gap-3">
+ <span>🤖</span> إدارة بوت التليجرام والمحاكاة المباشرة
+ </h2>
+ <p className="text-sm text-carbon-textSecondary pr-8">قم بتكوين البوت الخاص بمطعمك وتجربته في بيئة آمنة محاكية للواقع</p>
  </div>
 
  {/* Telegram Bot Grid */}
- <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+ <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
  {/* Config Card */}
- <div className="bg-carbon-layer border-carbon-border p-6 bg-carbon-layer space-y-6 h-fit">
- <div className="flex items-center justify-between border-b-2 border-carbon-border pb-4">
- <h3 className="font-semibold text-lg flex items-center gap-2">
- <span className="text-2xl">🤖</span>
- <span>إعدادات ربط البوت</span>
- </h3>
+ <div className="bg-carbon-layer p-6 shadow-sm border border-carbon-border h-fit">
+ <div className="flex items-center justify-between mb-6 pb-4 border-b border-carbon-border">
+ <h3 className="font-semibold text-base text-carbon-text">إعدادات الربط</h3>
  <StatusPill 
- label={botStatus === "Active" ? "نشط " : botStatus === "Error" ? "خطأ " : "غير مفعل "} 
- color={botStatus === "Active" ? "bg-carbon-success/10 text-carbon-success" : botStatus === "Error" ? "bg-carbon-error text-white" : "bg-carbon-layer"} 
+ label={botStatus === "Active" ? "متصل" : botStatus === "Error" ? "يوجد خطأ" : "غير مفعل"} 
+ color={botStatus === "Active" ? "bg-carbon-success/10 text-carbon-success" : botStatus === "Error" ? "bg-carbon-error/10 text-carbon-error" : "bg-carbon-layerHover text-carbon-textSecondary"} 
  />
  </div>
 
- <form onSubmit={handleSaveBotConfig} className="space-y-4">
+ <form onSubmit={handleSaveBotConfig} className="space-y-6">
  <div>
- <label className="block text-xs font-semibold text-carbon-textSecondary mb-2">توكن البوت (Bot API Token)</label>
+ <label className="block text-sm text-carbon-textSecondary mb-2">توكن البوت (Bot API Token)</label>
  <input 
  type="text" 
  placeholder="1234567890:ABCdefGhIJKlmNoPQRsTUVwxyZ"
- className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary w-full border-carbon-border font-mono text-sm dir-ltr text-left" 
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-3 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary dir-ltr text-left font-mono transition-colors" 
  value={botToken} 
  onChange={e => setBotToken(e.target.value)} 
  />
- <span className="text-[10px] font-medium text-gray-400 mt-1 block">احصل على التوكن من خلال @BotFather في تليجرام</span>
+ <span className="text-xs text-carbon-textSecondary mt-2 block">يمكنك استخراج التوكن عبر @BotFather في تليجرام</span>
  </div>
 
  {botUsername && (
- <div className="p-3 bg-carbon-blue/10 text-carbon-blue/10 border-brand-blue/30 rounded-sm flex items-center justify-between">
- <span className="text-xs font-medium text-carbon-textSecondary">معرف البوت المرتبط:</span>
- <span className="font-semibold text-carbon-blue dir-ltr">@{botUsername}</span>
+ <div className="p-4 bg-carbon-layerHover border border-carbon-border flex items-center justify-between">
+ <span className="text-sm text-carbon-textSecondary">معرف البوت المرتبط:</span>
+ <span className="font-medium text-carbon-blue dir-ltr">@{botUsername}</span>
  </div>
  )}
 
  {botMsg.text && (
- <div className={`p-3 rounded-sm border font-semibold text-xs animate-fade-in ${
- botMsg.type === "success" ? "bg-carbon-success/10 text-carbon-success/20 border-carbon-success text-carbon-success" : "bg-carbon-error/20 border-brand-red text-carbon-error"
+ <div className={`p-4 text-sm font-medium border-l-4 ${
+ botMsg.type === "success" ? "bg-carbon-success/10 text-carbon-success border-carbon-success" : "bg-carbon-error/10 text-carbon-error border-carbon-error"
  }`}>
  {botMsg.text}
  </div>
  )}
 
- <div className="flex gap-4 pt-2">
+ <div className="flex gap-3 pt-4">
  <button 
  type="submit" 
  disabled={botLoading}
- className="text-white flex-1 py-3 text-sm font-semibold ">
+ className="flex-1 bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors py-3 text-sm font-medium disabled:opacity-50">
  {botLoading ? "جاري الحفظ..." : "حفظ التوكن"}
  </button>
  <button 
  type="button" 
  onClick={handleTestBot}
  disabled={botLoading || !botToken}
- className="text-carbon-text px-4 py-3 text-sm font-semibold disabled:opacity-50">
+ className="flex-1 bg-carbon-layerHover text-carbon-text hover:bg-carbon-border transition-colors py-3 text-sm font-medium disabled:opacity-50">
  اختبار الاتصال
  </button>
  </div>
@@ -2350,50 +2457,50 @@ export function SettingsPage() {
  </div>
 
  {/* Simulator Card */}
- <div className="bg-carbon-layer border-carbon-border p-6 bg-carbon-layerHover flex flex-col h-[500px]">
- <div className="flex items-center justify-between border-b-2 border-carbon-border pb-4 mb-4">
- <h3 className="font-semibold text-lg flex items-center gap-2">
- <span className="text-2xl">📱</span>
- <span>محاكي تليجرام المباشر</span>
- </h3>
- <span className="px-2 py-1 text-xs font-medium bg-[#e5f6ff] text-[#00a68f] text-xs">محاكاة حية</span>
+ <div className="bg-carbon-layer p-6 shadow-sm border border-carbon-border flex flex-col h-[600px]">
+ <div className="flex items-center justify-between mb-6 pb-4 border-b border-carbon-border">
+ <h3 className="font-semibold text-base text-carbon-text">المحاكي المباشر</h3>
+ <span className="px-3 py-1 text-xs font-medium bg-carbon-blue/10 text-carbon-blue rounded-full flex items-center gap-2">
+ <span className="w-2 h-2 rounded-full bg-carbon-blue animate-pulse"></span>
+ Live
+ </span>
  </div>
 
  {/* Chat Messages Area */}
- <div className="flex-1 overflow-y-auto space-y-4 pr-2 flex flex-col border-carbon-border bg-carbon-layer rounded-sm p-4 ">
+ <div className="flex-1 overflow-y-auto space-y-4 pr-2 flex flex-col custom-scrollbar">
  {simChat.map((msg, idx) => (
  <div key={idx} className={`flex flex-col max-w-[85%] ${msg.sender === "user" ? "self-end items-end" : "self-start items-start"}`}>
- <div className={`p-3 rounded-sm border-carbon-border text-sm whitespace-pre-line font-medium ${
- msg.sender === "user" ? "bg-carbon-success/10 text-carbon-success text-white rounded-tr-none" : "bg-carbon-bg text-carbon-text rounded-tl-none"
+ <div className={`p-4 text-sm whitespace-pre-line font-medium leading-relaxed ${
+ msg.sender === "user" ? "bg-carbon-blue text-white" : "bg-carbon-layerHover text-carbon-text"
  }`}>
  {msg.imageUrl && (
- <img src={msg.imageUrl} alt="Bot attachment" className="w-full max-h-40 object-cover rounded-sm mb-2 border-carbon-border " />
+ <img src={msg.imageUrl} alt="Bot attachment" className="w-full max-h-48 object-cover mb-3" />
  )}
  <div>{msg.text}</div>
  </div>
- <span className="text-[10px] text-gray-400 font-medium mt-1 px-1">{msg.time}</span>
+ <span className="text-xs text-carbon-textSecondary mt-2 px-1">{msg.time}</span>
  </div>
  ))}
  {simLoading && (
- <div className="self-start bg-carbon-bg p-3 rounded-sm border-carbon-border text-xs font-semibold animate-pulse">
- البوت يكتب الآن... ✍️
+ <div className="self-start bg-carbon-layerHover p-4 text-sm font-medium text-carbon-textSecondary animate-pulse">
+ البوت يكتب الآن...
  </div>
  )}
  </div>
 
  {/* Chat Input Form */}
- <form onSubmit={handleSimulate} className="mt-4 flex gap-2">
+ <form onSubmit={handleSimulate} className="mt-6 flex gap-2">
  <input 
  type="text" 
- placeholder="تحدث مع البوت بلهجتك الطبيعية كأنك تتحدث مع إنسان..." 
- className="w-full border-carbon-border bg-carbon-bg px-3 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary flex-1 border-carbon-border text-sm font-medium"
+ placeholder="اكتب رسالة لمحاكاة العميل المحتمل..." 
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-3 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text placeholder-carbon-textSecondary transition-colors"
  value={simMsg}
  onChange={e => setSimMsg(e.target.value)}
  />
  <button 
  type="submit" 
  disabled={simLoading || !simMsg.trim()}
- className="text-white px-6 py-3 font-semibold disabled:opacity-50">
+ className="bg-carbon-blue text-white px-6 py-3 font-medium hover:bg-carbon-blueHover transition-colors disabled:opacity-50">
  إرسال
  </button>
  </form>

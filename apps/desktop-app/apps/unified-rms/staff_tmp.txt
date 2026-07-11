@@ -1,0 +1,347 @@
+export function StaffPage() {
+ const formatCurrency = useFormatCurrency();
+ const [employees, setEmployees] = useState<Employee[]>([]);
+ const [roles, setRoles] = useState<Role[]>([]);
+ const [departments, setDepartments] = useState<Department[]>([]);
+ const [branches, setBranches] = useState<Branch[]>([]);
+ const [loading, setLoading] = useState(true);
+ const [showAddForm, setShowAddForm] = useState(false);
+ const [newEmployee, setNewEmployee] = useState({ 
+ fullName: "", 
+ mobileNumber: "", 
+ employeeCode: "",
+ departmentId: "",
+ branchId: "",
+ isDelivery: false,
+ roles: [] as string[]
+ });
+ const [qrModalData, setQrModalData] = useState<{name: string, uri: string, isDelivery?: boolean} | null>(null);
+
+ const fetchData = async () => {
+ setLoading(true);
+ try {
+ const [empRes, rolesRes, deptRes, branchRes] = await Promise.all([
+ employeesApi.getAll(),
+ rolesApi.getAll(),
+ departmentsApi.getAll(),
+ branchesApi.getAll()
+ ]);
+ setEmployees(empRes.data || []);
+ setRoles(rolesRes.data || []);
+ setDepartments(deptRes.data || []);
+ setBranches(branchRes.data || []);
+ } catch (err) {
+ console.error("Error fetching staff management data", err);
+ } finally {
+ setLoading(false);
+ }
+ };
+
+ useEffect(() => {
+ fetchData();
+ }, []);
+
+ const handleAdd = async (e: React.FormEvent) => {
+ e.preventDefault();
+ try {
+ const payload = {
+ ...newEmployee,
+departmentId: newEmployee.departmentId || null,
+ branchId: newEmployee.branchId || null
+ };
+ const response = await employeesApi.create(payload);
+ setShowAddForm(false);
+ setNewEmployee({ fullName: "", mobileNumber: "", employeeCode: "", departmentId: "", branchId: "", isDelivery: false, roles: [] });
+ fetchData();
+ 
+ if (response.data && response.data.qrCodeDataUri) {
+ setQrModalData({ name: response.data.fullName, uri: response.data.qrCodeDataUri, isDelivery: response.data.isDelivery });
+ }
+ } catch (err: any) {
+ let errorMsg = "فشل إضافة الموظف. تأكد من صحة البيانات.";
+ if (err.response?.data) {
+ if (Array.isArray(err.response.data)) {
+ errorMsg = err.response.data.map((e: any) => e.description || e.code).join('\n');
+ } else if (err.response.data.errors) {
+ errorMsg = Object.values(err.response.data.errors).flat().join('\n');
+ } else if (err.response.data.message) {
+ errorMsg = err.response.data.message;
+ }
+ }
+ alert(errorMsg);
+ }
+ };
+
+ const handleDelete = async (id: string) => {
+ if (confirm("هل أنت متأكد من حذف هذا الموظف نهائياً؟")) {
+ try {
+ await employeesApi.delete(id);
+ fetchData();
+ } catch (err) {
+ alert("فشل الحذف. يرجى المحاولة مرة أخرى.");
+ }
+ }
+ };
+
+ const handleRegenerateTotp = async (id: string) => {
+ if (confirm("هل تريد إعادة توليد رمز تسجيل الدخول للموظف؟ سيفقد الموظف قدرته على الدخول بالرمز القديم.")) {
+ try {
+ const res = await employeesApi.regenerateTotp(id);
+ if (res.data.qrCodeDataUri) {
+ setQrModalData({ name: res.data.fullName, uri: res.data.qrCodeDataUri, isDelivery: res.data.isDelivery });
+ }
+ } catch (err) {
+ alert("فشل تحديث الرمز.");
+ }
+ }
+ };
+
+ const toggleRole = (roleName: string) => {
+ setNewEmployee(prev => ({
+ ...prev,
+ roles: prev.roles.includes(roleName)
+ ? prev.roles.filter(r => r !== roleName)
+ : [...prev.roles, roleName]
+ }));
+ };
+
+ if (loading) return <div className="p-20 text-center font-semibold text-2xl animate-pulse">جاري تحميل فريق العمل... </div>;
+
+ return (
+ <div className="space-y-6 max-w-7xl">
+ {qrModalData && (
+ <EmployeeQrModal 
+ employeeName={qrModalData.name} 
+ qrCodeDataUri={qrModalData.uri} 
+ onClose={() => setQrModalData(null)} 
+ />
+ )}
+
+ <div className="bg-carbon-layer border-b border-carbon-border p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+ <div className="flex items-center gap-4">
+ <Users size={24} className="text-carbon-text" />
+ <div>
+ <h2 className="text-xl font-semibold text-carbon-text">إدارة الموظفين</h2>
+ <p className="text-sm text-carbon-textSecondary mt-1">إدارة الفريق، الصلاحيات، ورموز الدخول الآمنة</p>
+ </div>
+ </div>
+ <button 
+ onClick={() => setShowAddForm(!showAddForm)} 
+ className="bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors px-6 py-2.5 text-sm font-medium flex items-center justify-center gap-2"
+ >
+ {showAddForm ? <X size={16} /> : <Plus size={16} />}
+ <span>{showAddForm ? 'إلغاء' : 'موظف جديد'}</span>
+ </button>
+ </div>
+
+ {showAddForm && (
+ <form onSubmit={handleAdd} className="bg-carbon-layer border border-carbon-border p-6 shadow-sm animate-fade-in space-y-6">
+ <h3 className="text-base font-semibold text-carbon-text border-b border-carbon-border pb-3 mb-4 flex items-center gap-2">
+ <UserPlus size={18} className="text-carbon-blue" />
+ إضافة موظف جديد
+ </h3>
+
+ <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div>
+ <label className="block text-sm text-carbon-textSecondary mb-2">الاسم الكامل *</label>
+ <input 
+ type="text" 
+ required
+ value={newEmployee.fullName}
+ onChange={e => setNewEmployee({...newEmployee, fullName: e.target.value})}
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors" 
+ />
+ </div>
+ <div>
+ <label className="block text-sm text-carbon-textSecondary mb-2">رقم الهاتف *</label>
+ <input 
+ type="tel" 
+ required
+ value={newEmployee.mobileNumber}
+ onChange={e => setNewEmployee({...newEmployee, mobileNumber: e.target.value})}
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors dir-ltr text-left" 
+ placeholder="+966..."
+ />
+ </div>
+ <div>
+ <label className="block text-sm text-carbon-textSecondary mb-2">القسم *</label>
+ <select 
+ required
+ value={newEmployee.departmentId}
+ onChange={e => setNewEmployee({...newEmployee, departmentId: e.target.value})}
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors appearance-none"
+ >
+ <option value="" disabled>اختر القسم</option>
+ {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+ </select>
+ </div>
+ <div>
+ <label className="block text-sm text-carbon-textSecondary mb-2">الفرع التابع له</label>
+ <select 
+ value={newEmployee.branchId}
+ onChange={e => setNewEmployee({...newEmployee, branchId: e.target.value})}
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors appearance-none"
+ >
+ <option value="">المركز الرئيسي (HQ)</option>
+ {branches.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+ </select>
+ </div>
+ <div>
+ <label className="block text-sm text-carbon-textSecondary mb-2">رمز الموظف (اختياري)</label>
+ <input 
+ type="text" 
+ value={newEmployee.employeeCode}
+ onChange={e => setNewEmployee({...newEmployee, employeeCode: e.target.value})}
+ className="w-full bg-carbon-bg border-b border-carbon-border px-4 py-2.5 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors dir-ltr text-left" 
+ />
+ </div>
+ </div>
+
+ <div className="pt-4 border-t border-carbon-border">
+ <label className="block text-sm text-carbon-textSecondary mb-3">الأدوار المخصصة (Roles)</label>
+ <div className="flex flex-wrap gap-4">
+ {roles.map(r => {
+ const isChecked = newEmployee.roles.includes(r.name);
+ return (
+ <label key={r.id} className="flex items-center gap-2 cursor-pointer group">
+ <div className="relative flex items-center justify-center">
+ <input 
+ type="checkbox" 
+ className="peer appearance-none w-4 h-4 border border-carbon-border bg-carbon-bg checked:bg-carbon-blue checked:border-carbon-blue transition-colors cursor-pointer"
+ checked={isChecked}
+ onChange={() => toggleRole(r.name)}
+ />
+ <Check size={12} strokeWidth={3} className="text-white absolute pointer-events-none opacity-0 peer-checked:opacity-100" />
+ </div>
+ <span className="text-sm font-medium text-carbon-text group-hover:text-carbon-blue transition-colors">{r.name}</span>
+ </label>
+ );
+ })}
+ </div>
+ </div>
+
+ <div className="pt-6 border-t border-carbon-border flex justify-end gap-3">
+ <button 
+ type="button" 
+ onClick={() => setShowAddForm(false)} 
+ className="px-6 py-2 bg-transparent text-carbon-text hover:bg-carbon-layerHover border border-carbon-border transition-colors text-sm font-medium"
+ >
+ إلغاء
+ </button>
+ <button 
+ type="submit" 
+ className="px-6 py-2 bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors text-sm font-medium flex items-center gap-2"
+ >
+ <UserPlus size={16} />
+ إضافة الموظف
+ </button>
+ </div>
+ </form>
+ )}
+
+ <div className="bg-carbon-layer border border-carbon-border overflow-hidden">
+ <div className="overflow-x-auto">
+ <table className="w-full text-right">
+ <thead className="bg-carbon-bg border-b border-carbon-border text-carbon-textSecondary text-xs">
+ <tr>
+ <th className="px-4 py-3 font-medium border-l border-carbon-border">الموظف</th>
+ <th className="px-4 py-3 font-medium border-l border-carbon-border">القسم / الفرع</th>
+ <th className="px-4 py-3 font-medium border-l border-carbon-border">الأدوار (Roles)</th>
+ <th className="px-4 py-3 font-medium border-l border-carbon-border">تسجيل الدخول (TOTP)</th>
+ <th className="px-4 py-3 font-medium border-l border-carbon-border">الحالة</th>
+ <th className="px-4 py-3 font-medium text-center w-24">إجراءات</th>
+ </tr>
+ </thead>
+ <tbody className="divide-y divide-carbon-border bg-carbon-layer">
+ {employees.length === 0 ? (
+ <tr>
+ <td colSpan={6} className="p-8 text-center text-sm text-carbon-textSecondary">
+ لا يوجد موظفين حالياً
+ </td>
+ </tr>
+ ) : (
+ employees.map(emp => (
+ <tr key={emp.id} className="hover:bg-carbon-layerHover transition-colors">
+ <td className="px-4 py-3 border-l border-carbon-border">
+ <div className="flex flex-col gap-1">
+ <span className="font-semibold text-sm text-carbon-text">{emp.fullName}</span>
+ <span className="text-xs text-carbon-textSecondary dir-ltr text-left w-max">{emp.mobileNumber}</span>
+ </div>
+ </td>
+ 
+ <td className="px-4 py-3 border-l border-carbon-border">
+ <div className="flex flex-col gap-1.5">
+ <div className="flex gap-2 items-center">
+ <span className="text-xs font-medium px-2 py-0.5 bg-carbon-bg border border-carbon-border text-carbon-text">{emp.departmentName}</span>
+ {emp.branchName && (
+ <span className="text-xs font-medium px-2 py-0.5 bg-carbon-blue/10 text-carbon-blue border border-carbon-border">{emp.branchName}</span>
+ )}
+ </div>
+ <span className="text-xs text-carbon-textSecondary font-mono">ID: {emp.employeeCode}</span>
+ </div>
+ </td>
+
+ <td className="px-4 py-3 border-l border-carbon-border">
+ <div className="flex flex-wrap gap-1.5">
+ {emp.roles?.map(role => (
+ <span key={role} className="text-[10px] font-medium px-2 py-0.5 bg-carbon-bg border border-carbon-border text-carbon-textSecondary">
+ {role}
+ </span>
+ ))}
+ </div>
+ </td>
+
+ <td className="px-4 py-3 border-l border-carbon-border">
+ <div className="flex items-center gap-2">
+ <ShieldCheck size={14} className={emp.hasTotp ? "text-carbon-success" : "text-carbon-textSecondary"} />
+ <span className={`text-xs font-medium ${emp.hasTotp ? "text-carbon-success" : "text-carbon-textSecondary"}`}>
+ {emp.hasTotp ? "مفعل" : "غير مفعل"}
+ </span>
+ </div>
+ </td>
+
+ <td className="px-4 py-3 border-l border-carbon-border">
+ <span className={`text-xs font-medium px-2 py-1 flex items-center justify-center w-fit gap-1 border border-carbon-border ${emp.status === "Available" ? "bg-carbon-success/10 text-carbon-success" : "bg-carbon-layerHover text-carbon-textSecondary"}`}>
+ <span className={`w-1.5 h-1.5 rounded-full ${emp.status === "Available" ? "bg-carbon-success" : "bg-carbon-textSecondary"}`}></span>
+ {emp.status === "Available" ? "نشط" : "غير نشط"}
+ </span>
+ </td>
+ 
+ <td className="px-4 py-3 text-center">
+ <div className="flex items-center justify-center gap-2">
+ <button 
+ onClick={() => handleRegenerateTotp(emp.id)}
+ className="p-1.5 text-carbon-textSecondary hover:text-carbon-blue hover:bg-carbon-layerHover transition-colors border border-transparent hover:border-carbon-border" 
+ title="تحديث الرمز"
+ >
+ <RefreshCw size={14} />
+ </button>
+ <button 
+ onClick={() => handleDelete(emp.id)}
+ className="p-1.5 text-carbon-textSecondary hover:text-carbon-error hover:bg-carbon-layerHover transition-colors border border-transparent hover:border-carbon-border" 
+ title="حذف الموظف"
+ >
+ <Trash2 size={14} />
+ </button>
+ </div>
+ </td>
+ </tr>
+ ))
+ )}
+ </tbody>
+ </table>
+ </div>
+ </div>
+ 
+ {employees.length === 0 && !loading && (
+ <div className="bg-carbon-layer border-carbon-border p-12 text-center bg-carbon-bg border-solid border-carbon-border">
+ <Users size={64} className="mx-auto text-gray-300 mb-4" />
+ <h3 className="text-xl font-semibold text-gray-400">لا يوجد موظفين حالياً</h3>
+ <p className="font-medium text-gray-400 mt-2">ابدأ بإضافة طاقم العمل وتوزيع الصلاحيات</p>
+ </div>
+ )}
+ </div>
+ );
+}
+// --- ORDERS PAGE ---
+export function OrdersPage({ onEditOrder }: { onEditOrder?: (id: string) => void }) {

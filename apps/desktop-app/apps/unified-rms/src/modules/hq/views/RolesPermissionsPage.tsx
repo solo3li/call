@@ -164,79 +164,94 @@ export function RolesPermissionsPage() {
  if (loading) return <div className="p-20 text-center font-semibold text-2xl animate-pulse">جاري تحميل الصلاحيات... </div>;
 
  return (
- <div className="space-y-6">
+ <div className="space-y-6 max-w-7xl">
  {/* Header */}
- <div className="bg-carbon-layer border-carbon-border p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+ <div className="bg-carbon-layer border-b border-carbon-border p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
  <div className="flex items-center gap-4">
- <div className="bg-carbon-layer border-carbon-border bg-carbon-layer p-3">
- <Lock size={28} />
- </div>
+ <Lock size={24} className="text-carbon-text" />
  <div>
- <h2 className="text-2xl font-semibold">الأدوار والصلاحيات</h2>
- <p className="font-medium text-carbon-text/70">إدارة مستويات الوصول وصلاحيات فريق العمل</p>
+ <h2 className="text-xl font-semibold text-carbon-text">الأدوار والصلاحيات</h2>
+ <p className="text-sm text-carbon-textSecondary mt-1">إدارة مستويات الوصول وصلاحيات فريق العمل بصرامة</p>
  </div>
  </div>
- <button onClick={handleCreateRole} className="px-5 py-2.5 flex items-center justify-center gap-2 border-carbon-border hover:shadow-none transition-all">
- <Plus size={18} />
+ <button 
+ onClick={handleCreateRole} 
+ className="bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors px-6 py-2.5 text-sm font-medium flex items-center justify-center gap-2"
+ >
+ <Plus size={16} />
  <span>دور جديد</span>
  </button>
  </div>
 
- <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
- {/* Roles List */}
- <div className="lg:col-span-1 space-y-2">
- <h3 className="font-semibold text-xs mb-2 bg-carbon-purple/10 text-carbon-purple text-white inline-block px-2 py-0.5 border-carbon-border ">
- الأدوار الحالية
- </h3>
- <div className="flex flex-col gap-2">
- {roles.map(role => (
+ <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+ {/* Roles List - 4 Columns */}
+ <div className="lg:col-span-4 bg-carbon-layer border border-carbon-border h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar">
+ <div className="p-4 border-b border-carbon-border bg-carbon-bg">
+ <h3 className="font-semibold text-sm text-carbon-text">الأدوار الحالية</h3>
+ </div>
+ <div className="flex flex-col">
+ {roles.map(role => {
+ const isActive = selectedRole?.id === role.id;
+ return (
  <div 
  key={role.id} 
  onClick={() => { setSelectedRole(role); setIsEditing(true); }}
- className={`p-2 cursor-pointer transition-all border-carbon-border ${
- selectedRole?.id === role.id 
- ? 'bg-carbon-warning/10 text-carbon-warning text-white shadow-sm' 
- : 'bg-carbon-layer hover:bg-carbon-bg '
+ className={`p-4 cursor-pointer transition-colors border-b border-carbon-border border-r-4 ${
+ isActive 
+ ? 'border-r-carbon-blue bg-carbon-layerHover' 
+ : 'border-r-transparent hover:bg-carbon-layerHover/50'
  }`}
  >
  <div className="flex justify-between items-start">
  <div>
- <h4 className="font-semibold text-xs leading-tight">{role.name}</h4>
- <p className={`text-[9px] font-medium mt-0.5 ${selectedRole?.id === role.id ? 'text-white' : 'text-carbon-warning'}`}>{role.departmentName || "عام"}</p>
+ <h4 className={`font-semibold text-sm ${isActive ? 'text-carbon-blue' : 'text-carbon-text'}`}>{role.name}</h4>
+ <p className="text-xs text-carbon-textSecondary mt-1">{role.departmentName || "عام"}</p>
  </div>
- <div className={`px-1.5 border-carbon-border text-[9px] font-semibold ${selectedRole?.id === role.id ? 'bg-carbon-layer text-carbon-warning' : 'bg-carbon-layer text-carbon-text'}`}>
- {role.staffCount}
+ <div className="px-2 py-0.5 bg-carbon-bg text-xs font-medium text-carbon-textSecondary border border-carbon-border">
+ {role.staffCount} موظف
  </div>
  </div>
- <div className="mt-2 flex gap-1 flex-wrap">
+ <div className="mt-3 flex gap-1.5 flex-wrap">
  {role.permissions.slice(0, 3).map(pId => (
- <span key={pId} className={`text-[8px] font-semibold px-1 border-carbon-border truncate max-w-[60px] ${selectedRole?.id === role.id ? 'bg-black/20 text-white' : 'bg-carbon-bg'}`}>
+ <span key={pId} className="text-[10px] font-medium px-2 py-0.5 bg-carbon-bg border border-carbon-border text-carbon-textSecondary truncate max-w-[80px]">
  {permissions.find(p => p.id === pId)?.name}
  </span>
  ))}
- {role.permissions.length > 3 && <span className={`text-[8px] font-semibold px-1 border-carbon-border ${selectedRole?.id === role.id ? 'bg-black/20 text-white' : 'bg-carbon-purple/10 text-carbon-purple text-carbon-purple'}`}>+{role.permissions.length - 3}</span>}
+ {role.permissions.length > 3 && (
+ <span className="text-[10px] font-medium px-2 py-0.5 bg-carbon-layerHover text-carbon-textSecondary border border-carbon-border">
+ +{role.permissions.length - 3}
+ </span>
+ )}
  </div>
  </div>
- ))}
+ );
+ })}
  </div>
  </div>
 
- <div className="lg:col-span-2">
+ {/* Role Editor - 8 Columns */}
+ <div className="lg:col-span-8">
  {isEditing && selectedRole ? (
- <div className="bg-carbon-layer p-6 md:p-8 border-carbon-border space-y-8 animate-fade-in">
- <div className="flex flex-col xl:flex-row justify-between gap-6">
- <div className="space-y-4 flex-1">
+ <div className="bg-carbon-layer border border-carbon-border animate-fade-in flex flex-col h-[calc(100vh-200px)]">
+ {/* Editor Header */}
+ <div className="p-6 border-b border-carbon-border bg-carbon-bg flex flex-col sm:flex-row justify-between gap-4">
+ <div className="flex-1 space-y-4">
+ <div>
+ <label className="block text-xs text-carbon-textSecondary mb-1">اسم الدور</label>
  <input 
  type="text" 
  value={selectedRole.name} 
  onChange={e => setSelectedRole({...selectedRole, name: e.target.value})}
- placeholder="اسم الدور"
- className="text-3xl font-semibold w-full bg-carbon-layer/30 px-4 py-2 border-l-8 border-carbon-blue focus:outline-none focus:bg-carbon-layer/50 transition-colors"
+ placeholder="أدخل اسم الدور..."
+ className="w-full bg-carbon-layer border-b border-carbon-border px-4 py-2 text-lg font-semibold focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors"
  />
+ </div>
+ <div>
+ <label className="block text-xs text-carbon-textSecondary mb-1">القسم المرتبط</label>
  <select 
  value={selectedRole.departmentId || ""} 
  onChange={e => setSelectedRole({...selectedRole, departmentId: e.target.value})}
- className="w-full bg-carbon-bg px-4 py-2 font-medium text-carbon-textSecondary border-carbon-border focus:outline-none focus:bg-carbon-layer"
+ className="w-full bg-carbon-layer border-b border-carbon-border px-4 py-2 text-sm focus:outline-none focus:border-carbon-blue text-carbon-text transition-colors appearance-none"
  >
  <option value="" disabled>اختر القسم (مطلوب)</option>
  {departments.map(d => (
@@ -244,29 +259,38 @@ export function RolesPermissionsPage() {
  ))}
  </select>
  </div>
- <div className="flex gap-3 h-fit flex-wrap">
- <button onClick={handleSave} className="px-6 py-3 flex items-center justify-center gap-2 border-carbon-border hover:shadow-none transition-all flex-1 xl:flex-none">
- <Check size={20} />
- <span className="font-semibold text-lg">حفظ التعديلات</span>
+ </div>
+ <div className="flex gap-2 items-end">
+ <button 
+ onClick={() => { setIsEditing(false); setSelectedRole(null); }} 
+ className="px-6 py-2 bg-transparent text-carbon-text hover:bg-carbon-layerHover border border-carbon-border transition-colors text-sm font-medium"
+ >
+ إلغاء
  </button>
- <button onClick={() => { setIsEditing(false); setSelectedRole(null); }} className="px-4 py-2 text-sm font-medium transition-colors bg-carbon-layerHover text-carbon-text border-carbon-border hover:bg-[#d4d4d4] px-6 py-3 border-carbon-border hover:shadow-none transition-all flex-1 xl:flex-none">
- <span className="font-semibold text-lg">إلغاء</span>
+ <button 
+ onClick={handleSave} 
+ className="px-6 py-2 bg-carbon-blue text-white hover:bg-carbon-blueHover transition-colors text-sm font-medium flex items-center gap-2"
+ >
+ <Check size={16} />
+ حفظ التعديلات
  </button>
  </div>
  </div>
 
+ {/* Permissions Content */}
+ <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
  {/* Templates */}
- <div className="p-3 bg-carbon-blue/10 text-carbon-blue/10 border-carbon-border shadow-sm mb-4">
- <p className="text-[10px] font-semibold mb-2 flex items-center gap-1">
+ <div className="mb-6 p-4 bg-carbon-bg border border-carbon-border">
+ <p className="text-xs font-semibold text-carbon-textSecondary mb-3 flex items-center gap-2">
  <ShieldAlert size={14} className="text-carbon-blue" />
- قوالب جاهزة للصلاحيات:
+ قوالب سريعة للصلاحيات:
  </p>
  <div className="flex flex-wrap gap-2">
  {roleTemplates.map(t => (
  <button 
  key={t.name}
  onClick={() => handleApplyTemplate(t)}
- className="px-2 py-1 bg-carbon-layer border-carbon-border shadow-sm text-[9px] font-semibold hover:bg-carbon-blue/10 text-carbon-blue hover:text-white transition-all"
+ className="px-3 py-1.5 bg-carbon-layer border border-carbon-border text-xs font-medium text-carbon-text hover:border-carbon-blue hover:text-carbon-blue transition-colors"
  >
  {t.name}
  </button>
@@ -275,38 +299,41 @@ export function RolesPermissionsPage() {
  </div>
 
  {/* Permissions Categories */}
- <div className="space-y-4">
+ <div className="space-y-8">
  {Object.entries(permissionsByCategory).map(([category, perms]) => (
- <div key={category} className="space-y-2">
- <div className="flex items-center gap-2 border-b-2 border-carbon-border pb-1">
- <div className="p-1 bg-carbon-bg border-carbon-border shadow-sm">
+ <div key={category} className="space-y-4">
+ <div className="flex items-center gap-3 border-b border-carbon-border pb-2">
+ <div className="p-1.5 bg-carbon-bg border border-carbon-border">
  {getCategoryIcon(category)}
  </div>
- <h4 className="font-semibold text-sm">{category}</h4>
+ <h4 className="font-semibold text-sm text-carbon-text">{category}</h4>
  </div>
- <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
  {perms.map(perm => {
  const isActive = selectedRole.permissions.includes(perm.id);
  return (
- <div 
+ <label 
  key={perm.id} 
- onClick={() => togglePermission(perm.id)}
- className={`p-2 border-carbon-border flex items-start gap-2 cursor-pointer transition-all ${
+ className={`p-3 border flex items-start gap-3 cursor-pointer transition-colors ${
  isActive 
- ? 'bg-carbon-success/10 border-carbon-success' 
- : 'bg-carbon-layer hover:bg-carbon-bg'
+ ? 'border-carbon-blue bg-carbon-blue/5' 
+ : 'border-carbon-border bg-carbon-layer hover:bg-carbon-layerHover'
  }`}
  >
- <div className={`mt-0.5 w-4 h-4 border-carbon-border flex items-center justify-center shrink-0 transition-colors ${
- isActive ? 'bg-carbon-success/10 text-carbon-success' : 'bg-carbon-layer'
- }`}>
- {isActive && <Check size={10} strokeWidth={4} className="text-white" />}
+ <div className="mt-0.5 relative flex items-center justify-center">
+ <input 
+ type="checkbox"
+ className="peer appearance-none w-4 h-4 border border-carbon-border bg-carbon-layer checked:bg-carbon-blue checked:border-carbon-blue transition-colors cursor-pointer"
+ checked={isActive}
+ onChange={() => togglePermission(perm.id)}
+ />
+ <Check size={12} strokeWidth={3} className="text-white absolute pointer-events-none opacity-0 peer-checked:opacity-100" />
  </div>
  <div className="flex-1">
- <p className="font-semibold text-[10px] leading-tight">{perm.name}</p>
- <p className="text-[8px] font-medium text-carbon-textSecondary mt-0.5 leading-snug">{perm.description}</p>
+ <p className="font-medium text-sm text-carbon-text leading-tight mb-1">{perm.name}</p>
+ <p className="text-xs text-carbon-textSecondary leading-snug">{perm.description}</p>
  </div>
- </div>
+ </label>
  );
  })}
  </div>
@@ -314,14 +341,15 @@ export function RolesPermissionsPage() {
  ))}
  </div>
  </div>
- ) : (
- <div className="bg-carbon-purple/10 text-carbon-purple p-12 xl:p-20 flex flex-col items-center justify-center text-center border-solid border-carbon-border h-full min-h-[500px]">
- <div className="w-24 h-24 bg-carbon-layer border-carbon-border rounded-full flex items-center justify-center mb-6">
- <Shield size={48} className="text-carbon-purple" />
  </div>
- <h3 className="font-semibold text-3xl text-carbon-text mb-3">الصلاحيات الذكية</h3>
- <p className="font-medium text-lg text-carbon-textSecondary max-w-md">
- اختر دوراً من القائمة الجانبية لتعديل صلاحياته، أو قم بإنشاء دور جديد بمستوى وصول مخصص وتخصيص دقيق.
+ ) : (
+ <div className="bg-carbon-bg border border-carbon-border h-[calc(100vh-200px)] flex flex-col items-center justify-center text-center p-8">
+ <div className="w-16 h-16 bg-carbon-layer border border-carbon-border flex items-center justify-center mb-6 text-carbon-textSecondary">
+ <Shield size={32} />
+ </div>
+ <h3 className="font-semibold text-xl text-carbon-text mb-2">إدارة الصلاحيات</h3>
+ <p className="text-sm text-carbon-textSecondary max-w-sm">
+ اختر دوراً من القائمة الجانبية لتعديل صلاحياته، أو قم بإنشاء دور جديد لتخصيص مستوى وصول محدد لفريق العمل.
  </p>
  </div>
  )}

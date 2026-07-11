@@ -152,10 +152,10 @@ function getPageContent(activeTab: string, setActiveTab: any, editOrderId: strin
  case "pos":
  return <PosPage />;
  case "kds":
- case "kds-monitor":
- return <KdsMonitorPage />;
  case "kds-station":
  return <KdsStationPage />;
+ case "kds-monitor":
+ return <KdsMonitorPage />;
  case "orders":
  return <OrdersPage onEditOrder={(id: string) => { setEditOrderId(id); setActiveTab("pos"); }} />;
  case "menu":

@@ -191,7 +191,7 @@ export default function SupportComplaintsPage() {
  {/* Search & Filter Controls */}
  <div className="space-y-2">
  <div className="relative">
- <Search className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+ <Search className="absolute right-2 top-1/2 -translate-y-1/2 text-carbon-textSecondary" size={14} />
  <input
  type="text"
  placeholder="ابحث..."
@@ -213,11 +213,11 @@ export default function SupportComplaintsPage() {
  {/* Tickets Scroll View */}
  <div className="flex-1 overflow-y-auto space-y-3 custom-scrollbar pr-1">
  {loading && tickets.length === 0 ? (
- <div className="flex flex-col items-center justify-center h-64 text-gray-400 font-medium animate-pulse">
+ <div className="flex flex-col items-center justify-center h-64 text-carbon-textSecondary font-medium animate-pulse">
  جاري تحميل التذاكر...
  </div>
  ) : filteredTickets.length === 0 ? (
- <div className="flex flex-col items-center justify-center h-64 text-gray-400 font-medium text-center p-4">
+ <div className="flex flex-col items-center justify-center h-64 text-carbon-textSecondary font-medium text-center p-4">
  <MessageSquare size={36} className="mb-2 opacity-50" />
  لا توجد تذاكر أو شكاوى مطابقة للبحث.
  </div>
@@ -258,7 +258,7 @@ export default function SupportComplaintsPage() {
  {ticket.lastMessage}
  </p>
 
- <div className="flex items-center justify-between text-[8px] font-medium text-gray-400 pt-1 border-t border-carbon-border/10">
+ <div className="flex items-center justify-between text-[8px] font-medium text-carbon-textSecondary pt-1 border-t border-carbon-border/10">
  <span className="flex items-center gap-1"><Clock size={10} /> {timeStr}</span>
  <span className="text-brand-purple">
  {ticket.messageCount} رسالة
@@ -311,7 +311,7 @@ export default function SupportComplaintsPage() {
  {/* Messages Scroll Area */}
  <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-carbon-layerHover/40 custom-scrollbar">
  {messages.length === 0 ? (
- <div className="flex flex-col items-center justify-center h-full text-gray-400 font-medium">
+ <div className="flex flex-col items-center justify-center h-full text-carbon-textSecondary font-medium">
  لا توجد رسائل في هذه التذكرة بعد.
  </div>
  ) : (
@@ -392,8 +392,8 @@ export default function SupportComplaintsPage() {
  </div>
  </>
  ) : (
- <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-gray-400 font-medium bg-carbon-bg/50">
- <MessageSquare size={64} className="mb-4 text-gray-300 animate-bounce" />
+ <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-carbon-textSecondary font-medium bg-carbon-bg/50">
+ <MessageSquare size={64} className="mb-4 text-carbon-textSecondary animate-bounce" />
  <h3 className="text-xl font-semibold text-carbon-textSecondary mb-1">اختر تذكرة أو شكوى للبدء</h3>
  <p className="text-sm text-carbon-textSecondary max-w-md">
  قم باختيار إحدى التذاكر من القائمة الجانبية لعرض تفاصيل المحادثة والرد مباشرة على استفسارات وشكاوى عملائك.
