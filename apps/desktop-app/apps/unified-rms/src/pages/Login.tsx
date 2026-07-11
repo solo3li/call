@@ -67,7 +67,7 @@ export default function Login() {
 
     try {
       const baseUrl = window.location.origin.includes('localhost') 
-          ? 'http://api-call.167.71.66.188.nip.io/api' 
+          ? 'http://api.167.71.66.188.nip.io/api' 
           : '/api';
           
       const response = await fetch(`${baseUrl}/Auth/login-employee`, {
