@@ -17,6 +17,7 @@ import QuickActions from "./QuickActions";
 import WeeklyRatings from "./WeeklyRatings";
 import MobileSidebar from "./MobileSidebar";
 import { useDashboard } from "../context/DashboardContext";
+import { useNavigation } from "../../../context/NavigationContext";
 import DeliveryDashboard from "./DeliveryDashboard";
 import SmartDeliveryView from "../views/SmartDeliveryView";
 import KdsMonitorPage from "../views/KdsMonitorPage";
@@ -197,110 +198,20 @@ function getPageContent(activeTab: string, setActiveTab: any, editOrderId: strin
 }
 
 export default function DashboardApp() {
-  const router = useRouter();
   const { isDisconnected } = useDashboard();
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [mounted, setMounted] = useState(false);
+  const { activeTab, setActiveTab } = useNavigation();
   const [editOrderId, setEditOrderId] = useState<string | null>(null);
 
-  useEffect(() => {
-    setMounted(true);
-    
-    // 1. Intercept URL tokens from cross-domain login
-    const params = new URLSearchParams(window.location.search);
-    const tokenFromUrl = params.get("token");
-    
-    if (tokenFromUrl) {
-      localStorage.setItem("token", tokenFromUrl);
-      localStorage.setItem("tenantId", params.get("tenantId") || "");
-      localStorage.setItem("userName", params.get("userName") || "");
-      localStorage.setItem("userRole", params.get("userRole") || "Owner");
-      
-      // Clean up URL without triggering a full page reload
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    // 2. Verify authentication
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setIsLoggedIn(false);
-      router.replace("/login");
-    } else {
-      setIsLoggedIn(true);
-    }
-  }, [router]);
-
-  const handleLogout = () => {
-    localStorage.clear();
-    setIsLoggedIn(false);
-    router.push("/");
-  };
-
-  if (!mounted || !isLoggedIn) {
-    return <div className="min-h-screen bg-carbon-bg text-carbon-text flex items-center justify-center font-bold">جاري التحميل...</div>;
-  }
-
-  const currentYear = new Date().getFullYear();
-
   return (
-    <div className="min-h-screen bg-carbon-bg text-carbon-text font-cairo" dir="rtl">
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:block">
-        <Sidebar
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          collapsed={sidebarCollapsed}
-          setCollapsed={setSidebarCollapsed}
-          onLogout={handleLogout}
-        />
-      </div>
+    <>
+      {isDisconnected && (
+        <div className="bg-[#da1e28] text-white border-b border-[#ba1b23] p-2 text-center font-bold text-sm flex items-center justify-center gap-2 mb-4 rounded">
+          <WifiOff size={16} /> 
+          انقطع الاتصال المباشر بالخادم! يرجى التحقق من الشبكة أو إعادة تحميل الصفحة.
+        </div>
+      )}
 
-      {/* Mobile Sidebar */}
-      <MobileSidebar
-        isOpen={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
-
-      {/* Main Content */}
-      <main
-        className={`transition-all duration-300 ${
-          sidebarCollapsed ? "lg:mr-14" : "lg:mr-52"
-        }`}
-      >
-        <Header
-          sidebarCollapsed={sidebarCollapsed}
-          onToggleMobile={() => setMobileMenuOpen(true)}
-        />
-        
-        {isDisconnected && (
-          <div className="bg-[#da1e28] text-white border-b border-[#ba1b23] p-2 text-center font-bold text-sm flex items-center justify-center gap-2 relative z-20">
-            <WifiOff size={16} /> 
-            انقطع الاتصال المباشر بالخادم! يرجى التحقق من الشبكة أو إعادة تحميل الصفحة.
-          </div>
-        )}
-
-        <div className="p-4 md:p-6">{getPageContent(activeTab, setActiveTab, editOrderId, setEditOrderId)}</div>
-
-        {/* Footer */}
-        <footer className="p-6 text-center border-t border-carbon-border mt-8">
-          <div className="flex flex-wrap items-center justify-center gap-2 text-carbon-textSecondary">
-            <span className="text-xl">🍽️</span>
-            <span className="font-bold text-white">أوبنو</span>
-            <span className="text-carbon-border">|</span>
-            <span className="text-xs">
-              نظام إدارة المطاعم والكافيهات © {currentYear}
-            </span>
-          </div>
-          <p className="text-[10px] text-carbon-textSecondary mt-2">
-            صُنع بـ ❤️ لأصحاب المطاعم والكافيهات
-          </p>
-        </footer>
-      </main>
-    </div>
+      {getPageContent(activeTab, setActiveTab, editOrderId, setEditOrderId)}
+    </>
   );
 }

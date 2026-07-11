@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth, Role } from "./AuthContext";
+import { NavigationProvider } from "./context/NavigationContext";
 
 import Login from "./pages/Login";
 import HQDashboard from "./pages/HQDashboard";
@@ -23,57 +24,55 @@ function ProtectedRoute({ children, allowedRoles }: { children: React.ReactEleme
     return <div>Unauthorized Access! You don't have permission to view this dashboard.</div>;
   }
   
-  return children;
+  return <NavigationProvider>{children}</NavigationProvider>;
 }
 
 function App() {
   const { role } = useAuth();
 
   return (
-    <div className="min-h-screen w-full bg-carbon-bg text-carbon-text">
-      <Routes>
-        <Route path="/" element={role ? <Navigate to={
-          role === 'admin' ? '/hq' : 
-          role === 'cashier' ? '/pos' : 
-          role === 'agent' ? '/call-center' :
-          role === 'branch_manager' ? '/branch' : '/inventory'
-        } /> : <Login />} />
-        
-        <Route path="/login" element={<Login />} />
-        
-        <Route path="/hq" element={
-          <ProtectedRoute allowedRoles={['admin']}>
-            <HQDashboard />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/pos" element={
-          <ProtectedRoute allowedRoles={['admin', 'cashier']}>
-            <POSDashboard />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/call-center" element={
-          <ProtectedRoute allowedRoles={['admin', 'agent']}>
-            <CallCenterDashboard />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/inventory" element={
-          <ProtectedRoute allowedRoles={['admin', 'inventory_manager']}>
-            <InventoryDashboard />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/branch" element={
-          <ProtectedRoute allowedRoles={['admin', 'branch_manager']}>
-            <BranchDashboard />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={role ? <Navigate to={
+        role === 'admin' ? '/hq' : 
+        role === 'cashier' ? '/pos' : 
+        role === 'agent' ? '/call-center' :
+        role === 'branch_manager' ? '/branch' : '/inventory'
+      } /> : <Login />} />
+      
+      <Route path="/login" element={<Login />} />
+      
+      <Route path="/hq" element={
+        <ProtectedRoute allowedRoles={['admin']}>
+          <HQDashboard />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/pos" element={
+        <ProtectedRoute allowedRoles={['admin', 'cashier', 'branch_manager']}>
+          <POSDashboard />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/call-center" element={
+        <ProtectedRoute allowedRoles={['admin', 'agent']}>
+          <CallCenterDashboard />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/inventory" element={
+        <ProtectedRoute allowedRoles={['admin', 'inventory_manager', 'branch_manager']}>
+          <InventoryDashboard />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/branch" element={
+        <ProtectedRoute allowedRoles={['admin', 'branch_manager']}>
+          <BranchDashboard />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
