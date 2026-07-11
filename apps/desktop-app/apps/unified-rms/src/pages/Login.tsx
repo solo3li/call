@@ -233,14 +233,6 @@ export default function Login() {
                   <Store size={16} />
                   <span>الفرع (Branch)</span>
                 </button>
-                <button type="button" onClick={() => setTotpCode(generateBoardToken("CASHIERSECRETKEY2222222222222222"))} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#00E676] transition-colors shadow-[2px_2px_0px_#1A1A1A]">
-                  <User size={16} />
-                  <span>الكاشير (POS)</span>
-                </button>
-                <button type="button" onClick={() => setTotpCode(generateBoardToken("AGENTSECRETKEY222222222222222222"))} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#FF6B35] transition-colors shadow-[2px_2px_0px_#1A1A1A]">
-                  <Headset size={16} />
-                  <span>خدمة العملاء</span>
-                </button>
                 <button type="button" onClick={() => setTotpCode(generateBoardToken("CHEFSECRETKEY2222222222222222222"))} className="py-2 flex flex-col items-center justify-center gap-1 bg-white border-2 border-[#1A1A1A] rounded-xl font-bold text-xs hover:bg-[#00B0FF] transition-colors shadow-[2px_2px_0px_#1A1A1A] col-span-2">
                   <PackageSearch size={16} />
                   <span>المخازن</span>
