@@ -20,16 +20,16 @@ interface RevenueChartProps {
 
 export function RevenueChart({ data }: RevenueChartProps) {
   return (
-    <div className="neo-card p-5">
+    <div className="bg-carbon-layer border border-carbon-border p-5">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="font-black text-lg">📊 الإيرادات</h3>
-          <p className="text-sm text-gray-500 font-semibold">آخر 7 أشهر</p>
+          <h3 className="font-semibold text-lg"> الإيرادات</h3>
+          <p className="text-sm text-carbon-textSecondary font-semibold">آخر 7 أشهر</p>
         </div>
         <div className="flex gap-3">
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 bg-brand-green rounded border-2 border-neo-border"></div>
-            <span className="text-xs font-bold">إيرادات</span>
+            <div className="w-3 h-3 bg-[#defbe6] text-[#198038] rounded border border-carbon-border"></div>
+            <span className="text-xs font-medium">إيرادات</span>
           </div>
         </div>
       </div>
@@ -69,10 +69,10 @@ interface OrdersChartProps {
 
 export function OrdersChart({ data }: OrdersChartProps) {
   return (
-    <div className="neo-card p-5">
+    <div className="bg-carbon-layer border border-carbon-border p-5">
       <div className="mb-4">
-        <h3 className="font-black text-lg">⏰ الطلبات حسب الساعة</h3>
-        <p className="text-sm text-gray-500 font-semibold">توزيع الطلبات اليوم</p>
+        <h3 className="font-semibold text-lg"> الطلبات حسب الساعة</h3>
+        <p className="text-sm text-carbon-textSecondary font-semibold">توزيع الطلبات اليوم</p>
       </div>
       <ResponsiveContainer width="100%" height={280}>
         <BarChart data={data}>
@@ -122,10 +122,10 @@ export function CategoryChart() {
   ];
 
   return (
-    <div className="neo-card p-5">
+    <div className="bg-carbon-layer border border-carbon-border p-5">
       <div className="mb-4">
-        <h3 className="font-black text-lg">🥧 المبيعات حسب الفئة</h3>
-        <p className="text-sm text-gray-500 font-semibold">توزيع المبيعات</p>
+        <h3 className="font-semibold text-lg"> المبيعات حسب الفئة</h3>
+        <p className="text-sm text-carbon-textSecondary font-semibold">توزيع المبيعات</p>
       </div>
       <ResponsiveContainer width="100%" height={280}>
         <PieChart>

@@ -46,38 +46,38 @@ const menuSections: MenuSection[] = [
   {
     title: "الرئيسية",
     items: [
-      { id: "dashboard", label: "لوحة التحكم", icon: LayoutDashboard, color: "bg-brand-yellow" },
-      { id: "pos", label: "نقطة بيع (POS)", icon: ShoppingBag, color: "bg-brand-purple text-white" },
+      { id: "dashboard", label: "لوحة التحكم", icon: LayoutDashboard, color: "bg-carbon-layer" },
+      { id: "pos", label: "نقطة بيع (POS)", icon: ShoppingBag, color: "bg-[#e8daff] text-[#6929c4] text-white" },
     ]
   },
   {
     title: "إدارة العمليات",
     items: [
-      { id: "orders", label: "الطلبات", icon: ShoppingBag, color: "bg-brand-orange" },
-      { id: "kds-monitor", label: "مراقبة المطبخ", icon: ChefHat, color: "bg-brand-red text-white" },
-      { id: "kds-station", label: "محطة الطهي", icon: UtensilsCrossed, color: "bg-brand-orange text-white" },
-      { id: "delivery", label: "إدارة التوصيل", icon: Store, color: "bg-brand-yellow" },
-      { id: "smart-delivery", label: "التوصيل الذكي", icon: Zap, color: "bg-brand-red text-white" },
-      { id: "delivery-driver", label: "شاشة المندوب", icon: Users, color: "bg-brand-cyan" },
-      { id: "menu", label: "قائمة الطعام", icon: UtensilsCrossed, color: "bg-brand-green" },
-      { id: "customers", label: "العملاء", icon: Users, color: "bg-brand-cyan" },
-      { id: "support", label: "دعم العملاء والشكاوى", icon: MessageSquare, color: "bg-brand-purple text-white" },
+      { id: "orders", label: "الطلبات", icon: ShoppingBag, color: "bg-[#fcf4d6] text-[#b47a00]" },
+      { id: "kds-monitor", label: "مراقبة المطبخ", icon: ChefHat, color: "bg-carbon-error text-white" },
+      { id: "kds-station", label: "محطة الطهي", icon: UtensilsCrossed, color: "bg-[#fcf4d6] text-[#b47a00] text-white" },
+      { id: "delivery", label: "إدارة التوصيل", icon: Store, color: "bg-carbon-layer" },
+      { id: "smart-delivery", label: "التوصيل الذكي", icon: Zap, color: "bg-carbon-error text-white" },
+      { id: "delivery-driver", label: "شاشة المندوب", icon: Users, color: "bg-[#e5f6ff] text-[#00a68f]" },
+      { id: "menu", label: "قائمة الطعام", icon: UtensilsCrossed, color: "bg-[#defbe6] text-[#198038]" },
+      { id: "customers", label: "العملاء", icon: Users, color: "bg-[#e5f6ff] text-[#00a68f]" },
+      { id: "support", label: "دعم العملاء والشكاوى", icon: MessageSquare, color: "bg-[#e8daff] text-[#6929c4] text-white" },
     ]
   },
   {
     title: "إدارة المنشأة",
     items: [
-      { id: "branches", label: "الفروع", icon: Store, color: "bg-brand-blue", restricted: true },
-      { id: "delivery-zones", label: "مناطق التوصيل", icon: MapPin, color: "bg-brand-orange text-white", restricted: true },
-      { id: "kitchen-stations", label: "محطات المطبخ", icon: ChefHat, color: "bg-brand-red text-white", restricted: true },
-      { id: "staff", label: "الموظفين", icon: Users, color: "bg-brand-pink", restricted: true },
-      { id: "roles", label: "الصلاحيات", icon: ShieldCheck, color: "bg-brand-purple text-white", restricted: true },
+      { id: "branches", label: "الفروع", icon: Store, color: "bg-[#edf5ff] text-[#0f62fe]", restricted: true },
+      { id: "delivery-zones", label: "مناطق التوصيل", icon: MapPin, color: "bg-[#fcf4d6] text-[#b47a00] text-white", restricted: true },
+      { id: "kitchen-stations", label: "محطات المطبخ", icon: ChefHat, color: "bg-carbon-error text-white", restricted: true },
+      { id: "staff", label: "الموظفين", icon: Users, color: "bg-[#fff0f7] text-[#ff7eb6]", restricted: true },
+      { id: "roles", label: "الصلاحيات", icon: ShieldCheck, color: "bg-[#e8daff] text-[#6929c4] text-white", restricted: true },
     ]
   },
   {
     title: "التحليل والتقييم",
     items: [
-      { id: "analytics", label: "التقارير", icon: BarChart3, color: "bg-brand-purple", restricted: true },
+      { id: "analytics", label: "التقارير", icon: BarChart3, color: "bg-[#e8daff] text-[#6929c4]", restricted: true },
     ]
   },
   {
@@ -115,7 +115,7 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
-            <h1 className="font-bold text-base leading-tight truncate text-white">أوبنو</h1>
+            <h1 className="font-medium text-base leading-tight truncate text-white">أوبنو</h1>
             <p className="text-[10px] font-normal text-carbon-textSecondary truncate">إدارة المطاعم</p>
           </div>
         )}
@@ -130,7 +130,7 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
           return (
             <div key={section.title} className="space-y-1">
               {!collapsed && (
-                <h3 className="px-2 text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                <h3 className="px-2 text-[9px] font-semibold text-gray-400 uppercase tracking-widest mb-1">
                   {section.title}
                 </h3>
               )}
@@ -141,7 +141,7 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
                   <button
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
-                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-none font-bold transition-colors ${
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-none font-medium transition-colors ${
                       isActive
                         ? `bg-carbon-blue text-white border-r-4 border-white`
                         : "text-carbon-textSecondary hover:bg-carbon-layerHover hover:text-white border-r-4 border-transparent"
@@ -165,15 +165,15 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
           className="w-full text-carbon-textSecondary hover:text-white hover:bg-carbon-layerHover py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none"
         >
           <RefreshCw size={14} />
-          {!collapsed && <span className="font-bold text-xs whitespace-nowrap">فحص التحديثات</span>}
+          {!collapsed && <span className="font-medium text-xs whitespace-nowrap">فحص التحديثات</span>}
         </button>
 
         <button
           onClick={onLogout}
-          className="w-full bg-[#da1e28] text-white hover:bg-[#ba1b23] py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none"
+          className="w-full bg-carbon-error text-white hover:bg-[#ba1b23] py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none"
         >
           <LogOut size={14} />
-          {!collapsed && <span className="font-bold text-xs whitespace-nowrap">تسجيل الخروج</span>}
+          {!collapsed && <span className="font-medium text-xs whitespace-nowrap">تسجيل الخروج</span>}
         </button>
         
         <button
@@ -181,7 +181,7 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
           className="w-full text-carbon-textSecondary hover:text-white hover:bg-carbon-layerHover py-2 px-3 flex items-center justify-center gap-2 transition-colors rounded-none mt-2"
         >
           {collapsed ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
-          {!collapsed && <span className="font-bold text-xs whitespace-nowrap">تصغير القائمة</span>}
+          {!collapsed && <span className="font-medium text-xs whitespace-nowrap">تصغير القائمة</span>}
         </button>
       </div>
     </aside>

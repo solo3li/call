@@ -113,19 +113,19 @@ export default function AutoUpdater() {
         className="fixed bottom-6 left-6 z-50 flex flex-col gap-3"
       >
         {isCheckingManual && (
-          <div className="flex items-center gap-3 p-4 shadow-lg rounded-xl border border-blue-200 bg-blue-50 text-blue-800 dark:bg-blue-900/30 dark:border-blue-800 w-72">
+          <div className="flex items-center gap-3 p-4  rounded-sm border border-blue-200 bg-blue-50 text-blue-800 dark:bg-blue-900/30 dark:border-blue-800 w-72">
             <Loader2 size={18} className="animate-spin text-blue-600" />
-            <span className="text-sm font-bold">جاري فحص التحديثات...</span>
+            <span className="text-sm font-medium">جاري فحص التحديثات...</span>
           </div>
         )}
 
         {statusMessage && (
-          <div className={`flex items-center justify-between p-4 shadow-lg rounded-xl border w-72 ${
+          <div className={`flex items-center justify-between p-4  rounded-sm border w-72 ${
             statusMessage.type === 'error' 
               ? 'border-red-200 bg-red-50 text-red-800 dark:bg-red-900/30 dark:border-red-800' 
               : 'border-green-200 bg-green-50 text-green-800 dark:bg-green-900/30 dark:border-green-800'
           }`}>
-            <span className="text-sm font-bold">{statusMessage.text}</span>
+            <span className="text-sm font-medium">{statusMessage.text}</span>
             <button onClick={() => setStatusMessage(null)} className="text-current opacity-70 hover:opacity-100">
               <X size={16} />
             </button>
@@ -133,23 +133,23 @@ export default function AutoUpdater() {
         )}
 
         {updateAvailable && !dismissed && (
-          <div className="shadow-lg rounded-xl border border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 overflow-hidden w-72">
+          <div className=" rounded-sm border border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 overflow-hidden w-72">
             <div className="p-4 flex flex-col gap-2">
               <div className="flex justify-between items-start">
-                <h3 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-sm font-medium text-gray-900 dark:text-white flex items-center gap-2">
                   <Download size={16} className="text-blue-500" />
                   تحديث جديد متاح
                 </h3>
                 <button 
                   onClick={() => setDismissed(true)} 
-                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  className="text-gray-400 hover:text-carbon-textSecondary dark:hover:text-gray-300"
                   disabled={isUpdating}
                 >
                   <X size={16} />
                 </button>
               </div>
               
-              <p className="text-xs text-gray-600 dark:text-gray-400">
+              <p className="text-xs text-carbon-textSecondary dark:text-gray-400">
                 الإصدار {updateAvailable.version} متاح الآن للتحميل.
               </p>
               

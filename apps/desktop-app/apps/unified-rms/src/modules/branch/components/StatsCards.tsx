@@ -23,8 +23,8 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       change: "+١٢.٥٪",
       trend: "up",
       icon: DollarSign,
-      color: "bg-brand-green",
-      emoji: "💰",
+      color: "bg-[#defbe6] text-[#198038]",
+      emoji: "",
     },
     {
       title: "الطلبات",
@@ -33,8 +33,8 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       change: "+٨.٣٪",
       trend: "up",
       icon: ShoppingBag,
-      color: "bg-brand-orange",
-      emoji: "📦",
+      color: "bg-[#fcf4d6] text-[#b47a00]",
+      emoji: "",
     },
 
     {
@@ -44,8 +44,8 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       change: "-١",
       trend: "down",
       icon: Star,
-      color: "bg-brand-yellow",
-      emoji: "⏳",
+      color: "bg-carbon-layer",
+      emoji: "",
     },
   ];
 
@@ -62,7 +62,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
             <div>
               <p className="text-sm font-normal text-carbon-textSecondary">{stat.title}</p>
               <div className="flex items-baseline gap-2 mt-1">
-                <span className="text-3xl font-bold text-white">{stat.value}</span>
+                <span className="text-3xl font-medium text-white">{stat.value}</span>
                 <span className="text-sm font-normal text-carbon-textSecondary">{stat.unit}</span>
               </div>
               <div className="flex items-center gap-1 mt-2">

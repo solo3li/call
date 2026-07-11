@@ -36,7 +36,6 @@ import { RolesPermissionsPage } from "../views/RolesPermissionsPage";
 import { AnalyticsPage } from "../views/AnalyticsPage";
 import PosPage from "../views/PosPage";
 import CustomersPage from "../views/CustomersPage";
-import KdsPage from "../views/KdsPage";
 import SupportComplaintsPage from "../views/SupportComplaintsPage";
 import HelpDeskPage from "../views/HelpDeskPage";
 
@@ -79,8 +78,8 @@ function DashboardPage() {
     }
   };
 
-  if (loading) return <div className="p-20 text-center font-black text-2xl animate-pulse">جاري تحميل البيانات... 🍽️</div>;
-  if (error) return <div className="p-20 text-center font-black text-2xl text-brand-red">⚠️ {error}</div>;
+  if (loading) return <div className="p-20 text-center font-semibold text-2xl animate-pulse">جاري تحميل البيانات... </div>;
+  if (error) return <div className="p-20 text-center font-semibold text-2xl text-carbon-error"> {error}</div>;
 
   return (
     <div className="space-y-6 text-carbon-text">
@@ -88,20 +87,20 @@ function DashboardPage() {
       <div className="bg-carbon-layer border border-carbon-border p-6 relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-white">
-              صباح الخير، {userName}! ☀️
+            <h2 className="text-2xl font-medium text-white">
+              صباح الخير، {userName}! 
             </h2>
             <p className="font-normal text-carbon-textSecondary mt-1">
-              إليك ملخص أداء مطعمك اليوم. أداء رائع! 🚀
+              إليك ملخص أداء مطعمك اليوم. أداء رائع! 
             </p>
           </div>
           <div>
             <button 
               onClick={toggleBusinessDay}
               disabled={dayLoading}
-              className={`px-4 py-2 font-bold text-white transition-colors ${isActiveDay ? 'bg-[#da1e28] hover:bg-[#ba1b23]' : 'bg-[#24a148] hover:bg-[#198038]'}`}
+              className={`px-4 py-2 font-medium text-white transition-colors ${isActiveDay ? 'bg-carbon-error hover:bg-[#ba1b23]' : 'bg-carbon-success hover:bg-[#198038]'}`}
             >
-              {dayLoading ? 'جاري التحميل...' : (isActiveDay ? '🛑 إنهاء اليوم التشغيلي' : '▶️ بدء اليوم التشغيلي')}
+              {dayLoading ? 'جاري التحميل...' : (isActiveDay ? ' إنهاء اليوم التشغيلي' : ' بدء اليوم التشغيلي')}
             </button>
           </div>
         </div>
@@ -116,15 +115,15 @@ function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-carbon-layer border border-carbon-border p-5 overflow-hidden">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-lg text-white">المبيعات والأرباح 📈</h3>
+            <h3 className="font-medium text-lg text-white">المبيعات والأرباح </h3>
             <span className="bg-[#f1c21b] text-black px-2 py-0.5 text-xs font-semibold">مباشر</span>
           </div>
           <RevenueChart data={stats?.revenueData || []} />
         </div>
         <div className="bg-carbon-layer border border-carbon-border p-5 overflow-hidden">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-lg text-white">حركة الطلبات 🚀</h3>
-            <span className="bg-[#24a148] text-white px-2 py-0.5 text-xs font-semibold">اليوم</span>
+            <h3 className="font-medium text-lg text-white">حركة الطلبات </h3>
+            <span className="bg-carbon-success text-white px-2 py-0.5 text-xs font-semibold">اليوم</span>
           </div>
           <OrdersChart data={stats?.ordersPerHour || []} />
         </div>
@@ -132,7 +131,7 @@ function DashboardPage() {
 
       <div className="bg-carbon-layer border border-carbon-border p-5 overflow-hidden">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-bold text-lg text-white">أحدث الطلبات 🍔</h3>
+          <h3 className="font-medium text-lg text-white">أحدث الطلبات </h3>
           <button className="text-carbon-blue hover:text-carbon-blueHover text-sm font-semibold transition-colors">
             عرض الكل
           </button>
@@ -155,6 +154,7 @@ function getPageContent(activeTab: string, setActiveTab: any, editOrderId: strin
   switch (activeTab) {
     case "pos":
       return <PosPage />;
+    case "kds":
     case "kds-monitor":
       return <KdsMonitorPage />;
     case "kds-station":
@@ -202,7 +202,7 @@ export default function DashboardApp() {
   return (
     <>
       {isDisconnected && (
-        <div className="bg-[#da1e28] text-white border-b border-[#ba1b23] p-2 text-center font-bold text-sm flex items-center justify-center gap-2 mb-4 rounded">
+        <div className="bg-carbon-error text-white border-b border-[#ba1b23] p-2 text-center font-medium text-sm flex items-center justify-center gap-2 mb-4 rounded">
           <WifiOff size={16} /> 
           انقطع الاتصال المباشر بالخادم! يرجى التحقق من الشبكة أو إعادة تحميل الصفحة.
         </div>

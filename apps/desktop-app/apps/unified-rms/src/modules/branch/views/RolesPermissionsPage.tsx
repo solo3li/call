@@ -142,12 +142,12 @@ export function RolesPermissionsPage() {
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case "الطلبات": return <Activity size={18} className="text-brand-blue" />;
-      case "القائمة": return <Shield size={18} className="text-brand-green" />;
+      case "الطلبات": return <Activity size={18} className="text-carbon-blue" />;
+      case "القائمة": return <Shield size={18} className="text-carbon-success" />;
       case "الموظفين": return <UserCheck size={18} className="text-brand-purple" />;
       case "التقارير": return <CreditCard size={18} className="text-brand-pink" />;
       case "العملاء": return <Users size={18} className="text-brand-cyan" />;
-      case "الإعدادات": return <Settings size={18} className="text-brand-orange" />;
+      case "الإعدادات": return <Settings size={18} className="text-carbon-warning" />;
       default: return <Shield size={18} className="text-gray-400" />;
     }
   };
@@ -161,22 +161,22 @@ export function RolesPermissionsPage() {
     return groups;
   }, [permissions]);
 
-  if (loading) return <div className="p-20 text-center font-black text-2xl animate-pulse">جاري تحميل الصلاحيات... 🛡️</div>;
+  if (loading) return <div className="p-20 text-center font-semibold text-2xl animate-pulse">جاري تحميل الصلاحيات... </div>;
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-brand-yellow neo-card p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="bg-carbon-layer bg-carbon-layer border border-carbon-border p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
-          <div className="neo-card-flat bg-white p-3">
+          <div className="bg-carbon-layer border border-carbon-border-flat bg-white p-3">
             <Lock size={28} />
           </div>
           <div>
-            <h2 className="text-2xl font-black">الأدوار والصلاحيات</h2>
-            <p className="font-bold text-neo-text/70">إدارة مستويات الوصول وصلاحيات فريق العمل</p>
+            <h2 className="text-2xl font-semibold">الأدوار والصلاحيات</h2>
+            <p className="font-medium text-carbon-text/70">إدارة مستويات الوصول وصلاحيات فريق العمل</p>
           </div>
         </div>
-        <button onClick={handleCreateRole} className="neo-btn bg-white px-5 py-2.5 flex items-center justify-center gap-2 border-2 border-neo-border shadow-[4px_4px_0px_#1A1A1A] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all">
+        <button onClick={handleCreateRole} className="px-4 py-2 text-sm font-medium transition-colors bg-carbon-layer text-carbon-text border border-carbon-border hover:bg-carbon-layerHover px-5 py-2.5 flex items-center justify-center gap-2 border border-carbon-border  hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all">
           <Plus size={18} />
           <span>دور جديد</span>
         </button>
@@ -185,7 +185,7 @@ export function RolesPermissionsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {/* Roles List */}
         <div className="lg:col-span-1 space-y-2">
-          <h3 className="font-black text-xs mb-2 bg-brand-pink text-white inline-block px-2 py-0.5 border border-neo-border shadow-[2px_2px_0px_#1A1A1A]">
+          <h3 className="font-semibold text-xs mb-2 bg-[#fff0f7] text-[#ff7eb6] text-white inline-block px-2 py-0.5 border border-carbon-border ">
             الأدوار الحالية
           </h3>
           <div className="flex flex-col gap-2">
@@ -193,28 +193,28 @@ export function RolesPermissionsPage() {
               <div 
                 key={role.id} 
                 onClick={() => { setSelectedRole(role); setIsEditing(true); }}
-                className={`p-2 cursor-pointer transition-all border-2 border-neo-border ${
+                className={`p-2 cursor-pointer transition-all border border-carbon-border ${
                   selectedRole?.id === role.id 
-                    ? 'bg-brand-orange text-white shadow-sm' 
-                    : 'bg-white hover:bg-gray-50 shadow-[2px_2px_0px_#1A1A1A] hover:translate-x-[-1px] hover:translate-y-[-1px]'
+                    ? 'bg-[#fcf4d6] text-[#b47a00] text-white shadow-sm' 
+                    : 'bg-white hover:bg-carbon-bg  hover:translate-x-[-1px] hover:translate-y-[-1px]'
                 }`}
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <h4 className="font-black text-xs leading-tight">{role.name}</h4>
-                    <p className={`text-[9px] font-bold mt-0.5 ${selectedRole?.id === role.id ? 'text-white' : 'text-brand-orange'}`}>{role.departmentName || "عام"}</p>
+                    <h4 className="font-semibold text-xs leading-tight">{role.name}</h4>
+                    <p className={`text-[9px] font-medium mt-0.5 ${selectedRole?.id === role.id ? 'text-white' : 'text-carbon-warning'}`}>{role.departmentName || "عام"}</p>
                   </div>
-                  <div className={`px-1.5 border border-neo-border text-[9px] font-black ${selectedRole?.id === role.id ? 'bg-white text-brand-orange' : 'bg-brand-yellow text-neo-text'}`}>
+                  <div className={`px-1.5 border border-carbon-border text-[9px] font-semibold ${selectedRole?.id === role.id ? 'bg-white text-carbon-warning' : 'bg-carbon-layer text-carbon-text'}`}>
                     {role.staffCount}
                   </div>
                 </div>
                 <div className="mt-2 flex gap-1 flex-wrap">
                   {role.permissions.slice(0, 3).map(pId => (
-                    <span key={pId} className={`text-[8px] font-black px-1 border border-neo-border truncate max-w-[60px] ${selectedRole?.id === role.id ? 'bg-black/20 text-white' : 'bg-gray-100'}`}>
+                    <span key={pId} className={`text-[8px] font-semibold px-1 border border-carbon-border truncate max-w-[60px] ${selectedRole?.id === role.id ? 'bg-black/20 text-white' : 'bg-gray-100'}`}>
                       {permissions.find(p => p.id === pId)?.name}
                     </span>
                   ))}
-                  {role.permissions.length > 3 && <span className={`text-[8px] font-black px-1 border border-neo-border ${selectedRole?.id === role.id ? 'bg-black/20 text-white' : 'bg-brand-pink/20 text-brand-pink'}`}>+{role.permissions.length - 3}</span>}
+                  {role.permissions.length > 3 && <span className={`text-[8px] font-semibold px-1 border border-carbon-border ${selectedRole?.id === role.id ? 'bg-black/20 text-white' : 'bg-[#fff0f7] text-[#ff7eb6]/20 text-brand-pink'}`}>+{role.permissions.length - 3}</span>}
                 </div>
               </div>
             ))}
@@ -223,7 +223,7 @@ export function RolesPermissionsPage() {
 
         <div className="lg:col-span-2">
           {isEditing && selectedRole ? (
-            <div className="bg-white p-6 md:p-8 border-4 border-neo-border shadow-[8px_8px_0px_#1A1A1A] space-y-8 animate-fade-in">
+            <div className="bg-white p-6 md:p-8 border border-carbon-border  space-y-8 animate-fade-in">
               <div className="flex flex-col xl:flex-row justify-between gap-6">
                 <div className="space-y-4 flex-1">
                   <input 
@@ -231,12 +231,12 @@ export function RolesPermissionsPage() {
                     value={selectedRole.name} 
                     onChange={e => setSelectedRole({...selectedRole, name: e.target.value})}
                     placeholder="اسم الدور"
-                    className="text-3xl font-black w-full bg-brand-yellow/30 px-4 py-2 border-l-8 border-brand-orange focus:outline-none focus:bg-brand-yellow/50 transition-colors"
+                    className="text-3xl font-semibold w-full bg-carbon-layer/30 px-4 py-2 border-l-8 border-brand-orange focus:outline-none focus:bg-carbon-layer/50 transition-colors"
                   />
                   <select 
                     value={selectedRole.departmentId || ""} 
                     onChange={e => setSelectedRole({...selectedRole, departmentId: e.target.value})}
-                    className="w-full bg-gray-50 px-4 py-2 font-bold text-gray-600 border-2 border-neo-border focus:outline-none focus:bg-white"
+                    className="w-full bg-carbon-bg px-4 py-2 font-medium text-carbon-textSecondary border border-carbon-border focus:outline-none focus:bg-white"
                   >
                     <option value="" disabled>اختر القسم (مطلوب)</option>
                     {departments.map(d => (
@@ -245,20 +245,20 @@ export function RolesPermissionsPage() {
                   </select>
                 </div>
                 <div className="flex gap-3 h-fit flex-wrap">
-                   <button onClick={handleSave} className="neo-btn bg-brand-green px-6 py-3 flex items-center justify-center gap-2 border-2 border-neo-border shadow-[4px_4px_0px_#1A1A1A] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all flex-1 xl:flex-none">
+                   <button onClick={handleSave} className="px-4 py-2 text-sm font-medium transition-colors bg-carbon-blue text-white hover:bg-carbon-blueHover px-6 py-3 flex items-center justify-center gap-2 border border-carbon-border  hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all flex-1 xl:flex-none">
                      <Check size={20} />
-                     <span className="font-black text-lg">حفظ التعديلات</span>
+                     <span className="font-semibold text-lg">حفظ التعديلات</span>
                    </button>
-                   <button onClick={() => { setIsEditing(false); setSelectedRole(null); }} className="neo-btn bg-gray-200 px-6 py-3 border-2 border-neo-border shadow-[4px_4px_0px_#1A1A1A] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all flex-1 xl:flex-none">
-                     <span className="font-black text-lg">إلغاء</span>
+                   <button onClick={() => { setIsEditing(false); setSelectedRole(null); }} className="px-4 py-2 text-sm font-medium transition-colors bg-carbon-layerHover text-carbon-text border border-carbon-border hover:bg-[#d4d4d4] px-6 py-3 border border-carbon-border  hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all flex-1 xl:flex-none">
+                     <span className="font-semibold text-lg">إلغاء</span>
                    </button>
                 </div>
               </div>
 
               {/* Templates */}
-              <div className="p-3 bg-brand-blue/10 border-2 border-neo-border shadow-sm mb-4">
-                <p className="text-[10px] font-black mb-2 flex items-center gap-1">
-                  <ShieldAlert size={14} className="text-brand-blue" />
+              <div className="p-3 bg-[#edf5ff] text-[#0f62fe]/10 border border-carbon-border shadow-sm mb-4">
+                <p className="text-[10px] font-semibold mb-2 flex items-center gap-1">
+                  <ShieldAlert size={14} className="text-carbon-blue" />
                   قوالب جاهزة للصلاحيات:
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -266,7 +266,7 @@ export function RolesPermissionsPage() {
                     <button 
                       key={t.name}
                       onClick={() => handleApplyTemplate(t)}
-                      className="px-2 py-1 bg-white border border-neo-border shadow-sm text-[9px] font-black hover:bg-brand-blue hover:text-white transition-all"
+                      className="px-2 py-1 bg-white border border-carbon-border shadow-sm text-[9px] font-semibold hover:bg-[#edf5ff] text-[#0f62fe] hover:text-white transition-all"
                     >
                       {t.name}
                     </button>
@@ -278,11 +278,11 @@ export function RolesPermissionsPage() {
               <div className="space-y-4">
                 {Object.entries(permissionsByCategory).map(([category, perms]) => (
                   <div key={category} className="space-y-2">
-                    <div className="flex items-center gap-2 border-b-2 border-neo-border pb-1">
-                      <div className="p-1 bg-gray-100 border border-neo-border shadow-sm">
+                    <div className="flex items-center gap-2 border-b-2 border-carbon-border pb-1">
+                      <div className="p-1 bg-gray-100 border border-carbon-border shadow-sm">
                         {getCategoryIcon(category)}
                       </div>
-                      <h4 className="font-black text-sm">{category}</h4>
+                      <h4 className="font-semibold text-sm">{category}</h4>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                       {perms.map(perm => {
@@ -291,20 +291,20 @@ export function RolesPermissionsPage() {
                           <div 
                             key={perm.id} 
                             onClick={() => togglePermission(perm.id)}
-                            className={`p-2 border-2 border-neo-border flex items-start gap-2 cursor-pointer transition-all ${
+                            className={`p-2 border border-carbon-border flex items-start gap-2 cursor-pointer transition-all ${
                               isActive 
                                 ? 'bg-[#ECFDF5] border-brand-green' 
-                                : 'bg-white hover:bg-gray-50'
+                                : 'bg-white hover:bg-carbon-bg'
                             }`}
                           >
-                            <div className={`mt-0.5 w-4 h-4 border-2 border-neo-border flex items-center justify-center shrink-0 transition-colors ${
-                              isActive ? 'bg-brand-green' : 'bg-white'
+                            <div className={`mt-0.5 w-4 h-4 border border-carbon-border flex items-center justify-center shrink-0 transition-colors ${
+                              isActive ? 'bg-[#defbe6] text-[#198038]' : 'bg-white'
                             }`}>
                               {isActive && <Check size={10} strokeWidth={4} className="text-white" />}
                             </div>
                             <div className="flex-1">
-                              <p className="font-black text-[10px] leading-tight">{perm.name}</p>
-                              <p className="text-[8px] font-bold text-gray-500 mt-0.5 leading-snug">{perm.description}</p>
+                              <p className="font-semibold text-[10px] leading-tight">{perm.name}</p>
+                              <p className="text-[8px] font-medium text-carbon-textSecondary mt-0.5 leading-snug">{perm.description}</p>
                             </div>
                           </div>
                         );
@@ -315,12 +315,12 @@ export function RolesPermissionsPage() {
               </div>
             </div>
           ) : (
-            <div className="bg-brand-pink/10 p-12 xl:p-20 flex flex-col items-center justify-center text-center border-4 border-dashed border-brand-pink shadow-[8px_8px_0px_#1A1A1A] h-full min-h-[500px]">
-              <div className="w-24 h-24 bg-white border-4 border-neo-border shadow-[6px_6px_0px_#1A1A1A] rounded-full flex items-center justify-center mb-6">
+            <div className="bg-[#fff0f7] text-[#ff7eb6]/10 p-12 xl:p-20 flex flex-col items-center justify-center text-center border-4 border-dashed border-brand-pink  h-full min-h-[500px]">
+              <div className="w-24 h-24 bg-white border border-carbon-border  rounded-full flex items-center justify-center mb-6">
                 <Shield size={48} className="text-brand-pink" />
               </div>
-              <h3 className="font-black text-3xl text-neo-text mb-3">الصلاحيات الذكية</h3>
-              <p className="font-bold text-lg text-gray-600 max-w-md">
+              <h3 className="font-semibold text-3xl text-carbon-text mb-3">الصلاحيات الذكية</h3>
+              <p className="font-medium text-lg text-carbon-textSecondary max-w-md">
                 اختر دوراً من القائمة الجانبية لتعديل صلاحياته، أو قم بإنشاء دور جديد بمستوى وصول مخصص وتخصيص دقيق.
               </p>
             </div>

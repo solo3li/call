@@ -36,7 +36,6 @@ import { RolesPermissionsPage } from "../views/RolesPermissionsPage";
 import { AnalyticsPage } from "../views/AnalyticsPage";
 import PosPage from "../views/PosPage";
 import CustomersPage from "../views/CustomersPage";
-import KdsPage from "../views/KdsPage";
 import SupportComplaintsPage from "../views/SupportComplaintsPage";
 import HelpDeskPage from "../views/HelpDeskPage";
 import ExternalCompaniesSettings from '../app/settings/external-companies/page';
@@ -152,6 +151,7 @@ function getPageContent(activeTab: string, setActiveTab: any, editOrderId: strin
   switch (activeTab) {
     case "pos":
       return <PosPage />;
+    case "kds":
     case "kds-monitor":
       return <KdsMonitorPage />;
     case "kds-station":

@@ -12,11 +12,11 @@ const OrderCard = ({ order, handleItemStatusChange }: { order: any, handleItemSt
   const isCritical = minutesElapsed > 15;
   const isWarning = minutesElapsed > 10 && !isCritical;
   
-  let cardClasses = "bg-white border-neo-border text-neo-text shadow-[2px_2px_0px_#1A1A1A]";
+  let cardClasses = "bg-white border-carbon-border text-carbon-text ";
   if (isCritical) {
-    cardClasses = "bg-brand-red text-white border-black shadow-[3px_3px_0px_#1A1A1A]";
+    cardClasses = "bg-carbon-error text-white border-black ";
   } else if (isWarning) {
-    cardClasses = "bg-brand-orange/20 border-brand-orange text-neo-text";
+    cardClasses = "bg-[#fcf4d6] text-[#b47a00]/20 border-brand-orange text-carbon-text";
   }
 
   return (
@@ -27,15 +27,15 @@ const OrderCard = ({ order, handleItemStatusChange }: { order: any, handleItemSt
       className={`border-2 flex flex-col justify-between overflow-hidden shrink-0 ${cardClasses}`}
     >
       <div className="p-1.5 border-b-2 border-inherit flex justify-between items-center bg-white/50">
-        <span className="text-2xl font-black leading-none">#{order.orderNumber}</span>
-        <div className={`flex items-center gap-1 px-1.5 py-0.5 border border-inherit ${isCritical ? 'bg-black text-white animate-pulse' : 'bg-gray-100 text-neo-text'}`}>
+        <span className="text-2xl font-semibold leading-none">#{order.orderNumber}</span>
+        <div className={`flex items-center gap-1 px-1.5 py-0.5 border border-inherit ${isCritical ? 'bg-black text-white animate-pulse' : 'bg-gray-100 text-carbon-text'}`}>
           <Clock size={12} />
-          <span className="text-sm font-black">{minutesElapsed}د</span>
+          <span className="text-sm font-semibold">{minutesElapsed}د</span>
         </div>
       </div>
 
       {order.externalCompanyName && (
-        <div className="bg-brand-orange text-white text-[10px] font-black uppercase text-center py-0.5 border-b-2 border-inherit">
+        <div className="bg-[#fcf4d6] text-[#b47a00] text-white text-[10px] font-semibold uppercase text-center py-0.5 border-b-2 border-inherit">
           توصيل خارجي: {order.externalCompanyName}
         </div>
       )}
@@ -44,12 +44,12 @@ const OrderCard = ({ order, handleItemStatusChange }: { order: any, handleItemSt
         {order.stationItems.map((item: any) => {
           const isReady = item.status === "Ready";
           const isPrep = item.status === "Preparing";
-          let btnClass = "bg-white border-neo-border text-neo-text";
+          let btnClass = "bg-white border-carbon-border text-carbon-text";
           
           if (isCritical) {
-            btnClass = isReady ? "bg-black/30 border-black/50 text-white/50 line-through" : isPrep ? "bg-black text-brand-yellow border-black" : "bg-white text-neo-text border-black";
+            btnClass = isReady ? "bg-black/30 border-black/50 text-white/50 line-through" : isPrep ? "bg-black text-[#f1c21b] border-black" : "bg-white text-carbon-text border-black";
           } else {
-            btnClass = isReady ? "bg-gray-100 border-gray-200 text-gray-400 line-through" : isPrep ? "bg-brand-purple/10 border-brand-purple text-brand-purple" : "bg-white border-neo-border text-neo-text hover:bg-gray-50";
+            btnClass = isReady ? "bg-gray-100 border-gray-200 text-gray-400 line-through" : isPrep ? "bg-[#e8daff] text-[#6929c4]/10 border-brand-purple text-brand-purple" : "bg-white border-carbon-border text-carbon-text hover:bg-carbon-bg";
           }
 
           return (
@@ -59,13 +59,13 @@ const OrderCard = ({ order, handleItemStatusChange }: { order: any, handleItemSt
               className={`w-full text-right p-2 flex items-center justify-between border-2 transition-colors cursor-pointer shadow-sm ${btnClass}`}
             >
               <div className="flex items-center gap-2 overflow-hidden">
-                <span className={`font-black px-1.5 py-0.5 border-inherit border-r-2 ${isCritical && !isReady && !isPrep ? 'bg-black/10' : 'bg-gray-100'}`}>{item.quantity}</span>
-                <span className="font-bold text-sm truncate">{item.menuItemName}</span>
+                <span className={`font-semibold px-1.5 py-0.5 border-inherit border-r-2 ${isCritical && !isReady && !isPrep ? 'bg-black/10' : 'bg-gray-100'}`}>{item.quantity}</span>
+                <span className="font-medium text-sm truncate">{item.menuItemName}</span>
               </div>
               <div className="shrink-0 flex items-center justify-center p-1 bg-white/50 rounded-sm border border-inherit">
                 {item.status === 'Pending' && <Square size={16} className={isCritical ? 'opacity-50' : 'text-gray-400'} />}
-                {item.status === 'Preparing' && <Flame size={16} className="text-brand-orange animate-pulse" />}
-                {item.status === 'Ready' && <CheckCircle2 size={16} className="text-brand-green" />}
+                {item.status === 'Preparing' && <Flame size={16} className="text-carbon-warning animate-pulse" />}
+                {item.status === 'Ready' && <CheckCircle2 size={16} className="text-carbon-success" />}
               </div>
             </button>
           );
@@ -190,10 +190,10 @@ export default function KdsStationPage() {
   if (!hasAccess) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[70vh] p-6">
-        <div className="bg-brand-yellow p-12 flex flex-col items-center gap-6 text-center border-4 border-neo-border shadow-[12px_12px_0px_#1A1A1A] max-w-2xl w-full">
-          <AlertTriangle size={64} strokeWidth={2.5} className="text-neo-text" />
-          <h2 className="text-5xl font-black text-neo-text uppercase tracking-tight">توقف!</h2>
-          <p className="font-bold text-2xl text-neo-text leading-snug">مخصصة لطاقم المطبخ فقط.</p>
+        <div className="bg-carbon-layer p-12 flex flex-col items-center gap-6 text-center border border-carbon-border  max-w-2xl w-full">
+          <AlertTriangle size={64} strokeWidth={2.5} className="text-carbon-text" />
+          <h2 className="text-5xl font-semibold text-carbon-text uppercase tracking-tight">توقف!</h2>
+          <p className="font-medium text-2xl text-carbon-text leading-snug">مخصصة لطاقم المطبخ فقط.</p>
         </div>
       </div>
     );
@@ -202,7 +202,7 @@ export default function KdsStationPage() {
   if (loading && stations.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[70vh]">
-        <div className="text-center font-black text-4xl animate-pulse flex items-center gap-4">
+        <div className="text-center font-semibold text-4xl animate-pulse flex items-center gap-4">
           <ChefHat size={48} /><span>جاري التحميل...</span>
         </div>
       </div>
@@ -214,15 +214,15 @@ export default function KdsStationPage() {
   if (!selectedStation) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[80vh] p-6 bg-neo-bg">
-        <div className="bg-white p-10 flex flex-col items-center text-center border-4 border-neo-border shadow-[8px_8px_0px_#1A1A1A] max-w-2xl w-full">
-          <Settings size={64} className="text-brand-blue mb-6" />
-          <h1 className="text-4xl font-black mb-4">إعداد المحطة</h1>
-          <p className="text-xl font-bold text-gray-500 mb-8">اختر محطة الطهي</p>
+        <div className="bg-white p-10 flex flex-col items-center text-center border border-carbon-border  max-w-2xl w-full">
+          <Settings size={64} className="text-carbon-blue mb-6" />
+          <h1 className="text-4xl font-semibold mb-4">إعداد المحطة</h1>
+          <p className="text-xl font-medium text-carbon-textSecondary mb-8">اختر محطة الطهي</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full">
             {activeStations.map(st => (
               <button 
                 key={st} onClick={() => handleStationChange(st)}
-                className="bg-brand-yellow text-neo-text p-6 border-4 border-neo-border shadow-[4px_4px_0px_#1A1A1A] hover:translate-y-[-2px] active:translate-y-[2px] font-black text-2xl flex flex-col items-center gap-3"
+                className="bg-carbon-layer text-carbon-text p-6 border border-carbon-border  hover:translate-y-[-2px] active:translate-y-[2px] font-semibold text-2xl flex flex-col items-center gap-3"
               >
                 <ChefHat size={32} /><span>{st}</span>
               </button>
@@ -239,14 +239,14 @@ export default function KdsStationPage() {
   const orderTypes = ["الكل", ...defaultOrderTypes, ...dynamicOrderTypes];
 
   return (
-    <div className="flex flex-col h-[calc(100vh-100px)] bg-gray-50 relative">
+    <div className="flex flex-col h-[calc(100vh-100px)] bg-carbon-bg relative">
       {/* Dense Header */}
-      <header className="flex flex-col lg:flex-row items-center justify-between p-2 border-b-2 border-neo-border bg-white shrink-0 z-20 shadow-[0_2px_0px_#1A1A1A] gap-2">
+      <header className="flex flex-col lg:flex-row items-center justify-between p-2 border-b-2 border-carbon-border bg-white shrink-0 z-20  gap-2">
         <div className="flex items-center gap-3 w-full lg:w-auto shrink-0 justify-between lg:justify-start">
-          <div className="bg-black text-white px-3 py-1.5 border-2 border-neo-border shadow-[2px_2px_0px_#1A1A1A] flex items-center gap-2 font-black">
+          <div className="bg-black text-white px-3 py-1.5 border border-carbon-border  flex items-center gap-2 font-semibold">
             <ChefHat size={16} /> <span className="uppercase text-sm">{selectedStation}</span>
           </div>
-          <span className="bg-gray-200 text-xs font-black px-2 py-1 rounded border border-gray-300 hidden sm:block">
+          <span className="bg-gray-200 text-xs font-semibold px-2 py-1 rounded border border-gray-300 hidden sm:block">
             {stationOrders.length} طلبات نشطة
           </span>
         </div>
@@ -257,7 +257,7 @@ export default function KdsStationPage() {
             <button
               key={type}
               onClick={() => setOrderTypeFilter(type)}
-              className={`px-4 py-1.5 text-xs font-black border-2 border-neo-border whitespace-nowrap transition-all active:scale-95 ${orderTypeFilter === type ? 'bg-brand-yellow text-neo-text shadow-[2px_2px_0px_#1A1A1A] -translate-y-0.5' : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-800'}`}
+              className={`px-4 py-1.5 text-xs font-semibold border border-carbon-border whitespace-nowrap transition-all active:scale-95 ${orderTypeFilter === type ? 'bg-carbon-layer text-carbon-text  -translate-y-0.5' : 'bg-white text-carbon-textSecondary hover:bg-carbon-layerHover hover:text-gray-800'}`}
             >
               {type}
             </button>
@@ -269,10 +269,10 @@ export default function KdsStationPage() {
             <Search className="w-3.5 h-3.5 text-gray-400 absolute right-2 top-1/2 -translate-y-1/2" />
             <input
               type="text" placeholder="رقم الطلب..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white border-2 border-neo-border py-1 pr-7 pl-2 text-xs font-bold focus:outline-none shadow-[2px_2px_0px_#1A1A1A]"
+              className="w-full bg-white border border-carbon-border py-1 pr-7 pl-2 text-xs font-medium focus:outline-none "
             />
           </div>
-          <button onClick={() => handleStationChange("")} className="bg-gray-100 text-[10px] font-black px-2 py-1 border-2 border-neo-border shadow-[2px_2px_0px_#1A1A1A] hover:bg-gray-200 shrink-0">
+          <button onClick={() => handleStationChange("")} className="bg-gray-100 text-[10px] font-semibold px-2 py-1 border border-carbon-border  hover:bg-gray-200 shrink-0">
             تغيير المحطة
           </button>
         </div>
@@ -282,18 +282,18 @@ export default function KdsStationPage() {
       <div className="flex-grow overflow-hidden flex flex-col md:flex-row p-2 gap-4">
         {stationOrders.length === 0 ? (
           <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 gap-4">
-            <div className="w-16 h-16 bg-white border-4 border-neo-border rounded-full flex items-center justify-center shadow-sm">
-              <CheckCircle2 size={32} className="text-brand-green" />
+            <div className="w-16 h-16 bg-white border border-carbon-border rounded-full flex items-center justify-center shadow-sm">
+              <CheckCircle2 size={32} className="text-carbon-success" />
             </div>
-            <p className="text-xl font-black">المحطة نظيفة! 🍳</p>
+            <p className="text-xl font-semibold">المحطة نظيفة! 🍳</p>
           </div>
         ) : (
           <>
             {/* Pending Column */}
-            <div className="flex-1 flex flex-col bg-gray-100 border-4 border-neo-border shadow-[4px_4px_0px_#1A1A1A] overflow-hidden">
-              <div className="bg-brand-yellow p-3 border-b-4 border-neo-border flex items-center justify-between z-10">
-                <h3 className="font-black text-xl flex items-center gap-2"><Square size={20} /> في الانتظار</h3>
-                <span className="bg-black text-white px-2 py-0.5 text-sm font-black rounded-full">{pendingOrders.length}</span>
+            <div className="flex-1 flex flex-col bg-gray-100 border border-carbon-border  overflow-hidden">
+              <div className="bg-carbon-layer p-3 border-b-4 border-carbon-border flex items-center justify-between z-10">
+                <h3 className="font-semibold text-xl flex items-center gap-2"><Square size={20} /> في الانتظار</h3>
+                <span className="bg-black text-white px-2 py-0.5 text-sm font-semibold rounded-full">{pendingOrders.length}</span>
               </div>
               <div className="flex-1 overflow-y-auto p-3 space-y-3 relative">
                 {pendingOrders.map(order => <OrderCard key={order.id} order={order} handleItemStatusChange={handleItemStatusChange} />)}
@@ -301,10 +301,10 @@ export default function KdsStationPage() {
             </div>
 
             {/* Preparing Column */}
-            <div className="flex-1 flex flex-col bg-gray-100 border-4 border-neo-border shadow-[4px_4px_0px_#1A1A1A] overflow-hidden">
-              <div className="bg-brand-orange p-3 border-b-4 border-neo-border flex items-center justify-between z-10">
-                <h3 className="font-black text-xl flex items-center gap-2"><Flame size={20} className="animate-pulse" /> على النار</h3>
-                <span className="bg-black text-white px-2 py-0.5 text-sm font-black rounded-full">{preparingOrders.length}</span>
+            <div className="flex-1 flex flex-col bg-gray-100 border border-carbon-border  overflow-hidden">
+              <div className="bg-[#fcf4d6] text-[#b47a00] p-3 border-b-4 border-carbon-border flex items-center justify-between z-10">
+                <h3 className="font-semibold text-xl flex items-center gap-2"><Flame size={20} className="animate-pulse" /> على النار</h3>
+                <span className="bg-black text-white px-2 py-0.5 text-sm font-semibold rounded-full">{preparingOrders.length}</span>
               </div>
               <div className="flex-1 overflow-y-auto p-3 space-y-3 relative">
                 {preparingOrders.map(order => <OrderCard key={order.id} order={order} handleItemStatusChange={handleItemStatusChange} />)}
@@ -312,10 +312,10 @@ export default function KdsStationPage() {
             </div>
 
             {/* Ready Column */}
-            <div className="flex-1 flex flex-col bg-gray-100 border-4 border-neo-border shadow-[4px_4px_0px_#1A1A1A] overflow-hidden">
-              <div className="bg-brand-green p-3 border-b-4 border-neo-border flex items-center justify-between z-10">
-                <h3 className="font-black text-xl flex items-center gap-2 text-white"><CheckCircle2 size={20} /> مكتمل</h3>
-                <span className="bg-black text-white px-2 py-0.5 text-sm font-black rounded-full">{readyOrders.length}</span>
+            <div className="flex-1 flex flex-col bg-gray-100 border border-carbon-border  overflow-hidden">
+              <div className="bg-[#defbe6] text-[#198038] p-3 border-b-4 border-carbon-border flex items-center justify-between z-10">
+                <h3 className="font-semibold text-xl flex items-center gap-2 text-white"><CheckCircle2 size={20} /> مكتمل</h3>
+                <span className="bg-black text-white px-2 py-0.5 text-sm font-semibold rounded-full">{readyOrders.length}</span>
               </div>
               <div className="flex-1 overflow-y-auto p-3 space-y-3 relative">
                 {readyOrders.map(order => <OrderCard key={order.id} order={order} handleItemStatusChange={handleItemStatusChange} />)}

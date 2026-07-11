@@ -126,11 +126,11 @@ export default function DeliveryDashboard() {
   }, [readyForDriver]);
 
   // Global Status Logic
-  let globalStatus = { text: "توصيل طبيعي", color: "bg-brand-green text-white", icon: <CheckCircle2 size={14} /> };
+  let globalStatus = { text: "توصيل طبيعي", color: "bg-[#defbe6] text-[#198038] text-white", icon: <CheckCircle2 size={14} /> };
   if (readyForDriver.length > 0 && availableDrivers.length === 0) {
-    globalStatus = { text: "أزمة توصيل!", color: "bg-brand-red text-white animate-pulse", icon: <AlertTriangle size={14} /> };
+    globalStatus = { text: "أزمة توصيل!", color: "bg-carbon-error text-white animate-pulse", icon: <AlertTriangle size={14} /> };
   } else if (readyForDriver.length > availableDrivers.length * 2) {
-    globalStatus = { text: "ضغط توصيل", color: "bg-brand-orange text-white", icon: <Activity size={14} /> };
+    globalStatus = { text: "ضغط توصيل", color: "bg-[#fcf4d6] text-[#b47a00] text-white", icon: <Activity size={14} /> };
   }
 
   return (
@@ -150,17 +150,17 @@ export default function DeliveryDashboard() {
         </Box>
 
         {/* Compact Analytics Strip */}
-        <div className="flex gap-2 items-center text-[10px] font-bold uppercase">
-          <div className="bg-brand-blue text-white px-2 py-1 border border-gray-200 flex gap-1 items-center">
+        <div className="flex gap-2 items-center text-[10px] font-medium uppercase">
+          <div className="bg-[#edf5ff] text-[#0f62fe] text-white px-2 py-1 border border-gray-200 flex gap-1 items-center">
             <Truck size={10} /> طلبات نشطة: {deliveryOrders.length}
           </div>
-          <div className="bg-brand-green text-white px-2 py-1 border border-gray-200 flex gap-1 items-center">
+          <div className="bg-[#defbe6] text-[#198038] text-white px-2 py-1 border border-gray-200 flex gap-1 items-center">
             <User size={10} /> متاح: {availableDrivers.length}
           </div>
-          <div className="bg-brand-orange text-white px-2 py-1 border border-gray-200 flex gap-1 items-center">
+          <div className="bg-[#fcf4d6] text-[#b47a00] text-white px-2 py-1 border border-gray-200 flex gap-1 items-center">
             <MapPin size={10} /> في مهمة: {busyDrivers.length}
           </div>
-          <div className={`${avgWaitTime > 15 ? 'bg-brand-red text-white animate-pulse' : 'bg-gray-200 text-gray-900'} px-2 py-1 border border-gray-200 flex gap-1 items-center`}>
+          <div className={`${avgWaitTime > 15 ? 'bg-carbon-error text-white animate-pulse' : 'bg-gray-200 text-gray-900'} px-2 py-1 border border-gray-200 flex gap-1 items-center`}>
             <Clock size={10} /> انتظار: {avgWaitTime}د
           </div>
         </div>
@@ -168,7 +168,7 @@ export default function DeliveryDashboard() {
         {/* Compact Filter Bar */}
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexGrow: 1, justifyContent: 'flex-end', maxWidth: 600 }}>
           <select 
-            className="border-2 border-black rounded-none px-2 py-1 text-[11px] font-bold focus:outline-none focus:bg-brand-yellow"
+            className="border-2 border-black rounded-none px-2 py-1 text-[11px] font-medium focus:outline-none focus:bg-carbon-layer"
             value={deliveryType}
             onChange={(e) => {
               setDeliveryType(e.target.value);
@@ -182,7 +182,7 @@ export default function DeliveryDashboard() {
             <option value="External">خارجي</option>
           </select>
           <select
-            className="border-2 border-black rounded-none px-2 py-1 text-[11px] font-bold focus:outline-none focus:bg-brand-yellow disabled:opacity-50 disabled:bg-gray-100"
+            className="border-2 border-black rounded-none px-2 py-1 text-[11px] font-medium focus:outline-none focus:bg-carbon-layer disabled:opacity-50 disabled:bg-gray-100"
             value={externalCompanyId}
             onChange={(e) => setExternalCompanyId(e.target.value)}
             disabled={deliveryType === "Internal"}
@@ -217,7 +217,7 @@ export default function DeliveryDashboard() {
           {/* Column 1: In Kitchen */}
           <div className="flex-1 bg-gray-200/50 border-2 border-gray-300 p-1.5 min-w-[200px] flex flex-col gap-2 relative">
             <div className="sticky top-0 z-10 bg-gray-200 border-b-2 border-gray-300 py-1 text-center shadow-sm">
-              <h2 className="font-bold text-gray-700 text-[11px] flex items-center justify-center gap-1">
+              <h2 className="font-medium text-carbon-textSecondary text-[11px] flex items-center justify-center gap-1">
                 قيد التجهيز ({inKitchen.length})
               </h2>
             </div>
@@ -243,21 +243,21 @@ export default function DeliveryDashboard() {
                             onChange={() => toggleOrderSelection(order.id)}
                             className="w-4 h-4 accent-black cursor-pointer"
                           />
-                          <span className="font-bold text-base leading-none">#{order.orderNumber}</span>
+                          <span className="font-medium text-base leading-none">#{order.orderNumber}</span>
                         </div>
-                        <span className="text-[10px] font-bold text-gray-500 bg-gray-100 px-1 border border-gray-200">{mins}د</span>
+                        <span className="text-[10px] font-medium text-carbon-textSecondary bg-gray-100 px-1 border border-gray-200">{mins}د</span>
                       </div>
-                      <p className="text-[10px] font-bold text-gray-600 truncate pl-6">{order.customerName}</p>
+                      <p className="text-[10px] font-medium text-carbon-textSecondary truncate pl-6">{order.customerName}</p>
                       {order.isExternalDelivery ? (
-                        <p className="text-[9px] font-bold text-brand-orange bg-brand-orange/10 px-1 mt-0.5 inline-block border border-brand-orange/30">
+                        <p className="text-[9px] font-medium text-carbon-warning bg-[#fcf4d6] text-[#b47a00]/10 px-1 mt-0.5 inline-block border border-brand-orange/30">
                           توصيل خارجي{order.externalCompanyName ? ` - ${order.externalCompanyName}` : ''}
                         </p>
                       ) : (
-                        <p className="text-[9px] font-bold text-brand-green bg-brand-green/10 px-1 mt-0.5 inline-block border border-brand-green/30">
+                        <p className="text-[9px] font-medium text-carbon-success bg-[#defbe6] text-[#198038]/10 px-1 mt-0.5 inline-block border border-brand-green/30">
                           توصيل داخلي
                         </p>
                       )}
-                      {!order.externalCompanyName && order.address && <p className="text-[9px] font-bold text-gray-500 truncate pl-6 mt-0.5">{order.address}</p>}
+                      {!order.externalCompanyName && order.address && <p className="text-[9px] font-medium text-carbon-textSecondary truncate pl-6 mt-0.5">{order.address}</p>}
                     </motion.div>
                   );
                 })}
@@ -266,10 +266,10 @@ export default function DeliveryDashboard() {
           </div>
 
           {/* Column 2: Ready for Driver */}
-          <div className="flex-1 bg-brand-yellow/10 border-2 border-brand-yellow/50 p-1.5 min-w-[200px] flex flex-col gap-2 relative">
-            <div className="sticky top-0 z-10 bg-brand-yellow text-gray-900 border-b-2 border-brand-yellow py-1 text-center shadow-sm">
-              <h2 className="font-bold text-[11px] flex items-center justify-center gap-1">
-                <Zap size={12} className="text-brand-orange animate-pulse" />
+          <div className="flex-1 bg-carbon-layer/10 border-2 border-brand-yellow/50 p-1.5 min-w-[200px] flex flex-col gap-2 relative">
+            <div className="sticky top-0 z-10 bg-carbon-layer text-gray-900 border-b-2 border-brand-yellow py-1 text-center shadow-sm">
+              <h2 className="font-medium text-[11px] flex items-center justify-center gap-1">
+                <Zap size={12} className="text-carbon-warning animate-pulse" />
                 جاهز للتوصيل ({readyForDriver.length})
               </h2>
             </div>
@@ -279,7 +279,7 @@ export default function DeliveryDashboard() {
                   const mins = Math.floor((new Date().getTime() - new Date(order.createdAt).getTime()) / 60000);
                   const isCritical = mins > 15;
                   
-                  let cardBg = isCritical ? 'bg-brand-red text-white border-black shadow-sm' : 'bg-white border-brand-orange shadow-[2px_2px_0px_#F97316]';
+                  let cardBg = isCritical ? 'bg-carbon-error text-white border-black shadow-sm' : 'bg-white border-brand-orange ';
                   
                   return (
                     <motion.div 
@@ -300,12 +300,12 @@ export default function DeliveryDashboard() {
                             className="w-4 h-4 mt-1 accent-black cursor-pointer shrink-0"
                           />
                           <div>
-                            <span className="font-bold text-lg leading-none">#{order.orderNumber}</span>
-                            <p className={`text-[10px] font-bold mt-0.5 truncate ${isCritical ? 'text-gray-100' : 'text-gray-700'}`}>{order.customerName}</p>
-                            {order.address && <p className={`text-[9px] font-bold mt-0.5 truncate ${isCritical ? 'text-gray-300' : 'text-gray-500'}`}>{order.address}</p>}
+                            <span className="font-medium text-lg leading-none">#{order.orderNumber}</span>
+                            <p className={`text-[10px] font-medium mt-0.5 truncate ${isCritical ? 'text-gray-100' : 'text-carbon-textSecondary'}`}>{order.customerName}</p>
+                            {order.address && <p className={`text-[9px] font-medium mt-0.5 truncate ${isCritical ? 'text-gray-300' : 'text-carbon-textSecondary'}`}>{order.address}</p>}
                           </div>
                         </div>
-                        <span className={`text-[10px] font-bold px-1.5 py-0.5 border flex items-center gap-0.5 shrink-0 ${isCritical ? 'bg-black border-black text-white animate-pulse' : 'bg-brand-orange border-brand-orange text-white'}`}>
+                        <span className={`text-[10px] font-medium px-1.5 py-0.5 border flex items-center gap-0.5 shrink-0 ${isCritical ? 'bg-black border-black text-white animate-pulse' : 'bg-[#fcf4d6] text-[#b47a00] border-brand-orange text-white'}`}>
                           <Clock size={10} /> {mins}د
                         </span>
                       </div>
@@ -313,21 +313,21 @@ export default function DeliveryDashboard() {
                       {/* Ultra-Fast Quick Assign Dropdown */}
                       <div className="mt-2">
                         {order.isExternalDelivery ? (
-                          <div className="w-full bg-brand-orange text-white py-1.5 text-[11px] font-bold shadow-sm flex justify-center items-center gap-1 uppercase">
+                          <div className="w-full bg-[#fcf4d6] text-[#b47a00] text-white py-1.5 text-[11px] font-medium shadow-sm flex justify-center items-center gap-1 uppercase">
                              توصيل خارجي{order.externalCompanyName ? ` - ${order.externalCompanyName}` : ''}
                           </div>
                         ) : assigningOrderId === order.id ? (
                           <div className="bg-white text-gray-900 border border-gray-200 p-1 shadow-sm w-full mb-1">
                             <div className="max-h-32 overflow-y-auto custom-scrollbar">
                               {availableDrivers.length === 0 ? (
-                                <p className="text-[10px] text-center text-brand-red font-bold py-1">لا يوجد مناديب متاحين!</p>
+                                <p className="text-[10px] text-center text-carbon-error font-medium py-1">لا يوجد مناديب متاحين!</p>
                               ) : (
                                 availableDrivers.map(d => (
                                   <button 
                                     key={d.id} 
                                     onClick={() => handleAssignDriver(order.id, d.fullName, d.mobileNumber || '')}
                                     disabled={assignLoading}
-                                    className="w-full text-right p-1.5 text-[11px] font-bold hover:bg-brand-green hover:text-white border-b border-gray-100 last:border-0 flex justify-between items-center transition-colors"
+                                    className="w-full text-right p-1.5 text-[11px] font-medium hover:bg-[#defbe6] text-[#198038] hover:text-white border-b border-gray-100 last:border-0 flex justify-between items-center transition-colors"
                                   >
                                     <span className="truncate">{d.fullName}</span>
                                     <ChevronRight size={12} />
@@ -335,12 +335,12 @@ export default function DeliveryDashboard() {
                                 ))
                               )}
                             </div>
-                            <button onClick={() => setAssigningOrderId(null)} className="w-full text-center bg-gray-100 text-[10px] font-bold py-1.5 mt-1 hover:bg-gray-200">إلغاء</button>
+                            <button onClick={() => setAssigningOrderId(null)} className="w-full text-center bg-gray-100 text-[10px] font-medium py-1.5 mt-1 hover:bg-gray-200">إلغاء</button>
                           </div>
                         ) : (
                           <button 
                             onClick={() => setAssigningOrderId(order.id)}
-                            className="w-full bg-brand-blue text-white py-1.5 text-[11px] font-bold border border-gray-200 shadow-sm hover:bg-brand-yellow hover:text-gray-900 active:translate-y-px active:shadow-none transition-all flex justify-center items-center gap-1 uppercase"
+                            className="w-full bg-[#edf5ff] text-[#0f62fe] text-white py-1.5 text-[11px] font-medium border border-gray-200 shadow-sm hover:bg-carbon-layer hover:text-gray-900 active:translate-y-px active:shadow-none transition-all flex justify-center items-center gap-1 uppercase"
                           >
                             <Truck size={12} /> تعيين
                           </button>
@@ -354,9 +354,9 @@ export default function DeliveryDashboard() {
           </div>
 
           {/* Column 3: Out for Delivery */}
-          <div className="flex-1 bg-brand-blue/5 border-2 border-brand-blue/30 p-1.5 min-w-[200px] flex flex-col gap-2 relative">
-            <div className="sticky top-0 z-10 bg-brand-blue text-white border-b-2 border-brand-blue py-1 text-center shadow-sm">
-              <h2 className="font-bold text-[11px] flex items-center justify-center gap-1">
+          <div className="flex-1 bg-[#edf5ff] text-[#0f62fe]/5 border-2 border-brand-blue/30 p-1.5 min-w-[200px] flex flex-col gap-2 relative">
+            <div className="sticky top-0 z-10 bg-[#edf5ff] text-[#0f62fe] text-white border-b-2 border-brand-blue py-1 text-center shadow-sm">
+              <h2 className="font-medium text-[11px] flex items-center justify-center gap-1">
                 <Truck size={12} /> قيد التوصيل ({inDelivery.length})
               </h2>
             </div>
@@ -370,22 +370,22 @@ export default function DeliveryDashboard() {
                     animate={{ opacity: 1, scale: 1 }} 
                     exit={{ opacity: 0, scale: 0.9 }}
                     key={order.id} 
-                    className="bg-brand-blue text-white border border-gray-200 p-2 shadow-sm"
+                    className="bg-[#edf5ff] text-[#0f62fe] text-white border border-gray-200 p-2 shadow-sm"
                   >
                     <div className="flex justify-between items-start mb-2">
-                      <span className="font-bold text-lg leading-none">#{order.orderNumber}</span>
+                      <span className="font-medium text-lg leading-none">#{order.orderNumber}</span>
                       <div className="text-left">
-                        <p className="text-[9px] font-bold opacity-80 truncate max-w-[150px]">{order.customerName}</p>
-                        {order.address && <p className="text-[8px] font-bold opacity-60 truncate max-w-[150px]">{order.address}</p>}
+                        <p className="text-[9px] font-medium opacity-80 truncate max-w-[150px]">{order.customerName}</p>
+                        {order.address && <p className="text-[8px] font-medium opacity-60 truncate max-w-[150px]">{order.address}</p>}
                       </div>
                     </div>
                     <div className="bg-white text-gray-900 px-1.5 py-1 border border-gray-200 flex items-center gap-1">
-                      <div className="w-4 h-4 bg-brand-blue flex items-center justify-center shrink-0">
+                      <div className="w-4 h-4 bg-[#edf5ff] text-[#0f62fe] flex items-center justify-center shrink-0">
                         <User size={10} className="text-white" />
                       </div>
                       <div className="overflow-hidden flex-1 flex justify-between items-center">
-                        <p className="text-[10px] font-bold truncate">{order.driverName}</p>
-                        {order.driverPhone && <p className="text-[8px] font-bold text-gray-500">{order.driverPhone}</p>}
+                        <p className="text-[10px] font-medium truncate">{order.driverName}</p>
+                        {order.driverPhone && <p className="text-[8px] font-medium text-carbon-textSecondary">{order.driverPhone}</p>}
                       </div>
                     </div>
                   </motion.div>
@@ -394,9 +394,9 @@ export default function DeliveryDashboard() {
             </div>
           </div>
           {/* Column 4: Completed */}
-          <div className="flex-1 bg-brand-green/5 border-2 border-brand-green/30 p-1.5 min-w-[200px] flex flex-col gap-2 relative">
-            <div className="sticky top-0 z-10 bg-brand-green text-white border-b-2 border-brand-green py-1 text-center shadow-sm">
-              <h2 className="font-bold text-[11px] flex items-center justify-center gap-1">
+          <div className="flex-1 bg-[#defbe6] text-[#198038]/5 border-2 border-brand-green/30 p-1.5 min-w-[200px] flex flex-col gap-2 relative">
+            <div className="sticky top-0 z-10 bg-[#defbe6] text-[#198038] text-white border-b-2 border-brand-green py-1 text-center shadow-sm">
+              <h2 className="font-medium text-[11px] flex items-center justify-center gap-1">
                 <CheckCircle2 size={12} /> مكتمل ({completed.length})
               </h2>
             </div>
@@ -410,16 +410,16 @@ export default function DeliveryDashboard() {
                     animate={{ opacity: 1, scale: 1 }} 
                     exit={{ opacity: 0, scale: 0.9 }}
                     key={order.id} 
-                    className="bg-brand-green/10 text-brand-green border-2 border-brand-green/50 p-2 shadow-sm opacity-80"
+                    className="bg-[#defbe6] text-[#198038]/10 text-carbon-success border-2 border-brand-green/50 p-2 shadow-sm opacity-80"
                   >
                     <div className="flex justify-between items-center mb-1">
-                      <span className="font-bold text-base leading-none">#{order.orderNumber}</span>
+                      <span className="font-medium text-base leading-none">#{order.orderNumber}</span>
                       <CheckCircle2 size={12} />
                     </div>
-                    <p className="text-[10px] font-bold text-gray-700 truncate">{order.customerName}</p>
-                    {order.address && <p className="text-[9px] font-bold text-gray-500 truncate mt-0.5">{order.address}</p>}
+                    <p className="text-[10px] font-medium text-carbon-textSecondary truncate">{order.customerName}</p>
+                    {order.address && <p className="text-[9px] font-medium text-carbon-textSecondary truncate mt-0.5">{order.address}</p>}
                     {order.driverName && (
-                      <p className="text-[9px] font-bold text-brand-green mt-1">بواسطة: {order.driverName}</p>
+                      <p className="text-[9px] font-medium text-carbon-success mt-1">بواسطة: {order.driverName}</p>
                     )}
                   </motion.div>
                 ))}
@@ -430,27 +430,27 @@ export default function DeliveryDashboard() {
 
         {/* Compact Fleet Side Panel (20%) */}
         <div className="w-full lg:w-48 bg-white border border-gray-200 shadow-sm p-2 flex flex-col shrink-0">
-          <h2 className="text-[11px] font-bold mb-2 flex items-center justify-between border-b border-gray-200 pb-1">
+          <h2 className="text-[11px] font-medium mb-2 flex items-center justify-between border-b border-gray-200 pb-1">
             <span>أسطول التوصيل</span>
-            <span className="bg-gray-50 px-1.5 text-[9px] border border-gray-200">{drivers.length}</span>
+            <span className="bg-carbon-bg px-1.5 text-[9px] border border-gray-200">{drivers.length}</span>
           </h2>
 
           <div className="overflow-y-auto flex-grow pr-1 custom-scrollbar">
             {loadingDrivers ? (
-              <p className="text-center text-gray-400 text-[10px] font-bold animate-pulse">جاري الجلب...</p>
+              <p className="text-center text-gray-400 text-[10px] font-medium animate-pulse">جاري الجلب...</p>
             ) : drivers.length === 0 ? (
-              <p className="text-center text-gray-400 text-[10px] font-bold">لا يوجد مناديب.</p>
+              <p className="text-center text-gray-400 text-[10px] font-medium">لا يوجد مناديب.</p>
             ) : (
               <div className="space-y-3">
                 {/* Available Drivers List */}
                 <div>
-                  <h3 className="text-[10px] font-bold text-brand-green mb-1 flex items-center gap-1 border-b border-gray-100 pb-0.5">
+                  <h3 className="text-[10px] font-medium text-carbon-success mb-1 flex items-center gap-1 border-b border-gray-100 pb-0.5">
                     <CheckCircle2 size={10} /> متاح ({availableDrivers.length})
                   </h3>
                   <div className="space-y-0.5">
                     {availableDrivers.map(d => (
-                      <div key={d.id} className="flex items-center gap-1.5 p-1 hover:bg-brand-green/5 text-[10px] font-bold">
-                        <span className="w-1.5 h-1.5 bg-brand-green rounded-full shrink-0"></span>
+                      <div key={d.id} className="flex items-center gap-1.5 p-1 hover:bg-[#defbe6] text-[#198038]/5 text-[10px] font-medium">
+                        <span className="w-1.5 h-1.5 bg-[#defbe6] text-[#198038] rounded-full shrink-0"></span>
                         <span className="truncate">{d.fullName}</span>
                       </div>
                     ))}
@@ -460,21 +460,21 @@ export default function DeliveryDashboard() {
                 {/* Busy Drivers List */}
                 {busyDrivers.length > 0 && (
                   <div>
-                    <h3 className="text-[10px] font-bold text-brand-orange mb-1 flex items-center gap-1 border-b border-gray-100 pb-0.5">
+                    <h3 className="text-[10px] font-medium text-carbon-warning mb-1 flex items-center gap-1 border-b border-gray-100 pb-0.5">
                       <Truck size={10} /> مشغول ({busyDrivers.length})
                     </h3>
                     <div className="space-y-0.5">
                       {busyDrivers.map(d => {
                         const myOrders = inDelivery.filter(o => o.driverName === d.fullName);
                         return (
-                          <div key={d.id} className="flex flex-col gap-0.5 p-1 bg-gray-50 border border-gray-100">
-                            <div className="flex items-center justify-between text-[10px] font-bold text-gray-900">
+                          <div key={d.id} className="flex flex-col gap-0.5 p-1 bg-carbon-bg border border-gray-100">
+                            <div className="flex items-center justify-between text-[10px] font-medium text-gray-900">
                               <span className="truncate">{d.fullName}</span>
-                              <span className="text-[8px] bg-brand-orange text-white px-1">{myOrders.length} طلب</span>
+                              <span className="text-[8px] bg-[#fcf4d6] text-[#b47a00] text-white px-1">{myOrders.length} طلب</span>
                             </div>
                             <div className="flex gap-0.5 flex-wrap">
                               {myOrders.map(mo => (
-                                <span key={mo.id} className="text-[8px] font-bold text-gray-500">#{mo.orderNumber}</span>
+                                <span key={mo.id} className="text-[8px] font-medium text-carbon-textSecondary">#{mo.orderNumber}</span>
                               ))}
                             </div>
                           </div>
@@ -494,16 +494,16 @@ export default function DeliveryDashboard() {
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black text-white p-3 border-4 border-brand-yellow shadow-[8px_8px_0px_#1A1A1A] z-50 flex flex-col sm:flex-row items-center gap-4 max-w-2xl w-[90%]"
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black text-white p-3 border-4 border-brand-yellow  z-50 flex flex-col sm:flex-row items-center gap-4 max-w-2xl w-[90%]"
           >
             <div className="flex items-center gap-3 shrink-0">
-              <span className="bg-brand-yellow text-black px-3 py-1 text-2xl font-bold">{selectedOrderIds.length}</span>
-              <span className="font-bold text-lg uppercase tracking-wider">طلبات للتعيين</span>
+              <span className="bg-carbon-layer text-black px-3 py-1 text-2xl font-medium">{selectedOrderIds.length}</span>
+              <span className="font-medium text-lg uppercase tracking-wider">طلبات للتعيين</span>
             </div>
             
             <div className="flex-grow w-full">
               <select 
-                className="w-full bg-white text-black border-4 border-white p-2 text-lg font-bold cursor-pointer focus:outline-none focus:border-brand-yellow transition-colors"
+                className="w-full bg-white text-black border-4 border-white p-2 text-lg font-medium cursor-pointer focus:outline-none focus:border-brand-yellow transition-colors"
                 onChange={(e) => {
                   const val = e.target.value;
                   if (!val) return;
@@ -519,7 +519,7 @@ export default function DeliveryDashboard() {
                 ))}
               </select>
             </div>
-            {assignLoading && <RefreshCw className="animate-spin text-brand-yellow shrink-0" size={24} />}
+            {assignLoading && <RefreshCw className="animate-spin text-[#f1c21b] shrink-0" size={24} />}
           </motion.div>
         )}
       </AnimatePresence>

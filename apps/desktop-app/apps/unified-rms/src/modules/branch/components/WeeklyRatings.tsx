@@ -11,13 +11,13 @@ export default function WeeklyRatings() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return <div className="neo-card p-5 h-64 animate-pulse bg-gray-50"></div>;
+  if (!mounted) return <div className="bg-carbon-layer border border-carbon-border p-5 h-64 animate-pulse bg-carbon-bg"></div>;
 
   return (
-    <div className="neo-card p-5">
+    <div className="bg-carbon-layer border border-carbon-border p-5">
       <div className="mb-4">
-        <h3 className="font-black text-lg">⭐ تقييمات الأسبوع</h3>
-        <p className="text-sm text-gray-500 font-semibold">متوسط التقييم اليومي</p>
+        <h3 className="font-semibold text-lg"> تقييمات الأسبوع</h3>
+        <p className="text-sm text-carbon-textSecondary font-semibold">متوسط التقييم اليومي</p>
       </div>
       <ResponsiveContainer width="100%" height={200}>
         <BarChart data={ratings}>
@@ -41,16 +41,16 @@ export default function WeeklyRatings() {
       </ResponsiveContainer>
       <div className="flex items-center justify-center gap-4 mt-3">
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 bg-brand-green rounded border-2 border-neo-border"></div>
-          <span className="text-xs font-bold">ممتاز (4.8+)</span>
+          <div className="w-3 h-3 bg-[#defbe6] text-[#198038] rounded border border-carbon-border"></div>
+          <span className="text-xs font-medium">ممتاز (4.8+)</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 bg-brand-yellow rounded border-2 border-neo-border"></div>
-          <span className="text-xs font-bold">جيد (4.5+)</span>
+          <div className="w-3 h-3 bg-carbon-layer rounded border border-carbon-border"></div>
+          <span className="text-xs font-medium">جيد (4.5+)</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 bg-brand-orange rounded border-2 border-neo-border"></div>
-          <span className="text-xs font-bold">متوسط</span>
+          <div className="w-3 h-3 bg-[#fcf4d6] text-[#b47a00] rounded border border-carbon-border"></div>
+          <span className="text-xs font-medium">متوسط</span>
         </div>
       </div>
     </div>

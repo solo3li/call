@@ -351,27 +351,27 @@ export default function HelpDeskPage() {
 
     return (
       <div key={msg.id} className={`flex flex-col mb-4 ${isMe ? 'items-end' : 'items-start'}`}>
-        <span className="text-[10px] font-black uppercase text-[#1A1A1A] mb-1 px-1 tracking-wider">{msg.sender} • {timeStr}</span>
+        <span className="text-[10px] font-semibold uppercase text-[#1A1A1A] mb-1 px-1 tracking-wider">{msg.sender} • {timeStr}</span>
         
         {replyTarget && (
-          <div className={`mb-1 p-2 rounded border-2 border-[#1A1A1A] text-[10px] font-bold bg-white/50 ${isMe ? 'mr-2' : 'ml-2'}`}>
+          <div className={`mb-1 p-2 rounded border-2 border-[#1A1A1A] text-[10px] font-medium bg-white/50 ${isMe ? 'mr-2' : 'ml-2'}`}>
             <div className="text-[#FF6B35] uppercase">Replying to {replyTarget.sender}</div>
             <div className="truncate max-w-[200px] opacity-70">{replyTarget.text || replyTarget.messageType}</div>
           </div>
         )}
 
-        <div className={`relative group p-3 rounded-lg max-w-[85%] border-2 border-[#1A1A1A] shadow-[3px 3px 0px #1A1A1A] ${isMe ? 'bg-[#00E676] text-[#1A1A1A]' : 'bg-white text-[#1A1A1A]'}`}>
-          {msg.messageType === 'Text' && <span className="whitespace-pre-wrap font-bold">{msg.text}</span>}
+        <div className={`relative group p-3 rounded-sm max-w-[85%] border-2 border-[#1A1A1A]  ${isMe ? 'bg-[#00E676] text-[#1A1A1A]' : 'bg-white text-[#1A1A1A]'}`}>
+          {msg.messageType === 'Text' && <span className="whitespace-pre-wrap font-medium">{msg.text}</span>}
           {msg.messageType === 'Image' && (
             <div>
-              <img src={msg.attachmentUrl} alt="attachment" className="rounded border-2 border-[#1A1A1A] mb-2 max-h-48 object-cover shadow-[2px 2px 0px #1A1A1A]" />
-              {msg.text && <div className="font-bold">{msg.text}</div>}
+              <img src={msg.attachmentUrl} alt="attachment" className="rounded border-2 border-[#1A1A1A] mb-2 max-h-48 object-cover " />
+              {msg.text && <div className="font-medium">{msg.text}</div>}
             </div>
           )}
           {msg.messageType === 'Video' && (
             <div>
-              <video src={msg.attachmentUrl} controls className="rounded border-2 border-[#1A1A1A] mb-2 max-h-48 w-full shadow-[2px 2px 0px #1A1A1A]" />
-              {msg.text && <div className="font-bold">{msg.text}</div>}
+              <video src={msg.attachmentUrl} controls className="rounded border-2 border-[#1A1A1A] mb-2 max-h-48 w-full " />
+              {msg.text && <div className="font-medium">{msg.text}</div>}
             </div>
           )}
           {msg.messageType === 'Audio' && (
@@ -381,16 +381,16 @@ export default function HelpDeskPage() {
             </div>
           )}
           {msg.messageType === 'File' && (
-            <a href={msg.attachmentUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-[#FFD700] p-2 rounded border-2 border-[#1A1A1A] hover:shadow-[2px 2px 0px #1A1A1A] transition shadow-[1px 1px 0px #1A1A1A]">
+            <a href={msg.attachmentUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-[#FFD700] p-2 rounded border-2 border-[#1A1A1A] hover: transition ">
               <FileIcon size={24} strokeWidth={3} />
-              <span className="truncate max-w-[150px] underline font-black">{msg.attachmentName}</span>
+              <span className="truncate max-w-[150px] underline font-semibold">{msg.attachmentName}</span>
             </a>
           )}
           
           <button 
             aria-label="Reply to this message"
             onClick={() => setReplyToMsg(msg)}
-            className={`absolute top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all p-1.5 rounded bg-white border-2 border-[#1A1A1A] shadow-[2px 2px 0px #1A1A1A] hover:shadow-[1px 1px 0px #1A1A1A] text-[#1A1A1A] ${isMe ? '-left-10' : '-right-10'}`}
+            className={`absolute top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all p-1.5 rounded bg-white border-2 border-[#1A1A1A]  hover: text-[#1A1A1A] ${isMe ? '-left-10' : '-right-10'}`}
           >
             <Reply size={14} strokeWidth={3} />
           </button>
@@ -403,24 +403,24 @@ export default function HelpDeskPage() {
 
   return (
     <div className="space-y-6 animate-fade-in h-[85vh] flex flex-col">
-      <div className="neo-card bg-[#FF69B4] p-3 flex flex-row items-center justify-between shadow-[2px_2px_0px_#1A1A1A]">
+      <div className="bg-carbon-layer border border-carbon-border bg-[#FF69B4] p-3 flex flex-row items-center justify-between ">
         <div className="flex items-center gap-3">
           <MessageCircle className="text-white" size={20} />
-          <h1 className="text-lg font-black text-white">الدعم الفني للمنصة</h1>
+          <h1 className="text-lg font-semibold text-white">الدعم الفني للمنصة</h1>
         </div>
       </div>
       
-      <div className="bg-[#FFFBEB] rounded-xl shadow-[2px_2px_0px_#1A1A1A] flex flex-col flex-1 overflow-hidden border-2 border-[#1A1A1A]">
+      <div className="bg-[#FFFBEB] rounded-sm  flex flex-col flex-1 overflow-hidden border-2 border-[#1A1A1A]">
         {/* LOBBY VIEW */}
             {activeView === 'lobby' && (
               <>
                 <div className="bg-[#FF6B35] text-[#1A1A1A] p-2 flex justify-between items-center border-b-2 border-[#1A1A1A] z-10">
                   <div>
-                    <h3 className="font-black text-sm uppercase tracking-tighter" style={{ fontFamily: 'Cairo, sans-serif' }}>Support Tickets</h3>
+                    <h3 className="font-semibold text-sm uppercase tracking-tighter" style={{ fontFamily: 'Cairo, sans-serif' }}>Support Tickets</h3>
                   </div>
                   <button
                     onClick={() => setActiveView('create')}
-                    className="flex items-center gap-1 bg-[#00E676] text-[#1A1A1A] font-black text-[10px] px-2 py-1 border border-[#1A1A1A] shadow-sm hover:shadow-none transition-all uppercase"
+                    className="flex items-center gap-1 bg-[#00E676] text-[#1A1A1A] font-semibold text-[10px] px-2 py-1 border border-[#1A1A1A] shadow-sm hover:shadow-none transition-all uppercase"
                   >
                     <Plus size={12} strokeWidth={3} /> New Ticket
                   </button>
@@ -430,7 +430,7 @@ export default function HelpDeskPage() {
                   {tickets.length === 0 ? (
                     <div className="flex-1 flex flex-col items-center justify-center text-center opacity-60 p-4">
                       <MessageCircle size={32} strokeWidth={2} className="mb-1" />
-                      <p className="font-black text-[10px]">No support tickets found.</p>
+                      <p className="font-semibold text-[10px]">No support tickets found.</p>
                     </div>
                   ) : (
                     tickets.map(ticket => {
@@ -442,15 +442,15 @@ export default function HelpDeskPage() {
                           className="bg-white border-2 border-[#1A1A1A] p-2 shadow-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all cursor-pointer flex flex-col gap-1"
                         >
                           <div className="flex justify-between items-start gap-1">
-                            <h4 className="font-black text-[10px] text-[#1A1A1A] line-clamp-1">{ticket.title}</h4>
-                            <span className={`text-[8px] font-black uppercase px-1 border border-[#1A1A1A] ${ticket.status === 'Open' ? 'bg-[#00E676] text-[#1A1A1A]' : 'bg-[#1A1A1A] text-white'}`}>
+                            <h4 className="font-semibold text-[10px] text-[#1A1A1A] line-clamp-1">{ticket.title}</h4>
+                            <span className={`text-[8px] font-semibold uppercase px-1 border border-[#1A1A1A] ${ticket.status === 'Open' ? 'bg-[#00E676] text-[#1A1A1A]' : 'bg-[#1A1A1A] text-white'}`}>
                               {ticket.status}
                             </span>
                           </div>
-                          <p className="text-[9px] font-bold text-[#1A1A1A]/70 line-clamp-1 bg-[#FFFBEB] p-1 border border-[#1A1A1A]/20">
+                          <p className="text-[9px] font-medium text-[#1A1A1A]/70 line-clamp-1 bg-[#FFFBEB] p-1 border border-[#1A1A1A]/20">
                             {ticket.lastMessage}
                           </p>
-                          <div className="flex justify-between items-center text-[8px] font-black text-[#1A1A1A]/60 pt-1 border-t border-[#1A1A1A]/10">
+                          <div className="flex justify-between items-center text-[8px] font-semibold text-[#1A1A1A]/60 pt-1 border-t border-[#1A1A1A]/10">
                             <span className="flex items-center gap-1"><Clock size={10} /> {dateStr}</span>
                             <span className="text-[#FF6B35]">
                               {ticket.messageCount} {ticket.messageCount === 1 ? 'Message' : 'Messages'}
@@ -473,8 +473,8 @@ export default function HelpDeskPage() {
                       <ArrowLeft size={20} strokeWidth={3} />
                     </button>
                     <div>
-                      <h3 className="font-black text-xl uppercase tracking-tighter" style={{ fontFamily: 'Cairo, sans-serif' }}>New Ticket</h3>
-                      <p className="text-xs font-bold">Provide details for your support request.</p>
+                      <h3 className="font-semibold text-xl uppercase tracking-tighter" style={{ fontFamily: 'Cairo, sans-serif' }}>New Ticket</h3>
+                      <p className="text-xs font-medium">Provide details for your support request.</p>
                     </div>
                   </div>
 
@@ -482,7 +482,7 @@ export default function HelpDeskPage() {
 
                 <form onSubmit={handleCreateTicket} className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 bg-white">
                   <div className="flex flex-col gap-1">
-                    <label className="font-black text-xs uppercase text-[#1A1A1A] flex items-center gap-1">
+                    <label className="font-semibold text-xs uppercase text-[#1A1A1A] flex items-center gap-1">
                       <Tag size={14} /> Ticket Title <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -491,18 +491,18 @@ export default function HelpDeskPage() {
                       value={newTitle}
                       onChange={e => setNewTitle(e.target.value)}
                       placeholder="e.g. Kitchen KDS Printer Not Syncing"
-                      className="bg-[#FFFBEB] border-2 border-[#1A1A1A] rounded-lg px-3 py-2 text-sm font-bold shadow-[2px 2px 0px #1A1A1A] outline-none focus:shadow-[3px 3px 0px #FF6B35] transition-all"
+                      className="bg-[#FFFBEB] border-2 border-[#1A1A1A] rounded-sm px-3 py-2 text-sm font-medium  outline-none focus: transition-all"
                     />
                   </div>
 
                   <div className="flex flex-col gap-1">
-                    <label className="font-black text-xs uppercase text-[#1A1A1A] flex items-center gap-1">
+                    <label className="font-semibold text-xs uppercase text-[#1A1A1A] flex items-center gap-1">
                       <AlertCircle size={14} /> Category / Department
                     </label>
                     <select
                       value={newCategory}
                       onChange={e => setNewCategory(e.target.value)}
-                      className="bg-[#FFFBEB] border-2 border-[#1A1A1A] rounded-lg px-3 py-2 text-sm font-bold shadow-[2px 2px 0px #1A1A1A] outline-none focus:shadow-[3px 3px 0px #FF6B35] transition-all"
+                      className="bg-[#FFFBEB] border-2 border-[#1A1A1A] rounded-sm px-3 py-2 text-sm font-medium  outline-none focus: transition-all"
                     >
                       <option value="General">General Inquiry</option>
                       <option value="Technical">Technical Support</option>
@@ -513,13 +513,13 @@ export default function HelpDeskPage() {
                   </div>
 
                   <div className="flex flex-col gap-1">
-                    <label className="font-black text-xs uppercase text-[#1A1A1A] flex items-center gap-1">
+                    <label className="font-semibold text-xs uppercase text-[#1A1A1A] flex items-center gap-1">
                       <AlertCircle size={14} /> Priority Level
                     </label>
                     <select
                       value={newPriority}
                       onChange={e => setNewPriority(e.target.value)}
-                      className="bg-[#FFFBEB] border-2 border-[#1A1A1A] rounded-lg px-3 py-2 text-sm font-bold shadow-[2px 2px 0px #1A1A1A] outline-none focus:shadow-[3px 3px 0px #FF6B35] transition-all"
+                      className="bg-[#FFFBEB] border-2 border-[#1A1A1A] rounded-sm px-3 py-2 text-sm font-medium  outline-none focus: transition-all"
                     >
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
@@ -529,12 +529,12 @@ export default function HelpDeskPage() {
                   </div>
 
                   <div className="flex flex-col gap-1 flex-1">
-                    <label className="font-black text-xs uppercase text-[#1A1A1A]">Initial Message / Description</label>
+                    <label className="font-semibold text-xs uppercase text-[#1A1A1A]">Initial Message / Description</label>
                     <textarea
                       value={newInitialMsg}
                       onChange={e => setNewInitialMsg(e.target.value)}
                       placeholder="Describe the issue in detail to help our technical team assist you faster..."
-                      className="bg-[#FFFBEB] border-2 border-[#1A1A1A] rounded-lg px-3 py-2 text-sm font-bold shadow-[2px 2px 0px #1A1A1A] outline-none focus:shadow-[3px 3px 0px #FF6B35] transition-all flex-1 resize-none min-h-[120px]"
+                      className="bg-[#FFFBEB] border-2 border-[#1A1A1A] rounded-sm px-3 py-2 text-sm font-medium  outline-none focus: transition-all flex-1 resize-none min-h-[120px]"
                     />
                   </div>
 
@@ -542,14 +542,14 @@ export default function HelpDeskPage() {
                     <button
                       type="button"
                       onClick={() => setActiveView('lobby')}
-                      className="px-4 py-2 bg-[#FFFBEB] text-[#1A1A1A] font-black text-xs uppercase rounded-lg border-2 border-[#1A1A1A] shadow-[2px 2px 0px #1A1A1A] hover:shadow-[1px 1px 0px #1A1A1A] transition-all"
+                      className="px-4 py-2 bg-[#FFFBEB] text-[#1A1A1A] font-semibold text-xs uppercase rounded-sm border-2 border-[#1A1A1A]  hover: transition-all"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={isCreating}
-                      className="px-6 py-2 bg-[#FF6B35] text-[#1A1A1A] font-black text-xs uppercase rounded-lg border-2 border-[#1A1A1A] shadow-[2px 2px 0px #1A1A1A] hover:shadow-[1px 1px 0px #1A1A1A] disabled:opacity-50 transition-all flex items-center gap-1"
+                      className="px-6 py-2 bg-[#FF6B35] text-[#1A1A1A] font-semibold text-xs uppercase rounded-sm border-2 border-[#1A1A1A]  hover: disabled:opacity-50 transition-all flex items-center gap-1"
                     >
                       {isCreating ? 'Creating...' : 'Submit Ticket'}
                     </button>
@@ -567,11 +567,11 @@ export default function HelpDeskPage() {
                       <ArrowLeft size={16} strokeWidth={3} />
                     </button>
                     <div className="overflow-hidden">
-                      <h3 className="font-black text-xs uppercase tracking-tight truncate w-60" title={activeTicketTitle}>
+                      <h3 className="font-semibold text-xs uppercase tracking-tight truncate w-60" title={activeTicketTitle}>
                         {activeTicketTitle || 'Support Chat'}
                       </h3>
-                      <p className="text-[9px] font-bold flex items-center gap-1 mt-0.5">
-                        Status: <span className={`px-1 rounded text-[8px] font-black uppercase border border-[#1A1A1A] ${activeTicketStatus === 'Open' ? 'bg-[#00E676] text-[#1A1A1A]' : 'bg-[#1A1A1A] text-white'}`}>{activeTicketStatus}</span>
+                      <p className="text-[9px] font-medium flex items-center gap-1 mt-0.5">
+                        Status: <span className={`px-1 rounded text-[8px] font-semibold uppercase border border-[#1A1A1A] ${activeTicketStatus === 'Open' ? 'bg-[#00E676] text-[#1A1A1A]' : 'bg-[#1A1A1A] text-white'}`}>{activeTicketStatus}</span>
                       </p>
                     </div>
                   </div>
@@ -592,8 +592,8 @@ export default function HelpDeskPage() {
                   {replyToMsg && (
                     <div className="bg-[#FFD700] px-4 py-2 border-t-2 border-[#1A1A1A] flex justify-between items-center overflow-hidden">
                       <div className="flex flex-col border-2 border-[#1A1A1A] bg-white/20 p-1 rounded pl-2">
-                        <span className="text-[10px] font-black uppercase text-[#1A1A1A]">Replying to {replyToMsg.sender}</span>
-                        <span className="text-xs font-bold text-[#1A1A1A] truncate w-64">{replyToMsg.text || replyToMsg.messageType}</span>
+                        <span className="text-[10px] font-semibold uppercase text-[#1A1A1A]">Replying to {replyToMsg.sender}</span>
+                        <span className="text-xs font-medium text-[#1A1A1A] truncate w-64">{replyToMsg.text || replyToMsg.messageType}</span>
                       </div>
                       <button onClick={() => setReplyToMsg(null)} className="p-1 hover:bg-[#1A1A1A]/10 rounded transition"><X size={16} strokeWidth={3}/></button>
                     </div>
@@ -602,7 +602,7 @@ export default function HelpDeskPage() {
                     <div className="bg-[#00E5FF] px-4 py-2 border-t-2 border-[#1A1A1A] flex justify-between items-center overflow-hidden">
                       <div className="flex items-center gap-2">
                         {selectedFile.type.startsWith('image/') ? <ImageIcon size={20} className="text-[#1A1A1A]" /> : selectedFile.type.startsWith('video/') ? <Video size={20} className="text-[#1A1A1A]" /> : <FileIcon size={20} className="text-[#1A1A1A]" />}
-                        <span className="text-sm font-black truncate w-48">{selectedFile.name}</span>
+                        <span className="text-sm font-semibold truncate w-48">{selectedFile.name}</span>
                       </div>
                       <button onClick={clearMedia} className="p-1 hover:bg-[#1A1A1A]/10 rounded transition"><X size={16} strokeWidth={3}/></button>
                     </div>
@@ -631,7 +631,7 @@ export default function HelpDeskPage() {
                       <div className="flex-1 h-full py-1 relative">
                          <canvas ref={canvasRef} width="200" height="20" className="w-full h-full"></canvas>
                       </div>
-                      <span className="text-[#1A1A1A] font-black font-mono text-[10px] px-1 w-10 text-center">00:{recordTime.toString().padStart(2, '0')}</span>
+                      <span className="text-[#1A1A1A] font-semibold font-mono text-[10px] px-1 w-10 text-center">00:{recordTime.toString().padStart(2, '0')}</span>
                       <button 
                         aria-label="Save recording"
                         onClick={() => stopRecording(true)} 
@@ -669,7 +669,7 @@ export default function HelpDeskPage() {
                         onChange={(e) => setInputText(e.target.value)}
                         onKeyDown={(e) => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(e); } }}
                         placeholder="Type..."
-                        className="flex-1 max-h-24 min-h-[32px] bg-white border-2 border-[#1A1A1A] px-2 py-1 text-[10px] font-bold shadow-sm outline-none resize-none"
+                        className="flex-1 max-h-24 min-h-[32px] bg-white border-2 border-[#1A1A1A] px-2 py-1 text-[10px] font-medium shadow-sm outline-none resize-none"
                         rows={1}
                       />
 
