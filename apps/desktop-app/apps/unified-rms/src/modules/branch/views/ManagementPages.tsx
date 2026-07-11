@@ -2,7 +2,7 @@ import { useFormatCurrency } from "../utils/useFormatCurrency";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { 
  Users, Plus, Star, Trash2, ShieldCheck, CalendarDays, 
- ShoppingBag, UserCheck, UtensilsCrossed, Store, MapPin, ChefHat,
+ ShoppingBag, UserCheck, UtensilsCrossed, Utensils, Store, MapPin, ChefHat,
  Clock, CheckCircle2, XCircle, ChevronRight, Filter, Mail, RefreshCw, Check,
  Settings, Save, Bell, ThumbsUp, MessageSquare, QrCode, X, Share2, ExternalLink, Tag, Edit3, Eye, History, Search, Truck
 } from "lucide-react";
