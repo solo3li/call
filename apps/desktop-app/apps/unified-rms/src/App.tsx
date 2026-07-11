@@ -30,7 +30,7 @@ function App() {
   const { role } = useAuth();
 
   return (
-    <div className="container">
+    <div className="min-h-screen w-full bg-carbon-bg text-carbon-text">
       <Routes>
         <Route path="/" element={role ? <Navigate to={
           role === 'admin' ? '/hq' : 
