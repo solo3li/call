@@ -59,6 +59,7 @@ export default function SupportComplaintsPage() {
 
  useEffect(() => {
  let isMounted = true;
+ let pollingInterval: NodeJS.Timeout | null = null;
 
  if (selectedTicketId) {
  const fetchTicketDetails = async () => {
@@ -74,6 +75,8 @@ export default function SupportComplaintsPage() {
  isComplaint: res.data.isComplaint,
  telegramChatId: res.data.telegramChatId
  });
+
+ let usePolling = false;
 
  // Setup SignalR
  if (!hubConnectionRef.current) {
@@ -95,14 +98,17 @@ export default function SupportComplaintsPage() {
  return;
  }
  hubConnectionRef.current = connection;
- } catch (err) {
- console.error("SignalR connection error", err);
- return;
+ } catch (err: any) {
+ if (isMounted && err.name !== 'AbortError') {
+ console.warn("SignalR not available, falling back to HTTP polling.");
+ usePolling = true;
+ }
  }
  }
 
  const connection = hubConnectionRef.current;
- if (connection.state === signalR.HubConnectionState.Connected) {
+ if (connection && connection.state === signalR.HubConnectionState.Connected) {
+ try {
  await connection.invoke("JoinTicketGroup", selectedTicketId);
  connection.off("ReceiveMessage");
  connection.on("ReceiveMessage", (message: Message) => {
@@ -112,7 +118,28 @@ export default function SupportComplaintsPage() {
  return [...prev, message];
  });
  });
+ } catch (invokeErr) {
+ console.warn("Failed to join ticket group, falling back to HTTP polling.", invokeErr);
+ usePolling = true;
  }
+ } else if (!connection || connection.state !== signalR.HubConnectionState.Connected) {
+ usePolling = true;
+ }
+
+ if (usePolling && isMounted) {
+ pollingInterval = setInterval(async () => {
+ try {
+ const pollRes = await api.get(`/Support/Ticket/${selectedTicketId}`);
+ if (isMounted) {
+ setMessages(pollRes.data.messages || []);
+ setActiveTicket(prev => prev ? { ...prev, status: pollRes.data.status } : null);
+ }
+ } catch (pollErr) {
+ // Silent catch for polling
+ }
+ }, 5000); // Poll every 5 seconds
+ }
+
  } catch (err) {
  console.error("Failed to fetch ticket details", err);
  }
@@ -122,6 +149,7 @@ export default function SupportComplaintsPage() {
 
  return () => {
  isMounted = false;
+ if (pollingInterval) clearInterval(pollingInterval);
  };
  }, [selectedTicketId]);
 

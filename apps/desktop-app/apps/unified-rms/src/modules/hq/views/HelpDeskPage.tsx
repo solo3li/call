@@ -100,6 +100,7 @@ export default function HelpDeskPage() {
 
  useEffect(() => {
  let isMounted = true;
+ let pollingInterval: NodeJS.Timeout | null = null;
 
  if (activeView === 'chat' && ticketId && isLoggedIn) {
  const initChat = async () => {
@@ -110,6 +111,8 @@ export default function HelpDeskPage() {
  setMessages(res.data.messages);
  setActiveTicketTitle(res.data.title);
  setActiveTicketStatus(res.data.status);
+
+ let usePolling = false;
 
  if (!hubConnectionRef.current) {
  const connection = new signalR.HubConnectionBuilder()
@@ -134,14 +137,16 @@ export default function HelpDeskPage() {
  hubConnectionRef.current = connection;
  } catch (err: any) {
  if (isMounted && err.name !== 'AbortError') {
- console.error("SignalR Connection Error:", err);
+ // Suppress large console errors and fallback to polling
+ console.warn("SignalR not available, falling back to HTTP polling.");
+ usePolling = true;
  }
- return;
  }
  }
 
  const connection = hubConnectionRef.current;
- if (connection.state === signalR.HubConnectionState.Connected) {
+ if (connection && connection.state === signalR.HubConnectionState.Connected) {
+ try {
  await connection.invoke("JoinTicketGroup", ticketId);
  
  connection.off("ReceiveMessage");
@@ -152,7 +157,28 @@ export default function HelpDeskPage() {
  return [...prev, message];
  });
  });
+ } catch (invokeErr) {
+ console.warn("Failed to join ticket group, falling back to HTTP polling.", invokeErr);
+ usePolling = true;
  }
+ } else if (!connection || connection.state !== signalR.HubConnectionState.Connected) {
+ usePolling = true;
+ }
+
+ if (usePolling && isMounted) {
+ pollingInterval = setInterval(async () => {
+ try {
+ const pollRes = await api.get(`/Support/Ticket/${ticketId}`);
+ if (isMounted) {
+ setMessages(pollRes.data.messages);
+ setActiveTicketStatus(pollRes.data.status);
+ }
+ } catch (pollErr) {
+ // Silent catch for polling
+ }
+ }, 5000); // Poll every 5 seconds
+ }
+
  } catch (error) {
  if (isMounted) {
  console.error("Failed to initialize support chat:", error);
@@ -164,6 +190,7 @@ export default function HelpDeskPage() {
 
  return () => {
  isMounted = false;
+ if (pollingInterval) clearInterval(pollingInterval);
  // We don't necessarily want to stop the global connection here 
  // if we want to keep it alive for the next time they open chat,
  // but we should at least leave the group if we are unmounting.
