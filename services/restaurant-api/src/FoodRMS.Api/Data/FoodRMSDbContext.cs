@@ -29,14 +29,7 @@ namespace FoodRMS.Api.Data
         public DbSet<SupportMessage> SupportMessages { get; set; }
         public DbSet<CasbinRule> CasbinRules { get; set; }
 
-        // AI and Telephony Global tables
-        public DbSet<VoiceDialect> VoiceDialects { get; set; }
-        public DbSet<VoiceEmotion> VoiceEmotions { get; set; }
-        public DbSet<VoiceStyle> VoiceStyles { get; set; }
-        public DbSet<VoiceProfile> VoiceProfiles { get; set; }
-        public DbSet<TenantAiSetting> TenantAiSettings { get; set; }
-        public DbSet<TenantSipSetting> TenantSipSettings { get; set; }
-        public DbSet<CallRecord> CallRecords { get; set; }
+        // No more AI and Telephony Global tables here
 
         // Per-tenant schema
         public DbSet<Branch> Branches { get; set; }
@@ -90,25 +83,7 @@ namespace FoodRMS.Api.Data
                 builder.Entity<CasbinRule>().ToTable("CasbinRules", "public");
                 builder.Entity<UserTenant>().ToTable("UserTenants", "public");
 
-                builder.Entity<VoiceDialect>().ToTable("VoiceDialects", "public");
-                builder.Entity<VoiceEmotion>().ToTable("VoiceEmotions", "public");
-                builder.Entity<VoiceStyle>().ToTable("VoiceStyles", "public");
-                builder.Entity<VoiceProfile>().ToTable("VoiceProfiles", "public");
-                
-                builder.Entity<TenantAiSetting>(entity => {
-                    entity.ToTable("TenantAiSettings", "public");
-                    entity.HasOne(t => t.Tenant).WithOne().HasForeignKey<TenantAiSetting>(t => t.TenantId);
-                });
-                
-                builder.Entity<TenantSipSetting>(entity => {
-                    entity.ToTable("TenantSipSettings", "public");
-                    entity.HasOne(t => t.Tenant).WithOne().HasForeignKey<TenantSipSetting>(t => t.TenantId);
-                });
-
-                builder.Entity<CallRecord>(entity => {
-                    entity.ToTable("CallRecords", "public");
-                    entity.HasOne(t => t.Tenant).WithMany().HasForeignKey(t => t.TenantId);
-                });
+        // Removed AI and Telephony tables configurations
 
                 // AppRole — explicit single relationship with Department
                 builder.Entity<AppRole>(entity =>
@@ -132,13 +107,7 @@ namespace FoodRMS.Api.Data
                 builder.Entity<SupportTicket>().ToTable("SupportTickets");
                 builder.Entity<SupportMessage>().ToTable("SupportMessages");
                 builder.Entity<CasbinRule>().ToTable("CasbinRules");
-                builder.Entity<VoiceDialect>().ToTable("VoiceDialects");
-                builder.Entity<VoiceEmotion>().ToTable("VoiceEmotions");
-                builder.Entity<VoiceStyle>().ToTable("VoiceStyles");
-                builder.Entity<VoiceProfile>().ToTable("VoiceProfiles");
-                builder.Entity<TenantAiSetting>().ToTable("TenantAiSettings");
-                builder.Entity<TenantSipSetting>().ToTable("TenantSipSettings");
-                builder.Entity<CallRecord>().ToTable("CallRecords");
+                // Removed Voice tables and CallRecords
             }
 
             // RolePermission configuration

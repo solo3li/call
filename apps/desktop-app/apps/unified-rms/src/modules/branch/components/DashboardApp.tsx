@@ -35,7 +35,6 @@ import {
 import { RolesPermissionsPage } from "../views/RolesPermissionsPage";
 import { AnalyticsPage } from "../views/AnalyticsPage";
 import PosPage from "../views/PosPage";
-import CallCenterPage from "../views/CallCenterPage";
 import CustomersPage from "../views/CustomersPage";
 import KdsPage from "../views/KdsPage";
 import SupportComplaintsPage from "../views/SupportComplaintsPage";
@@ -156,14 +155,12 @@ function getPageContent(activeTab: string, setActiveTab: any, editOrderId: strin
   switch (activeTab) {
     case "pos":
       return <PosPage />;
-    case "callcenter":
-      return <CallCenterPage editOrderId={editOrderId} setEditOrderId={setEditOrderId} />;
     case "kds-monitor":
       return <KdsMonitorPage />;
     case "kds-station":
       return <KdsStationPage />;
     case "orders":
-      return <OrdersPage onEditOrder={(id: string) => { setEditOrderId(id); setActiveTab("callcenter"); }} />;
+      return <OrdersPage onEditOrder={(id: string) => { setEditOrderId(id); setActiveTab("pos"); }} />;
     case "menu":
       return <MenuPage />;
     case "branches":

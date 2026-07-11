@@ -48,7 +48,6 @@ const menuSections: MenuSection[] = [
     items: [
       { id: "dashboard", label: "لوحة التحكم", icon: LayoutDashboard, color: "bg-brand-yellow" },
       { id: "pos", label: "نقطة بيع (POS)", icon: ShoppingBag, color: "bg-brand-purple text-white" },
-      { id: "callcenter", label: "مركز الاتصال", icon: PhoneCall, color: "bg-brand-orange text-white" },
     ]
   },
   {

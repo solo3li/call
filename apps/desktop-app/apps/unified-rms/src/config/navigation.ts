@@ -43,7 +43,6 @@ export const NAVIGATION_SECTIONS: MenuSection[] = [
       { id: "hq", label: "اللوحة الرئيسية", icon: LayoutDashboard, color: "text-carbon-blue", roles: ["admin"], path: "/hq" },
       { id: "branch", label: "إدارة الفرع", icon: LayoutDashboard, color: "text-carbon-blue", roles: ["admin", "branch_manager"], path: "/branch" },
       { id: "pos", label: "نقطة بيع (POS)", icon: ShoppingBag, color: "text-[#8a3ffc]", roles: ["admin", "cashier", "branch_manager"], path: "/pos" },
-      { id: "callcenter", label: "مركز الاتصال", icon: PhoneCall, color: "text-[#009d9a]", roles: ["admin", "agent"], path: "/call-center" },
       { id: "inventory", label: "إدارة المخزون", icon: Boxes, color: "text-[#da1e28]", roles: ["admin", "inventory_manager", "branch_manager"], path: "/inventory" },
     ]
   },

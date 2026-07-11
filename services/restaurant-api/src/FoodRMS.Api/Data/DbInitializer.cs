@@ -61,27 +61,6 @@ namespace FoodRMS.Api.Data
                 await context.SaveChangesAsync();
             }
 
-            // 0b. Seed Global Permissions
-            if (!context.VoiceDialects.Any())
-            {
-                context.VoiceDialects.AddRange(VoiceSeedData.GetDialects());
-                await context.SaveChangesAsync();
-            }
-            if (!context.VoiceEmotions.Any())
-            {
-                context.VoiceEmotions.AddRange(VoiceSeedData.GetEmotions());
-                await context.SaveChangesAsync();
-            }
-            if (!context.VoiceStyles.Any())
-            {
-                context.VoiceStyles.AddRange(VoiceSeedData.GetStyles());
-                await context.SaveChangesAsync();
-            }
-            if (!context.VoiceProfiles.Any())
-            {
-                context.VoiceProfiles.AddRange(VoiceSeedData.GetVoices());
-                await context.SaveChangesAsync();
-            }
 
             // 0c. Seed Global Permissions
             if (!context.Permissions.Any())

@@ -48,8 +48,6 @@ const menuSections: MenuSection[] = [
     items: [
       { id: "dashboard", label: "لوحة التحكم", icon: LayoutDashboard, color: "bg-brand-yellow" },
       { id: "pos", label: "نقطة بيع (POS)", icon: ShoppingBag, color: "bg-brand-purple text-white" },
-      { id: "callcenter", label: "مركز الاتصال", icon: PhoneCall, color: "bg-brand-orange text-white" },
-      { id: "call-records", label: "المكالمات المسجلة", icon: Mic, color: "bg-brand-purple text-white" },
     ]
   },
   {
@@ -86,7 +84,6 @@ const menuSections: MenuSection[] = [
     title: "النظام",
     items: [
       { id: "settings", label: "الإعدادات", icon: Settings, color: "text-white" },
-      { id: "ai-settings", label: "الذكاء الاصطناعي والمكالمات", icon: MessageSquare, color: "text-white", restricted: true },
       { id: "external-companies", label: "شركات التوصيل", icon: Store, color: "text-white", restricted: true },
       { id: "helpdesk", label: "الدعم الفني للمنصة", icon: LifeBuoy, color: "text-white" }
     ]

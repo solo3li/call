@@ -3,17 +3,20 @@ using System;
 using FoodRMS.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FoodRMS.Api.Migrations
+namespace FoodRMS.Api.Data.Migrations
 {
     [DbContext(typeof(FoodRMSDbContext))]
-    partial class FoodRMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260711050535_RemoveAiAndCallCenterEntities")]
+    partial class RemoveAiAndCallCenterEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

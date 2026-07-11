@@ -6,7 +6,6 @@ import { NavigationProvider } from "./context/NavigationContext";
 import Login from "./pages/Login";
 import HQDashboard from "./pages/HQDashboard";
 import POSDashboard from "./pages/POSDashboard";
-import CallCenterDashboard from "./pages/CallCenterDashboard";
 import InventoryDashboard from "./pages/InventoryDashboard";
 import BranchDashboard from "./pages/BranchDashboard";
 
@@ -35,7 +34,6 @@ function App() {
       <Route path="/" element={role ? <Navigate to={
         role === 'admin' ? '/hq' : 
         role === 'cashier' ? '/pos' : 
-        role === 'agent' ? '/call-center' :
         role === 'branch_manager' ? '/branch' : '/inventory'
       } /> : <Login />} />
       
@@ -50,12 +48,6 @@ function App() {
       <Route path="/pos" element={
         <ProtectedRoute allowedRoles={['admin', 'cashier', 'branch_manager']}>
           <POSDashboard />
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/call-center" element={
-        <ProtectedRoute allowedRoles={['admin', 'agent']}>
-          <CallCenterDashboard />
         </ProtectedRoute>
       } />
       

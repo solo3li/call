@@ -23,7 +23,6 @@ import SmartDeliveryView from "../views/SmartDeliveryView";
 import KdsMonitorPage from "../views/KdsMonitorPage";
 import KdsStationPage from "../views/KdsStationPage";
 import DeliveryDriverView from "../views/DeliveryDriverView";
-import AiSettingsView from "../views/AiSettingsView";
 import {
   BranchesPage,
   MenuPage,
@@ -36,13 +35,11 @@ import {
 import { RolesPermissionsPage } from "../views/RolesPermissionsPage";
 import { AnalyticsPage } from "../views/AnalyticsPage";
 import PosPage from "../views/PosPage";
-import CallCenterPage from "../views/CallCenterPage";
 import CustomersPage from "../views/CustomersPage";
 import KdsPage from "../views/KdsPage";
 import SupportComplaintsPage from "../views/SupportComplaintsPage";
 import HelpDeskPage from "../views/HelpDeskPage";
 import ExternalCompaniesSettings from '../app/settings/external-companies/page';
-import CallRecordsPage from "../views/CallRecordsPage";
 
 import { businessDaysApi } from "../utils/api";
 
@@ -159,14 +156,12 @@ function getPageContent(activeTab: string, setActiveTab: any, editOrderId: strin
   switch (activeTab) {
     case "pos":
       return <PosPage />;
-    case "callcenter":
-      return <CallCenterPage editOrderId={editOrderId} setEditOrderId={setEditOrderId} />;
     case "kds-monitor":
       return <KdsMonitorPage />;
     case "kds-station":
       return <KdsStationPage />;
     case "orders":
-      return <OrdersPage onEditOrder={(id: string) => { setEditOrderId(id); setActiveTab("callcenter"); }} />;
+      return <OrdersPage onEditOrder={(id: string) => { setEditOrderId(id); setActiveTab("pos"); }} />;
     case "menu":
       return <MenuPage />;
     case "branches":
@@ -191,10 +186,6 @@ function getPageContent(activeTab: string, setActiveTab: any, editOrderId: strin
       return <HelpDeskPage />;
     case "external-companies":
       return <ExternalCompaniesSettings />;
-    case "ai-settings":
-      return <AiSettingsView />;
-    case "call-records":
-      return <CallRecordsPage />;
     case "smart-delivery":
       return <div className="space-y-6"><SmartDeliveryView /></div>;
     case "delivery":
