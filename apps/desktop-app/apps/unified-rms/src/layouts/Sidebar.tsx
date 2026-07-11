@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { LogOut, ChevronRight, ChevronLeft } from "lucide-react";
 import { getNavigationForRole } from "../config/navigation";
 import { useAuth, Role } from "../AuthContext";
@@ -12,8 +12,7 @@ interface SidebarProps {
 
 export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
   const { role, logout } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
+
   const { activeTab, navigateToTab } = useNavigation();
 
   const sections = getNavigationForRole(role as Role | null);
@@ -48,7 +47,7 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
             )}
             <ul className="space-y-1">
               {section.items.map((item) => {
-                const isActive = item.path ? location.pathname.startsWith(item.path) : activeTab === item.id;
+                const isActive = activeTab === item.id;
                 const Icon = item.icon;
                 
                 return (
