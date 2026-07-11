@@ -1,33 +1,44 @@
-import { Clock, Flame, ChefHat, Truck, CheckCircle2 } from "lucide-react";
 import { useDashboard } from "../context/DashboardContext";
 
 export default function LiveStatus() {
   const { stats } = useDashboard();
 
   const liveStats = [
-    { label: "في الانتظار", count: stats?.pendingOrders || 0, icon: Clock, color: "bg-[#f1c21b] text-black", emoji: "⏳" },
-    { label: "جاري التحضير", count: stats?.preparingOrders || 0, icon: Flame, color: "bg-[#ff832b] text-white", emoji: "🔥" },
-    { label: "في المطبخ", count: stats?.inKitchenOrders || 0, icon: ChefHat, color: "bg-[#0f62fe] text-white", emoji: "👨‍🍳" },
-    { label: "قيد التوصيل", count: stats?.deliveryOrders || 0, icon: Truck, color: "bg-[#8a3ffc] text-white", emoji: "🚗" },
-    { label: "مكتملة اليوم", count: stats?.completedTodayOrders || 0, icon: CheckCircle2, color: "bg-[#24a148] text-white", emoji: "✅" },
+    { label: "في الانتظار", count: stats?.pendingOrders || 0, status: "warning" },
+    { label: "جاري التحضير", count: stats?.preparingOrders || 0, status: "info" },
+    { label: "في المطبخ", count: stats?.inKitchenOrders || 0, status: "primary" },
+    { label: "قيد التوصيل", count: stats?.deliveryOrders || 0, status: "purple" },
+    { label: "مكتملة اليوم", count: stats?.completedTodayOrders || 0, status: "success" },
   ];
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "warning": return "bg-[#f1c21b] text-black";
+      case "info": return "bg-[#08bdba] text-white";
+      case "primary": return "bg-[#0f62fe] text-white";
+      case "purple": return "bg-[#8a3ffc] text-white";
+      case "success": return "bg-[#24a148] text-white";
+      default: return "bg-[#e0e0e0] text-black";
+    }
+  };
+
   return (
-    <div className="bg-carbon-layer border border-carbon-border p-5">
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-3 h-3 bg-[#da1e28] rounded-full animate-pulse-glow"></div>
-        <h3 className="font-bold text-lg text-white">البث المباشر</h3>
-        <span className="bg-[#da1e28] text-white text-[10px] font-bold px-2 py-0.5 ml-2">LIVE</span>
+    <div className="bg-carbon-layer border border-carbon-border">
+      <div className="flex items-center gap-3 p-4 border-b border-carbon-border">
+        <div className="w-2 h-2 bg-carbon-error rounded-full animate-pulse"></div>
+        <h3 className="font-semibold text-base text-carbon-text">العمليات المباشرة</h3>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-5 divide-x divide-x-reverse border-carbon-border">
         {liveStats.map((stat, index) => (
           <div
             key={index}
-            className={`${stat.color} p-4 rounded-none text-center relative overflow-hidden transition-transform hover:-translate-y-1`}
+            className="p-4 flex flex-col justify-between h-24"
           >
-            <div className="text-2xl mb-1 opacity-90">{stat.emoji}</div>
-            <p className="text-3xl font-bold">{stat.count}</p>
-            <p className="text-xs font-semibold mt-1 opacity-90">{stat.label}</p>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-medium text-carbon-textSecondary">{stat.label}</span>
+              <div className={`w-2 h-2 rounded-full ${getStatusColor(stat.status).split(' ')[0]}`}></div>
+            </div>
+            <p className="text-2xl font-normal text-carbon-text leading-none">{stat.count}</p>
           </div>
         ))}
       </div>

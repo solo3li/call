@@ -1,6 +1,5 @@
 import { useCurrency } from "../utils/useCurrency";
 import { useState, useEffect } from "react";
-import { TrendingUp, ShoppingBag, DollarSign, Users, Star } from "lucide-react";
 import { DashboardStats } from "../types/api";
 
 interface StatsCardsProps {
@@ -22,9 +21,6 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       unit: currencySymbol,
       change: "+١٢.٥٪",
       trend: "up",
-      icon: DollarSign,
-      color: "bg-brand-green",
-      emoji: "💰",
     },
     {
       title: "الطلبات",
@@ -32,20 +28,13 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       unit: "طلب",
       change: "+٨.٣٪",
       trend: "up",
-      icon: ShoppingBag,
-      color: "bg-brand-orange",
-      emoji: "📦",
     },
-
     {
       title: "طلبات معلقة",
       value: stats?.pendingOrders?.toString() || "٠",
       unit: "طلب",
-      change: "-١",
+      change: "-١٪",
       trend: "down",
-      icon: Star,
-      color: "bg-brand-yellow",
-      emoji: "⏳",
     },
   ];
 
@@ -56,22 +45,31 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       {displayStats.map((stat, index) => (
         <div
           key={index}
-          className="bg-carbon-layer border border-carbon-border p-5 relative"
+          className="bg-carbon-layer border border-carbon-border p-4 flex flex-col justify-between h-32"
         >
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-normal text-carbon-textSecondary">{stat.title}</p>
-              <div className="flex items-baseline gap-2 mt-1">
-                <span className="text-3xl font-bold text-white">{stat.value}</span>
-                <span className="text-sm font-normal text-carbon-textSecondary">{stat.unit}</span>
-              </div>
-              <div className="flex items-center gap-1 mt-2">
-                <TrendingUp size={16} className="text-[#24a148]" />
-                <span className="text-sm font-semibold text-[#24a148]">{stat.change}</span>
-                <span className="text-xs text-carbon-textSecondary font-normal">عن أمس</span>
-              </div>
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-medium text-carbon-textSecondary">{stat.title}</h3>
+          </div>
+          <div>
+            <div className="flex items-end gap-2">
+              <span className="text-3xl font-normal text-carbon-text leading-none">{stat.value}</span>
+              <span className="text-sm font-medium text-carbon-textSecondary pb-1">{stat.unit}</span>
             </div>
-            <div className="text-3xl opacity-80">{stat.emoji}</div>
+            <div className="flex items-center gap-2 mt-2">
+              <div className={`flex items-center ${stat.trend === 'up' ? 'text-carbon-success' : 'text-carbon-error'}`}>
+                {stat.trend === 'up' ? (
+                  <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+                    <path d="M16 4L6 14l1.41 1.41L15 7.83V28h2V7.83l7.59 7.58L26 14 16 4z" />
+                  </svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+                    <path d="M16 28L26 18l-1.41-1.41L17 24.17V4h-2v20.17l-7.59-7.58L6 18 16 28z" />
+                  </svg>
+                )}
+                <span className="text-xs font-semibold ml-1">{stat.change}</span>
+              </div>
+              <span className="text-xs text-carbon-textSecondary">منذ اليوم السابق</span>
+            </div>
           </div>
         </div>
       ))}

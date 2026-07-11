@@ -11,46 +11,45 @@ export default function WeeklyRatings() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return <div className="neo-card p-5 h-64 animate-pulse bg-gray-50"></div>;
+  if (!mounted) return <div className="bg-carbon-layer border border-carbon-border p-5 h-64 animate-pulse"></div>;
 
   return (
-    <div className="neo-card p-5">
-      <div className="mb-4">
-        <h3 className="font-black text-lg">⭐ تقييمات الأسبوع</h3>
-        <p className="text-sm text-gray-500 font-semibold">متوسط التقييم اليومي</p>
+    <div className="bg-carbon-layer border border-carbon-border p-5">
+      <div className="mb-4 border-b border-carbon-border pb-3">
+        <h3 className="font-semibold text-base text-carbon-text">تقييمات الأسبوع</h3>
       </div>
       <ResponsiveContainer width="100%" height={200}>
         <BarChart data={ratings}>
-          <XAxis dataKey="day" tick={{ fontSize: 12, fontWeight: 700 }} />
-          <YAxis domain={[0, 5]} tick={{ fontSize: 12, fontWeight: 700 }} />
-          <Bar dataKey="rating" radius={[8, 8, 0, 0]} strokeWidth={2} stroke="#1A1A1A">
+          <XAxis dataKey="day" tick={{ fontSize: 11, fill: "#525252" }} axisLine={false} tickLine={false} />
+          <YAxis domain={[0, 5]} tick={{ fontSize: 11, fill: "#525252" }} axisLine={false} tickLine={false} />
+          <Bar dataKey="rating" radius={[2, 2, 0, 0]}>
             {ratings.map((entry: any, index: number) => (
               <Cell
                 key={`cell-${index}`}
                 fill={
                   entry.rating >= 4.8
-                    ? "#00E676"
+                    ? "#24a148"
                     : entry.rating >= 4.5
-                    ? "#FFD700"
-                    : "#FF6B35"
+                    ? "#0f62fe"
+                    : "#8a3ffc"
                 }
               />
             ))}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      <div className="flex items-center justify-center gap-4 mt-3">
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 bg-brand-green rounded border-2 border-neo-border"></div>
-          <span className="text-xs font-bold">ممتاز (4.8+)</span>
+      <div className="flex items-center justify-center gap-6 mt-4">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-[#24a148] rounded-full"></div>
+          <span className="text-[11px] text-carbon-textSecondary">ممتاز (4.8+)</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 bg-brand-yellow rounded border-2 border-neo-border"></div>
-          <span className="text-xs font-bold">جيد (4.5+)</span>
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-[#0f62fe] rounded-full"></div>
+          <span className="text-[11px] text-carbon-textSecondary">جيد (4.5+)</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 bg-brand-orange rounded border-2 border-neo-border"></div>
-          <span className="text-xs font-bold">متوسط</span>
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-[#8a3ffc] rounded-full"></div>
+          <span className="text-[11px] text-carbon-textSecondary">متوسط</span>
         </div>
       </div>
     </div>

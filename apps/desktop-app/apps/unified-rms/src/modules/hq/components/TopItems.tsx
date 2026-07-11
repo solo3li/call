@@ -1,6 +1,5 @@
 import { useCurrency } from "../utils/useCurrency";
 import { useDashboard } from "../context/DashboardContext";
-import { TrendingUp, TrendingDown } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function TopItems() {
@@ -13,53 +12,35 @@ export default function TopItems() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return <div className="neo-card p-5 h-64 animate-pulse bg-gray-50"></div>;
+  if (!mounted) return <div className="bg-carbon-layer border border-carbon-border p-5 h-64 animate-pulse"></div>;
 
   return (
-    <div className="neo-card p-5">
-      <div className="mb-4">
-        <h3 className="font-black text-lg">🏆 الأصناف الأكثر مبيعاً</h3>
-        <p className="text-sm text-gray-500 font-semibold">هذا الشهر</p>
+    <div className="bg-carbon-layer border border-carbon-border p-5">
+      <div className="mb-4 border-b border-carbon-border pb-3 flex justify-between items-center">
+        <h3 className="font-semibold text-base text-carbon-text">الأصناف الأكثر مبيعاً</h3>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-0 divide-y divide-carbon-border">
         {items.map((item: any, index: number) => (
           <div
             key={item.id}
-            className="flex items-center gap-3 p-3 rounded-lg border-2 border-neo-border hover:bg-yellow-50 transition-colors group"
+            className="flex items-center gap-4 py-3 group"
           >
             {/* Rank */}
-            <div
-              className={`w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm border-2 border-neo-border ${
-                index === 0
-                  ? "bg-brand-yellow"
-                  : index === 1
-                  ? "bg-gray-200"
-                  : index === 2
-                  ? "bg-brand-orange"
-                  : "bg-white"
-              }`}
-            >
+            <div className="w-6 text-center font-semibold text-sm text-carbon-textSecondary">
               {index + 1}
             </div>
-            {/* Emoji */}
-            <span className="text-2xl group-hover:animate-float">{item.emoji}</span>
             {/* Info */}
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-sm truncate">{item.name}</p>
-              <p className="text-xs text-gray-500 font-semibold">{item.orders} طلب</p>
+              <p className="font-medium text-sm text-carbon-text truncate">{item.name}</p>
+              <p className="text-xs text-carbon-textSecondary">{item.orders} طلب</p>
             </div>
             {/* Revenue */}
             <div className="text-left">
-              <p className="font-black text-sm">{item.revenue.toLocaleString()} {currencySymbol}</p>
-              <div className="flex items-center gap-1">
-                {item.trend.startsWith("+") ? (
-                  <TrendingUp size={12} className="text-green-600" />
-                ) : (
-                  <TrendingDown size={12} className="text-red-500" />
-                )}
+              <p className="font-medium text-sm text-carbon-text">{item.revenue.toLocaleString()} {currencySymbol}</p>
+              <div className="flex items-center justify-end gap-1">
                 <span
-                  className={`text-xs font-bold ${
-                    item.trend.startsWith("+") ? "text-green-600" : "text-red-500"
+                  className={`text-xs font-semibold ${
+                    item.trend.startsWith("+") ? "text-carbon-success" : "text-carbon-error"
                   }`}
                 >
                   {item.trend}

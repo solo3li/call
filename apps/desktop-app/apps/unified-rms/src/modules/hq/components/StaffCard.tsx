@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Star } from "lucide-react";
 import { staffApi } from "../utils/api";
 import { Staff } from "../types/api";
 
@@ -24,37 +23,37 @@ export default function StaffCard() {
     return () => { isMounted = false; };
   }, []);
 
-  if (loading) return <div className="neo-card p-5 animate-pulse">جاري تحميل فريق العمل...</div>;
+  if (loading) return <div className="bg-carbon-layer border border-carbon-border p-5 h-64 animate-pulse"></div>;
 
   return (
-    <div className="neo-card p-5">
-      <div className="mb-4">
-        <h3 className="font-black text-lg">👨‍🍳 فريق العمل</h3>
-        <p className="text-sm text-gray-500 font-semibold">الحالة الحالية</p>
+    <div className="bg-carbon-layer border border-carbon-border p-5">
+      <div className="mb-4 border-b border-carbon-border pb-3">
+        <h3 className="font-semibold text-base text-carbon-text">فريق العمل</h3>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="space-y-0 divide-y divide-carbon-border">
         {staff.map((member) => (
           <div
             key={member.id}
-            className="p-4 rounded-xl border-2 border-neo-border hover:bg-yellow-50 transition-colors flex items-center gap-3"
+            className="py-3 flex items-center gap-3"
           >
-            <div className="text-3xl">{member.avatar}</div>
+            <div className="w-8 h-8 rounded-full bg-carbon-layerHover flex items-center justify-center font-medium text-xs text-carbon-text">
+              {member.fullName.charAt(0)}
+            </div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h4 className="font-bold text-sm truncate">{member.fullName}</h4>
-                <span
-                  className={`w-2.5 h-2.5 rounded-full border border-neo-border ${
-                    member.status === "Available" || member.status === "متاح" ? "bg-brand-green" : "bg-brand-orange"
-                  }`}
-                ></span>
-              </div>
-              <p className="text-xs text-gray-500 font-semibold">{member.role}</p>
-              <div className="flex items-center gap-3 mt-1">
-                <span className="text-xs font-bold">{member.ordersHandled} طلب</span>
-                <div className="flex items-center gap-0.5">
-                  <Star size={10} className="text-brand-yellow fill-brand-yellow" />
-                  <span className="text-xs font-bold">{member.rating}</span>
+              <div className="flex items-center justify-between">
+                <h4 className="font-medium text-sm text-carbon-text truncate">{member.fullName}</h4>
+                <div className="flex items-center gap-2">
+                   <span
+                    className={`w-2 h-2 rounded-full ${
+                      member.status === "Available" || member.status === "متاح" ? "bg-carbon-success" : "bg-carbon-warning"
+                    }`}
+                  ></span>
                 </div>
+              </div>
+              <p className="text-xs text-carbon-textSecondary mt-0.5">{member.role}</p>
+              <div className="flex items-center justify-between mt-1 text-[10px] text-carbon-textSecondary">
+                <span>{member.ordersHandled} طلب</span>
+                <span>{member.rating} / 5 تقييم</span>
               </div>
             </div>
           </div>

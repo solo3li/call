@@ -8,38 +8,27 @@ module.exports = {
     extend: {
       colors: {
         carbon: {
-          // Light theme (Pages)
           bg: '#f4f4f4', // Gray 10
           layer: '#ffffff', // White
           layerHover: '#e5e5e5', // Gray 20
           border: '#e0e0e0', // Gray 20
-          
-          // Dark theme (Sidebar)
           darkBg: '#161616', // Gray 100
           darkLayer: '#262626', // Gray 90
           darkHover: '#393939', // Gray 80
           darkBorder: '#393939', // Border
-          
-          // Primary Actions
           blue: '#0f62fe', // Blue 60
           blueHover: '#0353e9', // Blue 70
-          
-          // Text (Light theme)
           text: '#161616', // Gray 100
           textSecondary: '#525252', // Gray 60
-          
-          // Text (Dark theme)
           darkText: '#f4f4f4', // Gray 10
           darkTextSecondary: '#c6c6c6', // Gray 30
-          
-          // Status Colors
           success: '#24a148',
           error: '#da1e28',
           warning: '#f1c21b',
         }
       },
       fontFamily: {
-        cairo: ['Cairo', 'sans-serif'],
+        plex: ['"IBM Plex Sans Arabic"', 'sans-serif'],
       },
     },
   },
