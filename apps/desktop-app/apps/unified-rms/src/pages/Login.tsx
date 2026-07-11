@@ -94,7 +94,7 @@ export default function Login() {
       let targetPath = "/";
       
       // Assign specific unified-rms roles based on API Role
-      const apiRole = (data.role || "").toUpperCase();
+      const apiRole = (data.userRole || data.role || "").toUpperCase();
       if (apiRole.includes("ADMIN") || apiRole.includes("OWNER")) {
           assignedRole = 'admin';
           targetPath = '/hq';

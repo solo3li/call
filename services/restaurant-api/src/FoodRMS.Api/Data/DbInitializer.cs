@@ -618,6 +618,10 @@ namespace FoodRMS.Api.Data
             var staffUsers = new List<User>();
             for (int i = 0; i < staffNames.Length; i++)
             {
+                var roleName = i == 0 ? "Chef" :
+                               i == 1 ? "Cashier" :
+                               i == 2 ? "Agent" :
+                               i == 3 ? "Manager" : "Staff";
                 var staffUser = new User
                 {
                     // Deterministic GUID for staff
@@ -626,7 +630,7 @@ namespace FoodRMS.Api.Data
                     Email = $"staff{i + 1}@{subdomain}.com",
                     FullName = staffNames[i],
                     TenantId = tenantId,
-                    Role = "Staff",
+                    Role = roleName,
                     BranchId = branches[i % branches.Count].Id,
                     OrdersHandled = 50 + (i * 10),
                     Rating = 4.4 + (i * 0.1),
@@ -636,6 +640,7 @@ namespace FoodRMS.Api.Data
                     TotpSecretKey = i == 0 ? "CHEFSECRETKEY2222222222222222222" : 
                                     i == 1 ? "CASHIERSECRETKEY2222222222222222" : 
                                     i == 2 ? "AGENTSECRETKEY222222222222222222" : 
+                                    i == 3 ? "MANAGERSECRETKEY2222222222222222" :
                                     OtpNet.Base32Encoding.ToString(OtpNet.KeyGeneration.GenerateRandomKey(20))
                 };
                 await userManager.CreateAsync(staffUser, "Staff123!");
