@@ -13,9 +13,9 @@ export function getPermissions(): string[] {
 }
 
 export function hasPermission(code: string): boolean {
-  const role = localStorage.getItem('userRole') || '';
-  // Owner has all permissions by default
-  if (role === 'Owner' || role === 'Admin') return true;
+  const role = (localStorage.getItem('userRole') || '').toLowerCase();
+  // Owner, Admin, and Branch Manager have all permissions by default for now
+  if (role === 'owner' || role === 'admin' || role === 'branch_manager' || role === 'manager') return true;
   return getPermissions().includes(code);
 }
 
@@ -32,6 +32,6 @@ export function getUserRole(): string {
 
 /** Owner / Admin see everything; staff only see their own branch */
 export function isManagerOrOwner(): boolean {
-  const role = getUserRole();
-  return role === 'Owner' || role === 'Admin' || role === 'Manager';
+  const role = getUserRole().toLowerCase();
+  return role === 'owner' || role === 'admin' || role === 'manager' || role === 'branch_manager';
 }
